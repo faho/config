@@ -1,0 +1,138 @@
+# Download updated scripts from the AUR and diff them
+aurpdate() {
+	cd ~/dev/build
+	cower -uq 2> /dev/null | while read pkg; do
+								 new=yes; dir="$(mktemp -d)"
+								 [[ -e ./"$pkg" ]] && new=no
+								 cower -d "$pkg" -t "$dir"
+								 [[ "yes" = "$new" ]] && diff -ur "$pkg" "$dir/$pkg" -x "*.pkg.*"
+								 ans="y"
+								 [[ "-r" = "$1" ]] || { echo "Replace? y/N"; read ans < /dev/tty; }
+								 if [[ "y" = "$ans" ]] || [[ "yes" = "$new" ]]; then
+									 \rm -r "$pkg"
+									 mv "$dir/$pkg/" "$pkg"
+								 fi
+								 \rm -r "$dir"
+							 done
+}
+alias monitor-off="xset dpms force off"
+alias pacneeded="comm -3 <(pacman -Qetq) <(pacman -Qeq)"
+alias abs="/home/alfa/dev/abs-replacement/abs.sh"
+alias record="arecord -f cd -t raw | oggenc - -r -o "
+alias open="xdg-open"
+#Execute last command in su -c
+alias please=' su -c "$(fc -l -n -1)"'
+export Automoc4_DIR=/usr/lib/automoc4
+alias duthis="du -sch * | sort -h"
+alias usc="systemctl --user"
+alias sc="systemctl"
+alias cgls="systemd-cgls"
+alias gamemode="startx -- -config xorg-nvidia.conf"
+alias upo="upower -i /org/freedesktop/UPower/devices/battery_BAT0"
+# alias kwinconsole="qdbus-qt4 org.kde.plasma-desktop /MainApplication showInteractiveConsole"
+alias kwinconsole="qdbus-qt5 org.kde.plasmashell /PlasmaShell showInteractiveConsole"
+alias e="$EDITOR "
+alias f="tail -f -n 1000 "
+alias fx="f ~/.xsession-errors"
+alias am="alsamixer -c0"
+alias alsamixer="alsamixer -c0"
+
+# Don't let eclipse use gtk3
+export SWT_GTK3=0
+
+export QT_PLUGIN_PATH=$HOME/.kde4/lib/kde4/plugins/:/usr/lib/kde4/plugins/
+
+# Steam
+# For linux version bumblebee, add "optirun -b primus %command%" to options in the client
+alias steamwine="WINEPREFIX=/home/alfa/.local/share/wineprefixes/steam wine "
+export SDL_AUDIODRIVER=pulse
+export STEAMDIR=$HOME/.local/share/Steam
+export STEAMLIBDIR="$STEAMDIR"/ubuntu12_32
+alias winesteam="cd ~/.local/share/wineprefixes/steam/drive_c/Program\ Files/Steam/;WINEPREFIX=/home/alfa/.local/share/wineprefixes/steam wine Steam -no-dwrite"
+alias wineoptisteam="cd ~/.local/share/wineprefixes/steam/drive_c/Program\ Files/Steam/;WINEPREFIX=/home/alfa/.local/share/wineprefixes/steam optirun wine Steam -no-dwrite"
+alias wineprimesteam="cd ~/.local/share/wineprefixes/steam/drive_c/Program\ Files/Steam/;WINEPREFIX=/home/alfa/.local/share/wineprefixes/steam primusrun wine Steam -no-dwrite"
+alias batman="cd ~/.local/share/wineprefixes/steam/drive_c/Program\ Files/Steam/steamapps/common/Batman\ Arkham\ City\ GOTY/Binaries/Win32;WINEPREFIX=/home/alfa/.local/share/wineprefixes/steam primusrun wine BatmanAC.exe"
+
+alias sound_hdmi="pacmd 'set-card-profile output:hdmi-surround'"
+alias sound_internal="pacmd 'set-card-profile output:analog-stereo+input:analog-stereo'"
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+export FT2_SUBPIXEL_HINTING=1
+#############
+# Functions #
+#############
+
+# man with colors
+man() {
+    env \
+        LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+        LESS_TERMCAP_md=$(printf "\e[1;31m") \
+        LESS_TERMCAP_me=$(printf "\e[0m") \
+        LESS_TERMCAP_se=$(printf "\e[0m") \
+        LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+        LESS_TERMCAP_ue=$(printf "\e[0m") \
+        LESS_TERMCAP_us=$(printf "\e[1;32m") \
+        man "$@"
+}
+
+# Simple hack to replace 'sudo', only apply if sudo is not installed
+if ! which sudo > /dev/null 2>&1; then
+    sudo(){
+        su - -c "$*"
+    }
+fi
+
+# Make multiple packages
+makepkgs(){
+	for pkg in "$@"; do
+		# Skip unnecessary builds
+		local grepver=$(grep "pkgver=" $1/PKGBUILD | head -n1 | cut -d"=" -f2)
+		local pacver=$(pacman -Q $pkg 2> /dev/null | cut -d" " -f2)
+		# vercmp will exit non-zero if it doesn't grok the arguments
+		[[ $(vercmp $grepver $pacver 2> /dev/null) -eq 0 ]] && continue
+		# Are these POSIX or bashisms? If the latter, move to .bashrc
+		pushd $pkg
+        makepkg -si --needed
+		popd
+    done
+}
+
+# FIXME: Loads of false-positives (e.g. teamspeak3 containing libgcc_s.so.1)
+gendeps(){
+	# Only scan multilib if arch is x86_64 and file is i686
+	if [[ "$(uname -m)" = "x86_64" ]] && ! (readelf -h "$1" | grep -c "Class:.*64" > /dev/null); then
+			REPOS=("core" "extra" "community" "multilib")
+	else
+		REPOS=("core" "extra" "community")
+	fi
+	readelf -d "$1" | sed -n "s/.*NEEDED.*\[\(.*\)\]/\1/p" | (while read a; do
+		for r in ${REPOS[@]}; do
+			pkgfile -s /usr/lib/$a --repo $r; done | cut -d"/" -f2 | (while read b;
+			do pacman -Qq $b 2> /dev/null && echo "exiting" && exit || echo "NOTINSTALLED: $b (providing $a)" ; done) || echo "$a not found"; done) | sort | uniq
+}
+
+justline(){
+    head -n $1 | tail -n 1
+}
+
+startnvidia() {
+	sudo systemctl stop bumblebeed display-manager
+	sudo modprobe -r bbswitch
+	export LD_LIBRARY_PATH=/usr/lib/nvidia:/usr/lib32/nvidia:/usr/lib:/usr/lib32
+	startx -- -config xorg-nvidia.conf
+}
+
+# startnvidia() {
+# 	sudo systemctl start kdm-prime
+# }
+# startintel() {
+# 	sudo systemctl start kdm bumblebeed
+# }
+# Clean stale .desktop entries
+cleandesktop() {
+	for i in {/usr,~/.local}/share/applications/*.desktop; do which $(grep -Poh '(?<=Exec=).*?( |$)' "$i" | sed 's/"//g') > /dev/null 2>&1 || rm -i "$i"; done
+}
+
+# Call info with a pager
+linfo() {
+	info $* | less
+}

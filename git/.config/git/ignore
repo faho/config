@@ -1,0 +1,8 @@
+*.swp
+*~
+a.out
+*.pyc
+*.kwinscript
+*.zip
+*.rar
+*.tar.*

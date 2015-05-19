@@ -1,0 +1,37 @@
+[user]
+	name = Fabian Homborg
+	email = FHomborg@gmail.com
+	signingkey = 36EBBDB3
+
+[core]
+	excludesfile = ~/.gitignore
+
+[sendemail]
+	from = Fabian Homborg <FHomborg@gmail.com>
+	smtpserver = smtp.gmail.com
+	smtpuser = FHomborg@gmail.com
+	smtpserverport = 587
+	smtpssl = true
+	smtpencryption = tls
+	chainreplyto = false
+
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	pom = pull origin master
+
+[diff "odf"]
+	  binary=true
+	  textconv=odt2txt
+
+[diff "pdf"]
+	  binary=true
+	  textconv=~/bin/pdf2txt
+
+[credential]
+	helper = cache
+
+[push]
+	default = simple
+
+[color]
+	ui = auto
