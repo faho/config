@@ -149,9 +149,6 @@
 ;; This needs to be set before evil-jumper is loaded so it doesn't bind TAB in console
 (req-package evil
   :diminish (undo-tree-mode . "")
-  ;; matchit: A way to jump between matched tags (parens, html tags etc)
-  ;; nerd-commenter: An easy way to comment/uncomment lines
-  :require (evil-matchit evil-nerd-commenter)
   :config
   (progn
 	(evil-mode t)
@@ -162,8 +159,6 @@
 	(ad-activate 'evil-yank)
 	;; Don't signal state in echo area
 	(setq evil-echo-state nil)
-	;; Bind "M-;" to commenting the selected lines (vim-style)
-	(evilnc-default-hotkeys)
 	;; Adds the "evilify" macro to add evil keybindings to modes
 	(require 'evil-evilified-state)
 	;; Remove some unhelpful bindings from evil so they are available elsewhere
@@ -195,7 +190,6 @@
 	;; "{" and "}" are badly reachable on QWERTZ, "ö" and "Ö" are unused
 	(define-key evil-motion-state-map "ö" 'evil-forward-paragraph)
 	(define-key evil-motion-state-map "Ö" 'evil-backward-paragraph)
-	(global-evil-matchit-mode 1)
 	;; Don't use C-i since that's TAB in a terminal
 	(setq evil-want-C-i-jump nil)
 	;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
@@ -252,7 +246,7 @@
 ;; jumper: A way to jump back and forward between points
 (req-package evil-jumper
   :require evil
-  :config
+  :init
   (progn
 	(setq evil-want-C-i-jump nil)
 	(define-key evil-motion-state-map "+" 'evil-jumper/forward)
@@ -261,6 +255,19 @@
 	(setq evil-jumper-auto-save-interval 30)
 	(global-evil-jumper-mode t)
 	))
+
+;; matchit: A way to jump between matched tags (parens, html tags etc)
+(req-package evil-matchit
+  :require evil
+  :init
+  (global-evil-matchit-mode 1))
+;; nerd-commenter: An easy way to comment/uncomment lines
+(req-package evil-nerd-commenter
+  :require evil
+  :init
+  ;; Bind "M-;" to commenting the selected lines (vim-style)
+  (evilnc-default-hotkeys)
+  )
 
 ;; (semantic-mode 1)
 ;; (setq semanticdb-default-save-directory (concat user-cache-directory "/emacs/semanticdb"))
@@ -298,6 +305,7 @@
 (setq-default tab-width 4)
 (setq-default standard-indent 4)
 (setq-default indent-tabs-mode t)
+(req-package editorconfig)
 ;;(add-hook 'prog-mode-hook 'c-guess-buffer)
 
 ;; Minibuffer
