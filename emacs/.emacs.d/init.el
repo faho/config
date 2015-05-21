@@ -35,9 +35,20 @@
 ;; Stuff that's not in the repos
 (add-to-list 'load-path (expand-file-name "local" user-emacs-directory))
 
+(dolist (dir load-path)
+  (make-directory dir t))
+
+(setq faho-config-files '("local/evil-evilified-state.el"
+						  "mystuff/mymail.el"
+						  "mystuff/myorg.el"
+						  "mystuff/myutil.el"))
+
+(dolist (file faho-config-files)
+  (if (not (file-exists-p (expand-file-name file user-emacs-directory)))
+  (url-copy-file (concat "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/" file) (expand-file-name file user-emacs-directory))))
+
 ;; Utility functions - always load
 (require 'myutil)
-
 (setq load-prefer-newer t)
 
 (require 'package)
@@ -54,7 +65,25 @@
 ;; (setq package-pinned-packages '((ox-reveal . "melpa-stable")))
 
 ;; BOOTSTRAP: Install req-package so that it can install everything else
+;; A simple req-package replacement to bootstrap req-package
+(defun require-package (package)
+  "refresh package archives, check package presence and install if it's not installed"
+  (if (null (require package nil t))
+      (progn (let* ((ARCHIVES (if (null package-archive-contents)
+                                  (progn (package-refresh-contents)
+                                         package-archive-contents)
+                                package-archive-contents))
+                    (AVAIL (assoc package ARCHIVES)))
+               (if AVAIL
+                   (package-install package)))
+             (require package))))
+
 (require-package 'req-package)
+
+;; These autoload through req-package
+;; Don't error if not found
+(require 'mymail nil t)
+(require 'myorg nil t)
 
 ;;; Aesthetics
 ;; Mode line
@@ -333,10 +362,6 @@
 ;;   (helm-mode 1)
 ;;   )
 
-;; These autoload through req-package
-;; Don't error if not found
-(require 'mymail nil t)
-(require 'myorg nil t)
 ;; Start in org-mode
 ;; (setq initial-major-mode 'org-mode)
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
