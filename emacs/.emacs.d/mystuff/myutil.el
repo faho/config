@@ -41,6 +41,15 @@
 		  ;; Supress "Shell command completed with no output"
 		  (message "")))))
 
+(defun paste-from-clipboard ()
+  (interactive)
+  (if (display-graphic-p)
+	  (progn
+		(clipboard-yank)
+		)
+	(insert (shell-command-to-string "xsel -o -b"))
+	))
+
 ;; From http://nullprogram.com/blog/2010/09/29/
 (defun expose (function)
   "Return an interactive version of FUNCTION."
