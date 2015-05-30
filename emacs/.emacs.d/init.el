@@ -134,6 +134,10 @@
 			  (nlinum-mode 1))))))
   )
 
+;; Add number of matches in search to mode-line
+(req-package anzu
+  :init
+  (global-anzu-mode 1))
 (setq diff-switches "-u")
 
 (req-package rainbow-delimiters
