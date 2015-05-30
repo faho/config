@@ -6,11 +6,10 @@
 	  (if (fboundp 'tool-bar-mode) tool-bar-mode t)
 	  (if (fboundp 'scroll-bar-mode) scroll-bar-mode 'right)
 	  )
-  (progn
-	(menu-bar-mode -1)
-	(if (fboundp 'tool-bar-mode) tool-bar-mode nil)
-	(if (fboundp 'scroll-bar-mode) scroll-bar-mode nil)
-	))
+  (menu-bar-mode -1)
+  (if (fboundp 'tool-bar-mode) tool-bar-mode nil)
+  (if (fboundp 'scroll-bar-mode) scroll-bar-mode nil)
+	)
 (setq-default major-mode 'text-mode)
 
 ;; Ask for y/n instead of "yes"/"no"
@@ -611,9 +610,6 @@
 (setq tramp-persistency-file-name (expand-file-name "tramp" user-cache-directory))
 (setq tramp-default-method "ssh")
 
-;; This should be the last line, after all req-package calls
-(req-package-finish)
-
 (defun djcb-find-file-as-root ()
   "Like `ido-find-file, but automatically edit the file with
 root-privileges (using tramp/sudo), if the file is not writable by
@@ -639,3 +635,6 @@ user."
  )
 
 (setq ediff-split-window-function 'split-window-horizontally)
+
+;; This should be the last line, after all req-package calls
+(req-package-finish)
