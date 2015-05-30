@@ -59,3 +59,16 @@ An infect script
 ====
 
 This trivial thing just uses Gnu Stow to symlink all _directories_, meaning there's no need to blacklist README.md or any other top-level files.
+
+License
+=======
+
+I don't consider this to be of sufficient originality to warrant copyright, but in case it somehow does, it needs a license.
+
+For "projects" like this I consider it important that you don't need to care about the license (I already do too much of that), that the license doesn't force you to do anything.
+
+Since I don't even want anyone to _need_ to attach a copyright notice or attribution to this or pieces of this, which rules out even the MIT license.
+
+So, since I want to have at least a bit of security, I picked one from the GNU project's list of licenses it calls the "GNU All-Permissive License".
+
+See the LICENSE file (so that bots pick it up and don't count this as another unlicensed repository). PLease note that I wish to apply the "this file" in that license to all files in this repository that don't state another license.
