@@ -17,6 +17,7 @@ set -x MPD_HOST "/run/user/1000/mpd.socket"
 set -x SWT_GTK3 0
 set -x _JAVA_OPTIONS "-Dawt.useSystemAAFontsettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 set -x PAGER "less"
+set -x SSH_AUTH_SOCK "$HOME/.gnupg/S.gpg-agent.ssh"
 
 # SDL mapping for PS3 controller
 set -x SDL_GAMECONTROLLERCONFIG "030000004c0500006802000011010000,PS3 Controller,a:b14,b:b13,back:b0,dpdown:b6,dpleft:b7,dpright:b5,dpup:b4,guide:b16,leftshoulder:b10,leftstick:b1,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b11,rightstick:b2,righttrigger:b9,rightx:a2,righty:a3,start:b3,x:b15,y:b12,platform:Linux,"
