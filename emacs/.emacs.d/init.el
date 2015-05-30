@@ -589,7 +589,9 @@
 
 (req-package magit
   :commands magit-status
-  :config
+  ;; init is run before the mode is activated
+  ;; Use it here instead of configure so we don't see the annoying instructions
+  :init
   ;; Using magit for that - vc-git takes too long to start up and lacks features
   (delq 'Git vc-handled-backends)
   ;; (if (boundp 'linum-disabled-modes-list)
