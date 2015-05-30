@@ -1,7 +1,10 @@
 #!/bin/bash
-if ! which stow; then
-	echo "Install gnu stow"
-	return 1
+if ! which stow > /dev/null 2>&1 ; then
+    echo "Install gnu stow"
+    exit 1
 fi
 
-stow -S -t "$HOME" *
+for d in *; do
+    [[ ! -d $d ]] && continue
+    stow -S -t "$HOME" "$d"
+done
