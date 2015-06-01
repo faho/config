@@ -502,6 +502,8 @@
 (global-set-key (my-kbd "C-x C-e") 'eval-last-sexp)
 ;; (global-set-key (kbd "<f6>") 'revert-this-buffer)
 (global-set-key (kbd "M-o") 'other-window)
+;; I literally only start overwrite-mode by accident
+(global-set-key (kbd "<insertchar>") nil)
 
 (add-hook 'dired-mode-hook (lambda ()
 							 ;;(require 'wdired)
