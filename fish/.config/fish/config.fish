@@ -75,6 +75,8 @@ abbr -a sc=systemctl
 abbr -a usc="systemctl --user"
 alias abs="$HOME/dev/abs-replacement/abs.sh"
 
+# Execute su via sudo if there are no arguments
+# This results in ~/.config/fish/fishd* not being overwritten
 function su
 	if count $argv > /dev/null
 		command su $argv
@@ -82,7 +84,7 @@ function su
 		sudo su
 	end
 end
-			
+
 function startnvidia
 	# sudo systemctl stop bumblebeed display-manager
 	# sudo modprobe -r bbswitch
