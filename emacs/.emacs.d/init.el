@@ -592,6 +592,7 @@
 	  ("e" ediff "ediff")
 	  ("g" magit-status "magit")
 	  ("c" calc "calc")
+	  ("p" list-packages "packages")
 	  ("q" nil "cancel")
 	  )
 	(global-set-key (my-kbd "m") 'hydra-misc-modes/body)))
