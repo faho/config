@@ -149,6 +149,8 @@
 
 (req-package diminish)
 
+(req-package expand-region)
+
 ;;; Minor Modes:
 ;; Vim-Mode
 ;; This needs to be set before evil-jumper is loaded so it doesn't bind TAB in console
@@ -179,6 +181,7 @@
 	(define-key evil-normal-state-map (kbd "<escape>") 'keyboard-quit)
 	(define-key evil-visual-state-map (kbd "<escape>") 'keyboard-quit)
 	(define-key evil-visual-state-map (kbd "u") 'undo-tree-undo)
+	(define-key evil-visual-state-map (kbd "+") 'er/expand-region)
 	;; My simple replacement for evil-leader
 	(define-key evil-normal-state-map (kbd "<SPC>") 'hydra-leader/body)
 	(setq evil-want-visual-char-semi-exclusive t)
