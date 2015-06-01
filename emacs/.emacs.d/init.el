@@ -271,6 +271,7 @@
   :require evil
   :init
   (global-evil-matchit-mode 1))
+
 ;; nerd-commenter: An easy way to comment/uncomment lines
 (req-package evil-nerd-commenter
   :require evil
