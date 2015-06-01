@@ -578,15 +578,6 @@
 	  ("q" nil "cancel"))
 	(global-set-key (my-kbd "e") 'hydra-emms/body)
 
-
-	(defhydra hydra-leader (:color blue)
-	  ("c" 'copy-to-clipboard "copy")
-	  ("v" 'paste-from-clipboard "paste")
-	  ("r" 'hydra-window/body "window")
-	  ("m" 'hydra-misc-modes/body "modes")
-	  ("q" nil "cancel"))
-	(global-set-key (my-kbd "<SPC>") 'hydra-misc/body)
-
 	(defhydra hydra-misc-modes (:color blue)
 	  "Misc modes"
 	  ("m" mu4e "mu4e")
@@ -596,9 +587,19 @@
 	  ("g" magit-status "magit")
 	  ("c" calc "calc")
 	  ("p" list-packages "packages")
+	  ("q" nil "cancel"))
+	(global-set-key (my-kbd "m") 'hydra-misc-modes/body)
+
+	(defhydra hydra-leader (:color blue)
+	  "Leader"
+	  ("c" copy-to-clipboard "copy")
+	  ("v" paste-from-clipboard "paste")
+	  ("w" hydra-window/body "window" :exit t)
+	  ("m" hydra-misc-modes/body "modes" :exit t)
 	  ("q" nil "cancel")
 	  )
-	(global-set-key (my-kbd "m") 'hydra-misc-modes/body)))
+	(global-set-key (my-kbd "<SPC>") 'hydra-leader/body)))
+
 
 (setq find-file-wildcards t)
 (which-function-mode 1)
