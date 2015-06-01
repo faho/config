@@ -179,6 +179,8 @@
 	(define-key evil-normal-state-map (kbd "<escape>") 'keyboard-quit)
 	(define-key evil-visual-state-map (kbd "<escape>") 'keyboard-quit)
 	(define-key evil-visual-state-map (kbd "u") 'undo-tree-undo)
+	;; My simple replacement for evil-leader
+	(define-key evil-normal-state-map (kbd "<SPC>") 'hydra-leader/body)
 	(setq evil-want-visual-char-semi-exclusive t)
 	(define-key evil-normal-state-map "q" 'delete-window)
 	(evil-define-key 'motion Info-mode-map
@@ -488,8 +490,6 @@
 ;;esc quits
 (global-set-key (kbd "<escape>") 'keyboard-quit)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (my-kbd "C-c") 'copy-to-clipboard)
-(global-set-key (my-kbd "C-v") 'paste-from-clipboard)
 (global-set-key (my-kbd "o") 'xdg-open)
 (global-set-key (kbd "<backtab>") 'indent-according-to-mode)
 ;; (global-set-key (my-kbd "C-x p") 'org-capture)
@@ -571,6 +571,15 @@
 	  ("l" (shell-command "mpc listall") "Listall")
 	  ("q" nil "cancel"))
 	(global-set-key (my-kbd "e") 'hydra-emms/body)
+
+
+	(defhydra hydra-leader (:color blue)
+	  ("c" 'copy-to-clipboard "copy")
+	  ("v" 'paste-from-clipboard "paste")
+	  ("r" 'hydra-window/body "window")
+	  ("m" 'hydra-misc-modes/body "modes")
+	  ("q" nil "cancel"))
+	(global-set-key (my-kbd "<SPC>") 'hydra-misc/body)
 
 	(defhydra hydra-misc-modes (:color blue)
 	  "Misc modes"
