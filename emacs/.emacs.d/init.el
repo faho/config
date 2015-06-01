@@ -42,9 +42,11 @@
 						  "mystuff/myorg.el"
 						  "mystuff/myutil.el"))
 
+(setq faho-config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
+
 (dolist (file faho-config-files)
   (if (not (file-exists-p (expand-file-name file user-emacs-directory)))
-  (url-copy-file (concat "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/" file) (expand-file-name file user-emacs-directory))))
+  (url-copy-file (concat faho-config-url file) (expand-file-name file user-emacs-directory))))
 
 ;; Utility functions - always load
 (require 'myutil)
