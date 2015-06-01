@@ -652,5 +652,9 @@ user."
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
+(req-package avy
+  :config
+  (global-set-key (my-kbd "C-y") 'avy-goto-char-2))
+
 ;; This should be the last line, after all req-package calls
 (req-package-finish)
