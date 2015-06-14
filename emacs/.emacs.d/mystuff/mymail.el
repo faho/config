@@ -42,7 +42,8 @@
   (setq mu4e-change-filenames-when-moving t)
   ;; Quiet normal output since it doesn't appear properly
   ;; enable "main" debug output instead
-  (setq mu4e-get-mail-command "mbsync -a -q -DM")
+  ;; Also don't clutter home directory
+  (setq mu4e-get-mail-command "mbsync -a -q -DM -c ~/.config/mbsync/mbsyncrc")
   (setq mu4e-sent-messages-behavior 'delete)
   (setq mu4e-update-interval nil)
   (setq mu4e-headers-auto-update t)
