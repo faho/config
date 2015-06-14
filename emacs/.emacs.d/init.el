@@ -580,12 +580,13 @@
 
 	(defhydra hydra-misc-modes (:color blue)
 	  "Misc modes"
-	  ("m" mu4e "mu4e")
-	  ("d" dired "dired")
+	  ("a" org-agenda "agenda")
 	  ("b" diff-buffer-with-file "diff buffer with file")
+	  ("c" calc "calc")
+	  ("d" dired "dired")
 	  ("e" ediff "ediff")
 	  ("g" magit-status "magit")
-	  ("c" calc "calc")
+	  ("m" mu4e "mu4e")
 	  ("p" list-packages "packages")
 	  ("q" nil "cancel"))
 	(global-set-key (my-kbd "m") 'hydra-misc-modes/body)
