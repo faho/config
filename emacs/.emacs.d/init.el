@@ -65,21 +65,12 @@
 ;; Useful because ox-reveal may depend on _really_ new org features
 ;; (setq package-pinned-packages '((ox-reveal . "melpa-stable")))
 
-;; BOOTSTRAP: Install req-package so that it can install everything else
-;; A simple req-package replacement to bootstrap req-package
-(defun require-package (package)
-  "refresh package archives, check package presence and install if it's not installed"
-  (if (null (require package nil t))
-      (progn (let* ((ARCHIVES (if (null package-archive-contents)
-                                  (progn (package-refresh-contents)
-                                         package-archive-contents)
-                                package-archive-contents))
-                    (AVAIL (assoc package ARCHIVES)))
-               (if AVAIL
-                   (package-install package)))
-             (require package))))
+;; Install req-package because that installs everything else
+(unless (package-installed-p 'req-package)
+  (package-refresh-contents)
+  (package-install 'req-package))
 
-(require-package 'req-package)
+(require 'req-package)
 
 ;; These autoload through req-package
 ;; Don't error if not found
