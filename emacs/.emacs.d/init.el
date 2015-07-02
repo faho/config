@@ -197,41 +197,6 @@
 	(setq evil-want-fine-undo 'fine)
 	;;; EVILIFY MODES
 	;; From https://github.com/samdoshi/.emacs.d
-	(evilify magit-commit-mode magit-commit-mode-map
-             (kbd "C-j") 'magit-goto-next-section
-             (kbd "C-k") 'magit-goto-previous-section
-             (kbd "C-n") 'magit-goto-next-section
-             (kbd "C-p") 'magit-goto-previous-section
-             (kbd "C-v") 'magit-revert-item)
-	(evilify magit-log-mode magit-log-mode-map
-			 (kbd "C-j") 'magit-goto-next-section
-			 (kbd "C-k") 'magit-goto-previous-section
-			 (kbd "C-n") 'magit-goto-next-section
-			 (kbd "C-p") 'magit-goto-previous-section
-			 (kbd "C-v") 'magit-revert-item)
-	(evilify magit-process-mode magit-process-mode-map
-			 (kbd "C-j") 'magit-goto-next-section
-			 (kbd "C-k") 'magit-goto-previous-section
-			 (kbd "C-n") 'magit-goto-next-section
-			 (kbd "C-p") 'magit-goto-previous-section
-			 (kbd "C-v") 'magit-revert-item)
-	(evilify magit-branch-manager-mode magit-branch-manager-mode-map
-			 "K" 'magit-discard-item
-			 "L" 'magit-key-mode-popup-logging
-			 (kbd "C-j") 'magit-goto-next-section
-			 (kbd "C-k") 'magit-goto-previous-section
-			 (kbd "C-n") 'magit-goto-next-section
-			 (kbd "C-p") 'magit-goto-previous-section
-			 (kbd "C-v") 'magit-revert-item)
-	(evilify magit-status-mode magit-status-mode-map
-			 "K" 'magit-discard-item
-			 "L" 'magit-key-mode-popup-logging
-			 "H" 'magit-key-mode-popup-diff-options
-			 (kbd "C-j") 'magit-goto-next-section
-			 (kbd "C-k") 'magit-goto-previous-section
-			 (kbd "C-n") 'magit-goto-next-section
-			 (kbd "C-p") 'magit-goto-previous-section
-			 (kbd "C-v") 'magit-revert-item)
 	(evilify package-menu-mode package-menu-mode-map)
 	;; Set cursor when in evil-insert mode
 	;; This works for KDE4 Konsole
@@ -601,14 +566,38 @@
   :commands magit-status
   ;; init is run before the mode is activated
   ;; Use it here instead of configure so we don't see the annoying instructions
-  :init
+  :config
   ;; Using magit for that - vc-git takes too long to start up and lacks features
   (delq 'Git vc-handled-backends)
-  ;; (if (boundp 'linum-disabled-modes-list)
-  ;; 	  (add-to-list 'linum-disabled-modes-list 'magit-status-mode)
-  ;; 	  (add-to-list 'linum-disabled-modes-list 'magit-key-mode)
-  ;; 	(setq linum-disabled-modes-list '(magit-key-mode)))
-  (setq magit-last-seen-setup-instructions "1.4.0")
+  (define-key magit-status-mode-map "j" 'evil-next-visual-line)
+  (define-key magit-status-mode-map "k" 'evil-previous-visual-line)
+  (define-key magit-status-mode-map "K" 'magit-discard)
+  (define-key magit-untracked-section-map "j" 'evil-next-visual-line)
+  (define-key magit-untracked-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-untracked-section-map "K" 'magit-discard)
+  (define-key magit-branch-section-map "j" 'evil-next-visual-line)
+  (define-key magit-branch-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-branch-section-map "K" 'magit-branch-delete)
+  (define-key magit-remote-section-map "j" 'evil-next-visual-line)
+  (define-key magit-remote-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-tag-section-map "j" 'evil-next-visual-line)
+  (define-key magit-tag-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-tag-section-map "K" 'magit-tag-delete)
+  (define-key magit-file-section-map "j" 'evil-next-visual-line)
+  (define-key magit-file-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-file-section-map "K" 'magit-discard)
+  (define-key magit-hunk-section-map "j" 'evil-next-visual-line)
+  (define-key magit-hunk-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-hunk-section-map "K" 'magit-discard)
+  (define-key magit-staged-section-map "j" 'evil-next-visual-line)
+  (define-key magit-staged-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-staged-section-map "K" 'magit-discard)
+  (define-key magit-stashes-section-map "j" 'evil-next-visual-line)
+  (define-key magit-stashes-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-stashes-section-map "K" 'magit-stash-clear)
+  (define-key magit-stash-section-map "j" 'evil-next-visual-line)
+  (define-key magit-stash-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-stash-section-map "K" 'magit-stash-drop)
   )
 
 (add-hook 'Info-mode-hook
