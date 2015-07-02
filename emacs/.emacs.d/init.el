@@ -198,6 +198,11 @@
 	;;; EVILIFY MODES
 	;; From https://github.com/samdoshi/.emacs.d
 	(evilify package-menu-mode package-menu-mode-map)
+	;; From spacemacs
+	;; default state for additional modes
+	(dolist (mode '(magit-popup-mode
+					magit-popup-sequence-mode))
+	  (add-to-list 'evil-emacs-state-modes mode))
 	;; Set cursor when in evil-insert mode
 	;; This works for KDE4 Konsole
 	(unless (display-graphic-p)
