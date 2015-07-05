@@ -144,7 +144,6 @@
 
 ;;; Minor Modes:
 ;; Vim-Mode
-;; This needs to be set before evil-jumper is loaded so it doesn't bind TAB in console
 (req-package evil
   :diminish (undo-tree-mode . "")
   :config
@@ -157,8 +156,6 @@
 	(ad-activate 'evil-yank)
 	;; Don't signal state in echo area
 	(setq evil-echo-state nil)
-	;; Adds the "evilify" macro to add evil keybindings to modes
-	(require 'evil-evilified-state)
 	;; Remove some unhelpful bindings from evil so they are available elsewhere
 	(define-key evil-motion-state-map (kbd "RET") nil)
 	(define-key evil-motion-state-map " " nil)
@@ -196,7 +193,8 @@
 	;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
 	(setq evil-want-fine-undo 'fine)
 	;;; EVILIFY MODES
-	;; From https://github.com/samdoshi/.emacs.d
+	;; Adds the "evilify" macro to add evil keybindings to modes
+	(require 'evil-evilified-state)
 	(evilify package-menu-mode package-menu-mode-map)
 	;; From spacemacs
 	;; default state for additional modes
@@ -569,8 +567,6 @@
 
 (req-package magit
   :commands magit-status
-  ;; init is run before the mode is activated
-  ;; Use it here instead of configure so we don't see the annoying instructions
   :config
   ;; Using magit for that - vc-git takes too long to start up and lacks features
   (delq 'Git vc-handled-backends)
