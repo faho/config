@@ -50,6 +50,7 @@
 
 ;; Utility functions - always load
 (require 'myutil)
+
 (setq load-prefer-newer t)
 
 (require 'package)
@@ -355,6 +356,12 @@
       '((output-pdf "xdg-open")
 		(output-html "xdg-open")
 		(output-dvi "xdg-open")))
+
+;; Backup/Autosave etc
+(setq version-control t ;; versioned backups
+	  delete-old-versions t
+	  kept-new-versions 6
+	  kept-old-versions 2)
 
 ;; Move temporary files out of the way (to $XDG_CACHE_HOME/emacs/$type)
 (setq backup-dir (expand-file-name "emacs/backup" user-cache-directory))
