@@ -116,3 +116,12 @@ end
 function startintel --description "Start X server backed by the intel card"
 	sudo systemctl start bumblebeed display-manager
 end
+
+function fish_user_key_bindings
+	# bind \er 'fg > /dev/null ^/dev/null'
+	bind \cv yank # paste from killring/clipboard
+end
+
+if status --is-interactive
+	logo
+end
