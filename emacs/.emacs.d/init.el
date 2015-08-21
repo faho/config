@@ -417,10 +417,10 @@
 ;; Spelling
 ;;(setq-default ispell-program-name "aspell")
 ;;(setq ispell-list-command "list")
-(setq ispell-alternate-dictionary "english")
-(setq ispell-dictionary "deutsch")
-(add-hook 'text-mode-hook 'set-dict)
-(add-hook 'prog-mode-hook 'set-dict)
+;; (setq ispell-alternate-dictionary "english")
+;; (setq ispell-dictionary "deutsch")
+;; (add-hook 'text-mode-hook 'set-dict)
+;; (add-hook 'prog-mode-hook 'set-dict)
 (setq scroll-step 1)
 (setq scroll-conservatively 1000)
 
