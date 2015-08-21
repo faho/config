@@ -17,7 +17,6 @@ set -x MPD_HOST "/run/user/1000/mpd.socket"
 set -x SWT_GTK3 0
 set -x _JAVA_OPTIONS "-Dawt.useSystemAAFontsettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 set -x PAGER "less"
-set -x SSH_AUTH_SOCK "$HOME/.gnupg/S.gpg-agent.ssh"
 
 # SDL mapping for PS3 controller
 set -x SDL_GAMECONTROLLERCONFIG "030000004c0500006802000011010000,PS3 Controller,a:b14,b:b13,back:b0,dpdown:b6,dpleft:b7,dpright:b5,dpup:b4,guide:b16,leftshoulder:b10,leftstick:b1,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b11,rightstick:b2,righttrigger:b9,rightx:a2,righty:a3,start:b3,x:b15,y:b12,platform:Linux,"
@@ -27,7 +26,10 @@ set -x XDG_CONFIG_HOME "$HOME/.config"
 set -x XDG_DATA_HOME "$HOME/.local/share"
 set -x XDG_CACHE_HOME "$HOME/.cache"
 
-function duthis --wraps "sort"
+set -x SSH_AUTH_SOCK "$XDG_CONFIG_HOME/gnupg/S.gpg-agent.ssh"
+set -x LESSHISTFILE "-"
+
+function duthis --wraps "du"
 	if [ -z $argv ]
 		set argv ./* ./.*
 	end
@@ -69,11 +71,29 @@ function alsamixer --wraps "alsamixer"
 	command alsamixer -c0
 end
 
-alias mu4e="emacs --eval '(mu4e)'"
-alias upo="upower -i /org/freedesktop/UPower/devices/battery_BAT0"
 abbr -a sc=systemctl
 abbr -a usc="systemctl --user"
-alias abs="$HOME/dev/abs-replacement/abs.sh"
+abbr -a pm="pulsemixer"
+
+#alias mu4e emacs --eval "'(mu4e)'"
+function mu4e
+	emacs --eval "(mu4e)" $argv
+end
+
+#alias todo emacs ~/docs/org/TODO.org
+function todo
+	emacs ~/docs/org/TODO.org $argv
+end
+
+#alias abs $HOME/dev/abs-replacement/abs.sh
+function abs
+	~/dev/abs-replacement/abs.sh $argv
+end
+
+#alias upo upower -i /org/freedesktop/UPower/devices/battery_BAT0
+function upo
+	upower -i /org/freedesktop/UPower/devices/battery_BAT0 $argv
+end
 
 # Execute su via sudo if there are no arguments
 # This results in ~/.config/fish/fishd* not being overwritten
@@ -81,18 +101,18 @@ function su
 	if count $argv > /dev/null
 		command su $argv
 	else
-		sudo su
+		sudo fish
 	end
 end
 
-function startnvidia
+function startnvidia --description "Switch to X server backed by the nvidia card"
 	# sudo systemctl stop bumblebeed display-manager
-	# sudo modprobe -r bbswitch
+	sudo modprobe -r bbswitch
 	# set -x LD_LIBRARY_PATH "/usr/lib/nvidia:/usr/lib32/nvidia:/usr/lib:/usr/lib32"
 	# startx -- -config xorg-nvidia.conf
 	sudo systemctl start prime@$USER.service
 end
 
-function startintel
+function startintel --description "Start X server backed by the intel card"
 	sudo systemctl start bumblebeed display-manager
 end
