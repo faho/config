@@ -3,7 +3,7 @@
 #
 
 # The greeting is annoying and useless
-set -e fish_greeting
+# set -e fish_greeting
 set -x GPGKEY 36EBBDB3
 set -x GPG_TTY (tty)
 set -x PATH $PATH $HOME/.local/bin
@@ -29,46 +29,14 @@ set -x XDG_CACHE_HOME "$HOME/.cache"
 set -x SSH_AUTH_SOCK "$XDG_CONFIG_HOME/gnupg/S.gpg-agent.ssh"
 set -x LESSHISTFILE "-"
 
-function duthis --wraps "du"
-	if [ -z $argv ]
-		set argv ./* ./.*
-	end
-	du -sch $argv  | sort -h
-end
-
-function makepkgs --description "Build multiple packages with makepkg"
-	if [ (count $argv) -eq 0 ]
-		echo "Please specify packages"
-		return
-	end
-	set -l built 0  # has a new package been built last run? (0=true, 1=false)
-	while [ $built -eq 0 -a (count $argv) -gt 0 ]
-		set -l built 1
-		for pkg in $argv
-			echo "Making $pkg"
-			pushd $pkg
-			# Install dependencies and the resulting package, but only when needed
-			# Don't remove dependencies because they might be needed by the next package
-			makepkg -si --needed
-			if [ $status -eq 0 ]
-				# Remove package that has been built successfully
-				set -e argv[(contains -i $pkg $argv)]
-				set built 0
-			end
-			popd
-		end
-	end
-	if [ $built -gt 0 ]
-		echo "No new packages could be built, please check"
-	end
-end
+set FISH_CLIPBOARD_CMD "cat"
 
 function rm --wraps "rm"
-	command rm -I $argv
+    command rm -I $argv
 end
 
 function alsamixer --wraps "alsamixer"
-	command alsamixer -c0
+    command alsamixer -c0
 end
 
 abbr -a sc=systemctl
@@ -77,51 +45,66 @@ abbr -a pm="pulsemixer"
 
 #alias mu4e emacs --eval "'(mu4e)'"
 function mu4e
-	emacs --eval "(mu4e)" $argv
+    emacs --eval "(mu4e)" $argv
 end
 
 #alias todo emacs ~/docs/org/TODO.org
 function todo
-	emacs ~/docs/org/TODO.org $argv
+    emacs ~/docs/org/TODO.org $argv
 end
 
 #alias abs $HOME/dev/abs-replacement/abs.sh
 function abs
-	~/dev/abs-replacement/abs.sh $argv
+    ~/dev/abs-replacement/abs.sh $argv
 end
 
 #alias upo upower -i /org/freedesktop/UPower/devices/battery_BAT0
 function upo
-	upower -i /org/freedesktop/UPower/devices/battery_BAT0 $argv
-end
-
-# Execute su via sudo if there are no arguments
-# This results in ~/.config/fish/fishd* not being overwritten
-function su
-	if count $argv > /dev/null
-		command su $argv
-	else
-		sudo fish
-	end
+    upower -i /org/freedesktop/UPower/devices/battery_BAT0 $argv
 end
 
 function startnvidia --description "Switch to X server backed by the nvidia card"
-	# sudo systemctl stop bumblebeed display-manager
-	sudo modprobe -r bbswitch
-	# set -x LD_LIBRARY_PATH "/usr/lib/nvidia:/usr/lib32/nvidia:/usr/lib:/usr/lib32"
-	# startx -- -config xorg-nvidia.conf
-	sudo systemctl start prime@$USER.service
+    # sudo systemctl stop bumblebeed display-manager
+    sudo modprobe -r bbswitch
+    # set -x LD_LIBRARY_PATH "/usr/lib/nvidia:/usr/lib32/nvidia:/usr/lib:/usr/lib32"
+    # startx -- -config xorg-nvidia.conf
+    sudo systemctl start prime@$USER.service
 end
 
 function startintel --description "Start X server backed by the intel card"
-	sudo systemctl start bumblebeed display-manager
+    sudo systemctl start bumblebeed display-manager
 end
 
 function fish_user_key_bindings
-	# bind \er 'fg > /dev/null ^/dev/null'
-	bind \cv yank # paste from killring/clipboard
+    bind \cv yank # paste from killring/clipboard
+    bind -k ic yank # insert key
+	bind \ev yank-pop
 end
 
 if status --is-interactive
-	logo
+    logo
 end
+
+function erase_grep_options --on-variable GREP_OPTIONS --description "Delete GREP_OPTIONS if it is ever set"
+    if set -q GREP_OPTIONS
+        echo "SOMETHING TRIED TO SET GREP_OPTIONS to $GREP_OPTIONS!"
+        set -e GREP_OPTIONS
+    end
+end
+
+function remouse
+    sudo modprobe -r psmouse
+    sudo modprobe psmouse resync_time=10
+end
+
+# if status --is-login
+# 	if test -z "$DISPLAY" -a $XDG_VTNR = 2
+# 		exec startx -- -keeptty
+# 	end
+# end
+
+set -g fish_term24bit 1
+
+# Add path for completions/functions intended to go upstream
+set fish_function_path ~/.config/fish/test/functions $fish_function_path
+set fish_complete_path ~/.config/fish/test/completions $fish_complete_path
