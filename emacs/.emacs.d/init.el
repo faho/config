@@ -638,3 +638,9 @@ user."
 
 ;; This should be the last line, after all req-package calls
 (req-package-finish)
+
+;; Also enable 256 colors on konsole
+(when (string= (tty-type) "konsole-256color")
+  (load "term/xterm")
+  (xterm-register-default-colors)
+  (tty-set-up-initial-frame-faces))
