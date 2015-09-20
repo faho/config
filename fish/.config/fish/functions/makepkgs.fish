@@ -9,6 +9,9 @@ function makepkgs --description "Build multiple packages with makepkg"
         for pkg in $argv
             echo "Making $pkg"
             pushd $pkg
+            [ -d .git ]
+            and echo "Pulling git"
+            and git pull origin
             # Install dependencies and the resulting package, but only when needed
             # Don't remove dependencies because they might be needed by the next package
             # Also log output and clean on successful build
