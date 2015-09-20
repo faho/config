@@ -33,6 +33,7 @@
   		   ("/gmail/[Google Mail]/.Drafts" . ?e)
   		   ("/gmail/arch/.[arch-projects]" . ?p)
   		   ("/gmail/arch/.[arch-dev-public]" . ?d)
+		   ("/gmail/fish" . ?f)
   		   ("/gmail/systemd" . ?s)))
   (add-to-list 'mu4e-bookmarks
   			   '("maildir:/Uni/*" "Uni" ?n))
