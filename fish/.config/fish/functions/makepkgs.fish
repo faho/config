@@ -11,7 +11,8 @@ function makepkgs --description "Build multiple packages with makepkg"
             pushd $pkg
             # Install dependencies and the resulting package, but only when needed
             # Don't remove dependencies because they might be needed by the next package
-            makepkg -si --needed
+            # Also log output and clean on successful build
+            makepkg -sic --needed
             if [ $status -eq 0 ]
                 # Remove package that has been built successfully
                 set -e argv[(contains -i $pkg $argv)]
