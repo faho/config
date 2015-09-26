@@ -145,9 +145,17 @@ function battery -a \
   end
 
   for n in (seq 10)
-    if test $n -le $BATTERY_SLOTS
-      printf "$color$filled_slot_ch$normal"
-    else
+    if test $n -eq $BATTERY_SLOTS
+		if type -q bar
+			printf "$color"
+			bar (string sub -s -1 -l 1 $BATTERY_PCT)0
+			printf "$normal"
+		else
+			printf "$color$filled_slot_ch$normal"
+		end
+    else if test $n -lt $BATTERY_SLOTS
+		printf "$color$filled_slot_ch$normal"
+	else
       if test $show_empty_slots = true
         printf "$color$empty_slot_ch$normal"
       end
