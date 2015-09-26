@@ -2,8 +2,6 @@
 # Init file for fish
 #
 
-# The greeting is annoying and useless
-# set -e fish_greeting
 set -x GPGKEY 36EBBDB3
 set -x GPG_TTY (tty)
 set -x PATH $PATH $HOME/.local/bin
@@ -96,12 +94,6 @@ function remouse
     sudo modprobe -r psmouse
     sudo modprobe psmouse resync_time=10
 end
-
-# if status --is-login
-# 	if test -z "$DISPLAY" -a $XDG_VTNR = 2
-# 		exec startx -- -keeptty
-# 	end
-# end
 
 set -g fish_term24bit 1
 
