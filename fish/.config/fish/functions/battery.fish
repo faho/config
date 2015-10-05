@@ -111,11 +111,11 @@ function battery -a \
   red yellow green
 
   if test -z "$filled_slot_ch"
-    set filled_slot_ch ▮
+	set filled_slot_ch "█|"
   end
 
   if test -z "$empty_slot_ch"
-    set empty_slot_ch ▯
+    set empty_slot_ch " |"
   end
 
   if test -z "$show_empty_slots"
