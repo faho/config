@@ -3,9 +3,6 @@
 	email = FHomborg@gmail.com
 	signingkey = 36EBBDB3
 
-[core]
-	excludesfile = ~/.gitignore
-
 [sendemail]
 	from = Fabian Homborg <FHomborg@gmail.com>
 	smtpserver = smtp.gmail.com
@@ -34,4 +31,7 @@
 	default = simple
 
 [color]
+	ui = auto
+
+[column]
 	ui = auto
