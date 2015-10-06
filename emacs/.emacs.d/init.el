@@ -577,6 +577,7 @@
   :config
   ;; Using magit for that - vc-git takes too long to start up and lacks features
   (delq 'Git vc-handled-backends)
+  ;; Evilify magit - unfortunately this now has a million section-maps
   (define-key magit-status-mode-map "j" 'evil-next-visual-line)
   (define-key magit-status-mode-map "k" 'evil-previous-visual-line)
   (define-key magit-status-mode-map "K" 'magit-discard)
@@ -606,6 +607,15 @@
   (define-key magit-stash-section-map "j" 'evil-next-visual-line)
   (define-key magit-stash-section-map "k" 'evil-previous-visual-line)
   (define-key magit-stash-section-map "K" 'magit-stash-drop)
+  (define-key magit-commit-section-map "j" 'evil-next-visual-line)
+  (define-key magit-commit-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-commit-section-map "K" 'magit-discard)
+  (define-key magit-unstaged-section-map "j" 'evil-next-visual-line)
+  (define-key magit-unstaged-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-unstaged-section-map "K" 'magit-discard)
+  (define-key magit-module-commit-section-map "j" 'evil-next-visual-line)
+  (define-key magit-module-commit-section-map "k" 'evil-next-visual-line)
+  (define-key magit-module-commit-section-map "K" 'magit-discard)
   )
 
 (add-hook 'Info-mode-hook
