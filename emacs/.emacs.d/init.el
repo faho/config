@@ -18,6 +18,7 @@
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t
 	  inhibit-splash-screen t
+	  inhibit-startup-buffer-menu t ; Don't show buffer list when opening multiple files
 	  initial-scratch-message "")
 
 ;; Don't warn about advice
