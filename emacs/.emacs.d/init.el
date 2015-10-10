@@ -564,6 +564,8 @@
 	  ("v" paste-from-clipboard "paste")
 	  ("w" hydra-window/body "window" :exit t)
 	  ("m" hydra-misc-modes/body "modes" :exit t)
+	  ("<left>" previous-buffer "previous buffer")
+	  ("<right>" next-buffer "next buffer")
 	  ("q" nil "cancel")
 	  )
 	(global-set-key (my-kbd "<SPC>") 'hydra-leader/body)))
