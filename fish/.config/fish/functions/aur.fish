@@ -129,15 +129,23 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 		return 1
 	else if [ $mode = "build" ]
 		for pkg in $argv
-			# HACK: This is _really_ ugly
-			# It should parse .SRCINFO instead
-			set -l aurdeps (aur clone $argv | string match "Aurdeps:*" | string replace "Aurdeps: " "" | string trim | string split " ")
+			# Find the package, if it's already cloned
+			set -l dir
+			[ -d $aurpkgs/$pkg ]; and set dir $aurpkgs/$pkg
+			[ -d $aurqueue/$pkg ]; and set dir $aurqueue/$pkg
+			# If necessary, clone it
+			if [ -z "$dir" ]
+				aur clone $pkg
+				set dir $aurqueue/$pkg
+			end
+			# Parse SRCINFO for deps
+			set -l aurdeps (string match \t"depends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
+			set aurdeps $aurdeps (string match \t"makedepends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
+			set aurdeps (pacman -Spq -- $aurdeps >/dev/null ^| string replace -r '^.*: ' '')
 			[ -n "$aurdeps" ]; and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
 				echo "Building $dep"
 				aur build $dep
 			end
-			[ -d $aurpkgs/$pkg ]; and set -l dir $aurpkgs/$pkg
-			[ -d $aurqueue/$pkg ]; and set -l dir $aurqueue/$pkg
 			echo "Making $dir"
 			makepkgs $dir
 		end
