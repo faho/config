@@ -281,7 +281,6 @@
 (setq-default tab-width 4)
 (setq-default standard-indent 4)
 (setq-default indent-tabs-mode t)
-(req-package editorconfig)
 ;;(add-hook 'prog-mode-hook 'c-guess-buffer)
 
 ;; Minibuffer
