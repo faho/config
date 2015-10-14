@@ -46,11 +46,6 @@ function mu4e
     emacs --eval "(mu4e)" $argv
 end
 
-#alias todo emacs ~/docs/org/TODO.org
-function todo
-    emacs ~/docs/org/TODO.org $argv
-end
-
 #alias abs $HOME/dev/abs-replacement/abs.sh
 function abs
     ~/dev/abs-replacement/abs.sh $argv
@@ -88,11 +83,6 @@ function erase_grep_options --on-variable GREP_OPTIONS --description "Delete GRE
         echo "SOMETHING TRIED TO SET GREP_OPTIONS to $GREP_OPTIONS!"
         set -e GREP_OPTIONS
     end
-end
-
-function remouse
-    sudo modprobe -r psmouse
-    sudo modprobe psmouse resync_time=10
 end
 
 set -g fish_term24bit 1
