@@ -4,6 +4,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 	# TODO: These should be real configuration
 	set -q aurqueue; or set -l aurqueue ~/dev/build/new
 	set -q aurpkgs; or set -l aurpkgs ~/dev/build/current
+	set -q aurl; or set -l aurl "https://aur.archlinux.org/rpc.php?v=4"
 
 	# Enable color when in terminal
 	set -l yellow ""
@@ -53,7 +54,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			set arg --data-urlencode "arg=$a" $arg
 		end
 		# This line dominates the profile, the jshon calls don't matter
-		set -l tmp (curl -G $arg "https://aur.archlinux.org/rpc.php?v=4&type=search" -s)
+		set -l tmp (curl -G $arg "$aurl&type=search" -s)
 		if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
 			echo "No results found"
 			return 1
@@ -68,7 +69,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 		return 0
 	else if [ $mode = clone ]
 		# For some reason only explicitly encoding the version gets us deps
-		set -l tmp (curl -G --data-urlencode "arg=$argv" "https://aur.archlinux.org/rpc.php?v=4&type=multiinfo" -s)
+		set -l tmp (curl -G --data-urlencode "arg=$argv" "$aurl&type=multiinfo" -s)
 		set -l names (echo $tmp | jshon -e results -a -e Name -u)
 		set -l descs (echo $tmp | jshon -e results -a -e Description -u)
 		set -l urls (echo $tmp | jshon -e results -a -e URL -u)
@@ -94,7 +95,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			return 1
 		end
 		# For some reason only explicitly encoding the version gets us deps
-		set -l tmp (curl -G --data-urlencode "arg=$argv" "https://aur.archlinux.org/rpc.php?v=4&type=info" -s)
+		set -l tmp (curl -G --data-urlencode "arg=$argv" "$aurl&type=info" -s)
 		set -l names (echo $tmp | jshon -e results -a -e Name -u)
 		set -l descs (echo $tmp | jshon -e results -a -e Description -u)
 		set -l urls (echo $tmp | jshon -e results -a -e URL -u)
