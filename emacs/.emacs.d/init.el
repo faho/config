@@ -201,6 +201,10 @@
 	;; From spacemacs
 	;; default state for additional modes
 	(dolist (mode '(magit-popup-mode
+					git-rebase-mode
+					comint-mode
+					shell-mode
+					term-mode
 					magit-popup-sequence-mode))
 	  (add-to-list 'evil-emacs-state-modes mode))
 	;; Set cursor when in evil-insert mode
