@@ -23,15 +23,23 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 
 	# Parse arguments
 	set -l mode
-	switch $argv[1]
+	switch "$argv[1]"
 		case "search" "clone" "promote" "demote" "rm" "build" "info"
 			set mode $argv[1]
 			set -e argv[1]
 		case "update"
 			set mode update
-		case "help" "*"
-			echo "aur [operation] arguments"
-			echo "Operation: search clone promote demote rm build update"
+		case "help" "*" ""
+			echo "Usage: aur <Operation> [...]"
+			echo "Operations:"
+			echo "search <keywords>"
+			echo "clone <Packages>"
+			echo "promote <Packages>"
+			echo "demote <Packages>"
+			echo "rm <Packages>"
+			echo "build <Packages>"
+			echo "update"
+			return 0
 	end
 			
 	if not set -q argv[1]
