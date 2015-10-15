@@ -4,7 +4,7 @@
 
 set -x GPGKEY 36EBBDB3
 set -x GPG_TTY (tty)
-set -x PATH $PATH $HOME/.local/bin
+set -U fish_user_paths ~alfa/.local/bin
 set -x MAIL $HOME/.mail
 set -x MAILDIR $MAIL
 set -x CDPATH . $HOME $HOME/Videos
