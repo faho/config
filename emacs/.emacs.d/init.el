@@ -218,19 +218,6 @@
 	  (add-hook 'evil-insert-state-exit-hook  (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7"))))
 	))
 
-;; jumper: A way to jump back and forward between points
-(req-package evil-jumper
-  :require evil
-  :init
-  (progn
-	(setq evil-want-C-i-jump nil)
-	(define-key evil-motion-state-map "+" 'evil-jumper/forward)
-	(define-key evil-motion-state-map "-" 'evil-jumper/backward)
-	(setq evil-jumper-file (expand-file-name "emacs/evil-jumps" user-cache-directory))
-	(setq evil-jumper-auto-save-interval 30)
-	(global-evil-jumper-mode t)
-	))
-
 ;; matchit: A way to jump between matched tags (parens, html tags etc)
 (req-package evil-matchit
   :require evil
@@ -244,13 +231,6 @@
   ;; Bind "M-;" to commenting the selected lines (vim-style)
   (evilnc-default-hotkeys)
   )
-
-;; (semantic-mode 1)
-;; (setq semanticdb-default-save-directory (concat user-cache-directory "/emacs/semanticdb"))
-
-;; Don't ask for confirmation when quitting shell
-(add-hook 'comint-exec-hook 
-		  (lambda () (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
 
 ;; (req-package auto-complete
 ;;   :require (auto-complete-config) ;; readline-complete)
@@ -327,12 +307,6 @@
   :require ido
   :init
   (ido-ubiquitous-mode t))
-
-;; (req-package swiper
-;;   :config
-;;   (progn
-;; 	(ivy-mode t)
-;; 	))
 
 (req-package guide-key
   :init
