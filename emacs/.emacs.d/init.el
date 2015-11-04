@@ -114,8 +114,6 @@
 (req-package nlinum
   :init
   (global-linum-mode t)
-  ;; (require 'linum-relative)
-  ;; (setq linum-relative-current-symbol "")
   ;; Disable linum in select modes
   ;; and all that aren't derived from prog-mode
   (defun linum-on ()
@@ -654,10 +652,6 @@ user."
 (global-set-key (kbd "C-x f") 'djcb-find-file-as-root)
 
 (setq ediff-split-window-function 'split-window-horizontally)
-
-(req-package avy
-  :config
-  (global-set-key (my-kbd "C-y") 'avy-goto-char-2))
 
 ;; This should be the last line, after all req-package calls
 (req-package-finish)
