@@ -1,4 +1,6 @@
 function psgrep
 	[ -z $argv ]; and return
-ps aux | grep $argv
+	set -l p (pgrep -f $argv)
+	or return 1
+	ps up $p
 end
