@@ -653,6 +653,8 @@ user."
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
+(req-package fish-mode)
+
 ;; This should be the last line, after all req-package calls
 (req-package-finish)
 
