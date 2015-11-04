@@ -13,6 +13,7 @@
 (req-package org
   :mode ("\\.org$" . org-mode) 
   :config (progn
+			(setq org-ellipsis "…") ;; Nice unicode ellipsis in one character
 			(setq org-src-fontify-natively t)
 			(setq org-directory "~/docs/org/")
 			(setq org-mobile-directory "~/owncloud/MobileOrg")
