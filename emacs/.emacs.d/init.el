@@ -555,12 +555,79 @@
   :config
   ;; Using magit for that - vc-git takes too long to start up and lacks features
   (delq 'Git vc-handled-backends)
+  ;; A list of magit's keymaps (from https://github.com/magit/evil-magit/issues/1)
+  ;; (defvar magit-keymaps
+  ;; '(git-commit-mode-map
+  ;;   git-rebase-mode-map
+  ;;   magit-blame-mode-map
+  ;;   magit-blob-mode-map
+  ;;   magit-branch-section-map
+  ;;   magit-cherry-mode-map
+  ;;   magit-commit-section-map
+  ;;   magit-diff-mode-map
+  ;;   magit-file-mode-map
+  ;;   magit-file-section-map
+  ;;   magit-hunk-section-map
+  ;;   magit-log-mode-map
+  ;;   magit-log-read-revs-map
+  ;;   magit-log-select-mode-map
+  ;;   magit-minibuffer-local-ns-map
+  ;;   magit-module-commit-section-map
+  ;;   magit-popup-mode-map
+  ;;   magit-process-mode-map
+  ;;   magit-reflog-mode-map
+  ;;   magit-refs-mode-map
+  ;;   magit-remote-section-map
+  ;;   magit-staged-section-map
+  ;;   magit-stash-section-map
+  ;;   magit-stashes-section-map
+  ;;   magit-status-mode-map
+  ;;   magit-tag-section-map
+  ;;   magit-unpulled-section-map
+  ;;   magit-unpushed-section-map
+  ;;   magit-unstaged-section-map
+  ;;   magit-untracked-section-map
+  ;;   with-editor-mode-map))
+  ;; Evilify magit - unfortunately this now has a million section-maps
+  (define-key magit-status-mode-map "j" 'evil-next-visual-line)
+  (define-key magit-status-mode-map "k" 'evil-previous-visual-line)
+  (define-key magit-status-mode-map "K" 'magit-discard)
+  (define-key magit-untracked-section-map "j" 'evil-next-visual-line)
+  (define-key magit-untracked-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-untracked-section-map "K" 'magit-discard)
+  (define-key magit-branch-section-map "j" 'evil-next-visual-line)
+  (define-key magit-branch-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-branch-section-map "K" 'magit-branch-delete)
+  (define-key magit-remote-section-map "j" 'evil-next-visual-line)
+  (define-key magit-remote-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-tag-section-map "j" 'evil-next-visual-line)
+  (define-key magit-tag-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-tag-section-map "K" 'magit-tag-delete)
+  (define-key magit-file-section-map "j" 'evil-next-visual-line)
+  (define-key magit-file-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-file-section-map "K" 'magit-discard)
+  (define-key magit-hunk-section-map "j" 'evil-next-visual-line)
+  (define-key magit-hunk-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-hunk-section-map "K" 'magit-discard)
+  (define-key magit-staged-section-map "j" 'evil-next-visual-line)
+  (define-key magit-staged-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-staged-section-map "K" 'magit-discard)
+  (define-key magit-stashes-section-map "j" 'evil-next-visual-line)
+  (define-key magit-stashes-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-stashes-section-map "K" 'magit-stash-clear)
+  (define-key magit-stash-section-map "j" 'evil-next-visual-line)
+  (define-key magit-stash-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-stash-section-map "K" 'magit-stash-drop)
+  (define-key magit-commit-section-map "j" 'evil-next-visual-line)
+  (define-key magit-commit-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-commit-section-map "K" 'magit-discard)
+  (define-key magit-unstaged-section-map "j" 'evil-next-visual-line)
+  (define-key magit-unstaged-section-map "k" 'evil-previous-visual-line)
+  (define-key magit-unstaged-section-map "K" 'magit-discard)
+  (define-key magit-module-commit-section-map "j" 'evil-next-visual-line)
+  (define-key magit-module-commit-section-map "k" 'evil-next-visual-line)
+  (define-key magit-module-commit-section-map "K" 'magit-discard)
   )
-
-(req-package evil-magit
-  :require (evil magit)
-  :config
-  (setq evil-magit-state 'motion))
 
 (add-hook 'Info-mode-hook
 		  (lambda ()
