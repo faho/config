@@ -523,6 +523,7 @@
 	(defhydra hydra-misc-modes (:color blue)
 	  "Misc modes"
 	  ("a" org-agenda "agenda")
+	  ("A" org-capture "capture")
 	  ("b" diff-buffer-with-file "diff buffer with file")
 	  ("c" calc "calc")
 	  ("d" dired "dired")
