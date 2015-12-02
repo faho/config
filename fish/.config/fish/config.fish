@@ -76,6 +76,7 @@ if status --is-interactive
 	end
 
 	function fish_user_key_bindings
+		bind \cx "commandline | xsel --clipboard"
 		bind \cv yank # paste from killring/clipboard
 		bind -k ic yank # insert key
 		bind \ev yank-pop
