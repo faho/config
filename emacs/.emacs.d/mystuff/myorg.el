@@ -1,15 +1,4 @@
 ;;; Org mode
-;; (require 'evil-org)
-;; ;; Remove stupid evil-org bindings
-;; (mapc (lambda (state)
-;; 		(evil-define-key state evil-org-mode-map
-;; 		  (kbd "M-o") 'other-window))
-;; 	  '(normal insert))
-;; (evil-define-key 'normal evil-org-mode-map
-;;   "o" 'evil-open-below
-;;   "O" 'evil-open-above
-;;   "ö" (lambda () (interactive) (evil-org-eol-call 'always-insert-item))
-;;   "Ö" (lambda () (interactive) (evil-org-eol-call 'org-insert-heading)))
 (req-package org
   :mode ("\\.org$" . org-mode) 
   :config (progn
@@ -25,9 +14,6 @@
 			(setq org-caldav-inbox (concat org-directory "calendar.org"))
 			(setq org-caldav-files (concat org-directory "appointments.org"))
 			(setq org-icalendar-timezone "Europe/Berlin")
-			(global-set-key "\C-Cl" 'org-store-link)
-			(global-set-key "\C-Ca" 'org-agenda)
-			(global-set-key "\C-Cb" 'org-ido-switchb)
 			(setq calendar-date-style 'european)
 			(setq org-agenda-include-diary t)
 			(setq diary-file (concat org-directory "diary.org"))
