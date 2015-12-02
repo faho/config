@@ -119,7 +119,11 @@
 		mu4e-decryption-policy 'ask)
   (add-hook
    'message-send-hook
-   'mml-secure-message-sign-pgpmime)
+   'mml-secure-message-sign)
+   ;; 'mml-secure-message-sign-pgpmime)
+  (add-hook
+   'mu4e-view-mode-hook
+   'epa-mail-decrypt)
 
   ;; Add some evil-ish keybindings
   ;; Not using evil-make-overriding-map since it would mean defining mu4e-ish stuff manually
