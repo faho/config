@@ -2,9 +2,12 @@
 # Init file for fish
 #
 
+set -x LANG de_DE.UTF-8
+set -x LANGUAGE de
 set -x GPGKEY 36EBBDB3
 set -x GPG_TTY (tty)
-set -U fish_user_paths ~alfa/.local/bin
+set -x GOPATH ~/dev/go
+set -U fish_user_paths ~alfa/.local/bin $GOPATH/bin
 set -x MAIL $HOME/.mail
 set -x MAILDIR $MAIL
 set -x CDPATH . $HOME $HOME/Videos
@@ -31,6 +34,8 @@ set -x XDG_CACHE_HOME "$HOME/.cache"
 
 set -x SSH_AUTH_SOCK "$XDG_CONFIG_HOME/gnupg/S.gpg-agent.ssh"
 set -x LESSHISTFILE "-"
+
+set -x ASPROOT ~/packages/asp
 
 set FISH_CLIPBOARD_CMD "cat"
 
