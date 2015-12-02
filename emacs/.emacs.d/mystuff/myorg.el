@@ -27,7 +27,7 @@
 						(define-key org-agenda-mode-map "l" 'org-agenda-later)
 						(define-key org-agenda-mode-map "h" 'org-agenda-earlier)))
 			(setq org-todo-keywords
-				  '((sequence "TODO" "INPROGRESS" "WAITING" "DONE")))
+				  '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "DONE(d)")))
 			(setq org-todo-keyword-faces
 				  '(
 					("TODO" . (:foreground "red" :weight bold))
