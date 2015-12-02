@@ -40,7 +40,6 @@ set -x ASPROOT ~/packages/asp
 set FISH_CLIPBOARD_CMD "cat"
 
 if status --is-interactive
-    logo
 	function rm --wraps "rm"
 		command rm -I $argv
 	end
@@ -48,10 +47,6 @@ if status --is-interactive
 	function alsamixer --wraps "alsamixer"
 		command alsamixer -c0
 	end
-
-	abbr -a sc=systemctl
-	abbr -a usc="systemctl --user"
-	abbr -a pm="pulsemixer"
 
 	#alias mu4e emacs --eval "'(mu4e)'"
 	function mu4e
@@ -93,7 +88,6 @@ if status --is-interactive
 		end
 	end
 
-	set -g fish_term24bit 1
 
 	# Add path for completions/functions intended to go upstream
 	set fish_function_path ~/.config/fish/test/functions $fish_function_path
@@ -104,8 +98,16 @@ if status --is-interactive
 	set -g __fish_git_prompt_describe_style contains
 	set -g __fish_git_prompt_showcolorhints 0
 
-	# Assorted emacs ansi-term workarounds:
-	if string match -i "eterm*" -- $TERM >/dev/null
+	abbr -a sc=systemctl
+	abbr -a usc="systemctl --user"
+	abbr -a pm="pulsemixer"
+
+	if set -q SCRIPTHACK
 		function fish_title; end
+		function fish_right_prompt; end
+		function fish_prompt; echo -n $PWD ">"; end
+	else
+		set -g fish_term24bit 1
+		logo
 	end
 end
