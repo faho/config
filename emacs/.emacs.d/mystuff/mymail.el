@@ -52,6 +52,9 @@
   (setq mu4e-headers-visible-columns 72)
   (setq mu4e-headers-visible-lines 10)
 
+  ;; Make it so the older messages are on top, so the reading direction matches
+  (setq mu4e-headers-sort-direction 'ascending)
+
   (setq mu4e-headers-skip-duplicates t)
   (setq message-send-mail-function 'smtpmail-send-it
 		smtpmail-auth-credentials "~/.netrc")
