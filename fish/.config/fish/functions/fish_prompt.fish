@@ -29,9 +29,7 @@ function fish_prompt --description 'Prompt anzeigen'
                 and systemd-detect-virt -q
             end
         end
-        set -g __fish_prompt_user (set_color $fish_color_user)
-        set -g __fish_prompt_host (set_color $fish_color_host)
-        set host "$__fish_prompt_user$USER$__fish_prompt_normal@$__fish_prompt_host$__fish_prompt_hostname$__fish_prompt_normal "
+        set host (set_color $fish_color_user; or echo "")"$USER$__fish_prompt_normal@"(set_color $fish_color_host; or echo "")"$__fish_prompt_hostname$__fish_prompt_normal "
     end
 
     echo -n -s $host "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" "$prompt_status" "$delim" ' '
