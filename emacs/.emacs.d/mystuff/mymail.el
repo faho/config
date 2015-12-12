@@ -122,8 +122,9 @@
 		mu4e-decryption-policy 'ask)
   (add-hook
    'message-send-hook
+   ;; Unfortunately I can't figure out how to encrypt-if-possible
    'mml-secure-message-sign)
-   ;; 'mml-secure-message-sign-pgpmime)
+  ;; Automatically decrypt inline-pgp
   (add-hook
    'mu4e-view-mode-hook
    'epa-mail-decrypt)
