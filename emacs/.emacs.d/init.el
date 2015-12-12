@@ -175,8 +175,6 @@
 	  "/" 'Info-history-forward
 	  "l" 'Info-next
 	  "h" 'Info-prev
-	  ;; "k" 'scroll-down-line
-	  ;; "j" 'scroll-up-line
 	  "d" 'Info-directory
 	  "y" 'evil-yank)
 	;; (evil-set-initial-state 'wdired-mode 'normal)
@@ -412,17 +410,14 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (my-kbd "o") 'xdg-open)
 (global-set-key (kbd "<backtab>") 'indent-according-to-mode)
-;; (global-set-key (my-kbd "C-x p") 'org-capture)
 ;; Allow elisp evaluation in all major modes
 ;; For quick reconfiguration
 (global-set-key (my-kbd "C-x C-e") 'eval-last-sexp)
-;; (global-set-key (kbd "<f6>") 'revert-this-buffer)
 (global-set-key (kbd "M-o") 'other-window)
 ;; I literally only start overwrite-mode by accident
 (global-set-key (kbd "<insertchar>") nil)
 
 (add-hook 'dired-mode-hook (lambda ()
-							 ;;(require 'wdired)
 							 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
 							 (autoload 'wdired-change-to-wdired-mode "wdired" nil t)
                              (define-key dired-mode-map "U" 'dired-up-directory)
