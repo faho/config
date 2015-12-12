@@ -198,6 +198,7 @@
 					comint-mode
 					shell-mode
 					term-mode
+					neotree-mode
 					magit-popup-sequence-mode))
 	  (add-to-list 'evil-emacs-state-modes mode))
 	;; Set cursor when in evil-insert mode
@@ -621,6 +622,17 @@ user."
 (global-set-key (kbd "C-x f") 'djcb-find-file-as-root)
 
 (setq ediff-split-window-function 'split-window-horizontally)
+
+(req-package neotree
+  :init
+  (global-set-key [f9] 'neotree-toggle)
+  :config
+  (define-key neotree-mode-map (kbd "l") 'neotree-enter)
+  ;; I'd like this to _close_ the last node
+  ;; (define-key neotree-mode-map (kbd "h") 'neotree-
+  (define-key neotree-mode-map (kbd "j") 'next-line)
+  (define-key neotree-mode-map (kbd "k") 'previous-line))
+
 
 (req-package fish-mode)
 
