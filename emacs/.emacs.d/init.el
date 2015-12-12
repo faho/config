@@ -125,11 +125,6 @@
 			(unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
 			  (nlinum-mode 1))))))
   )
-
-;; Add number of matches in search to mode-line
-(req-package anzu
-  :init
-  (global-anzu-mode 1))
 (setq diff-switches "-u")
 
 (req-package rainbow-delimiters
@@ -230,20 +225,6 @@
   (evilnc-default-hotkeys)
   )
 
-;; (req-package auto-complete
-;;   :require (auto-complete-config) ;; readline-complete)
-;;   :init (progn
-;; 	(auto-complete-mode t)
-;; 	(ac-config-default)
-;; 	(add-to-list 'ac-modes 'shell-mode)
-;; 	;; (ac-etags-setup)
-;; 	;; Messes with mu4e-compose-mode address completion
-;; 	;;(defalias 'completion-at-point 'auto-complete)
-;; 	;; To enable ac-mode in mu4e-compose-mode:
-;; 	;;(add-to-list 'ac-modes 'mu4e-compose-mode)
-;; 	)
-;;   )
-
 (req-package company
   :config (progn
 			(setq company-backends (delete 'company-semantic company-backends))
@@ -251,8 +232,6 @@
 			(setq-default tab-always-indent 'complete)
 			(setq-default c-tab-always-indent 'complete)
 			(global-company-mode t)))
-
-;;(electric-pair-mode) ;Annoying
 
 ;; Code Style
 (setq c-default-style "k&r")
@@ -305,17 +284,6 @@
   :require ido
   :init
   (ido-ubiquitous-mode t))
-
-(req-package guide-key
-  :init
-  (guide-key-mode t)
-  (setq guide-key/guide-key-sequence t))
-
-;; (req-package helm-config
-;;   :init
-;;   (global-unset-key (kbd "C-x c"))
-;;   (helm-mode 1)
-;;   )
 
 ;; Start in org-mode
 ;; (setq initial-major-mode 'org-mode)
