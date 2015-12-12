@@ -394,11 +394,16 @@
 	(openwith-mode t)
 	))
 
+(req-package projectile
+  :require neotree
+  :config
+  (setq projectile-switch-project-action 'neotree-projectile-action)
+  (projectile-global-mode))
+
 ;;; Keybindings
 (add-hook 'prog-mode-hook
 		  (lambda ()
 			(local-set-key [f8] 'compile)
-			;;(projectile-mode)
 			))
 
 (global-set-key [f5] 'revert-buffer)
