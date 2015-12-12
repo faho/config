@@ -331,7 +331,7 @@
 ;; Included in emacs, no need to req-package
 (require 'saveplace)
 (setq-default save-place t)
-(setq save-place-file (expand-file-name "emacs/.places" user-cache-directory))
+(setq save-place-file (expand-file-name "emacs/places" user-cache-directory))
 
 (setq bookmark-default-file (expand-file-name "emacs/bookmark" user-cache-directory))
 (setq delete-old-versions -1)
