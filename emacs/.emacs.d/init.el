@@ -19,6 +19,7 @@
       inhibit-startup-echo-area-message t
 	  inhibit-splash-screen t
 	  inhibit-startup-buffer-menu t ; Don't show buffer list when opening multiple files
+	  inhibit-default-init t ; Don't read default.el - I like my settings to be mine
 	  initial-scratch-message "")
 
 ;; Don't warn about advice
