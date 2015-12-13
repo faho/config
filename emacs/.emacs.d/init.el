@@ -68,21 +68,22 @@
 ;; Useful because ox-reveal may depend on _really_ new org features
 ;; (setq package-pinned-packages '((ox-reveal . "melpa-stable")))
 
-;; Install req-package because that installs everything else
-(unless (package-installed-p 'req-package)
+;; Install use-package because that installs everything else
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'req-package))
+  (package-install 'use-package))
 
-(require 'req-package)
+(require 'use-package)
+(setq use-package-always-ensure t)
 
-;; These autoload through req-package
+;; These autoload through use-package
 ;; Don't error if not found
 (require 'mymail nil t)
 (require 'myorg nil t)
 
 ;;; Aesthetics
 ;; Mode line
-(req-package smart-mode-line           
+(use-package smart-mode-line
   :init
   (progn
 	(setq sml/theme 'respectful)
@@ -105,14 +106,14 @@
 ;; reverse
 ;; ample
 ;; flatland-black
-(req-package cyberpunk-theme
+(use-package cyberpunk-theme
   :init
   (load-theme 'cyberpunk' t)
   )
 
-;; This should be outside of req-package so we can add to it from outside
+;; This should be outside of use-package so we can add to it from outside
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
-(req-package nlinum
+(use-package nlinum
   :init
   (global-linum-mode t)
   ;; Disable linum in select modes
@@ -128,19 +129,19 @@
   )
 (setq diff-switches "-u")
 
-(req-package rainbow-delimiters
+(use-package rainbow-delimiters
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   )
 (show-paren-mode t) ;; Highlight matching parens
 
-(req-package diminish)
+(use-package diminish)
 
-(req-package expand-region)
+(use-package expand-region)
 
 ;;; Minor Modes:
 ;; Vim-Mode
-(req-package evil
+(use-package evil
   :diminish (undo-tree-mode . "")
   :config
   (progn
@@ -212,20 +213,21 @@
 	))
 
 ;; matchit: A way to jump between matched tags (parens, html tags etc)
-(req-package evil-matchit
-  :require evil
+(use-package evil-matchit
+  ;; :require evil
   :init
   (global-evil-matchit-mode 1))
 
 ;; nerd-commenter: An easy way to comment/uncomment lines
-(req-package evil-nerd-commenter
-  :require evil
+(use-package evil-nerd-commenter
+  ;; :require evil
   :init
   ;; Bind "M-;" to commenting the selected lines (vim-style)
   (evilnc-default-hotkeys)
   )
 
-(req-package company
+(use-package company
+  :diminish company-mode
   :config (progn
 			(setq company-backends (delete 'company-semantic company-backends))
 			;; Tab completion - insert tab at start of line, complete otherwise
@@ -258,7 +260,7 @@
 
 (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
 ;; ido-mode: Nicer minibuffer completion
-(req-package ido
+(use-package ido
   :init
   (progn
 	(setq ido-enable-flex-matching t)
@@ -280,8 +282,8 @@
 		  (all-completions "" obarray 'commandp))))))
   ))
 
-(req-package ido-ubiquitous
-  :require ido
+(use-package ido-ubiquitous
+  ;; :require ido
   :init
   (ido-ubiquitous-mode t))
 
@@ -328,7 +330,7 @@
       )
 
 ;; Save point position between sessions
-;; Included in emacs, no need to req-package
+;; Included in emacs, no need to use-package
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (expand-file-name "emacs/places" user-cache-directory))
@@ -386,15 +388,16 @@
 			(c-set-style "linux-tabs-only")))
 
 ;; Open files in external programs
-(req-package openwith
+(use-package openwith
   :init
   (progn
 	(setq openwith-associations '(("\\.pdf\\'" "xdg-open" (file))))
 	(openwith-mode t)
 	))
 
-(req-package projectile
-  :require neotree
+(use-package projectile
+  ;; :require neotree
+  :diminish projectile-mode
   :config
   (setq projectile-switch-project-action 'neotree-projectile-action)
   (projectile-global-mode))
@@ -427,7 +430,7 @@
 ;; This seems to be disabled by something else before it
 (line-number-mode)
 
-(req-package hydra
+(use-package hydra
   :init
   (progn
 	(defhydra hydra-window-size (:color amaranth)
@@ -521,7 +524,7 @@
 (which-function-mode 1)
 (setq-default split-width-threshold 100)
 
-(req-package magit
+(use-package magit
   :commands magit-status
   :config
   ;; Using magit for that - vc-git takes too long to start up and lacks features
@@ -624,7 +627,7 @@ user."
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
-(req-package neotree
+(use-package neotree
   :init
   (global-set-key [f9] 'neotree-toggle)
   :config
@@ -635,10 +638,11 @@ user."
   (define-key neotree-mode-map (kbd "k") 'previous-line))
 
 
-(req-package fish-mode)
+(use-package fish-mode
+  :commands fish-mode)
 
-;; This should be the last line, after all req-package calls
-(req-package-finish)
+;; This should be the last line, after all use-package calls
+;; (use-package-finish)
 
 ;; Also enable 256 colors on konsole
 (when (string= (tty-type) "konsole-256color")

@@ -1,5 +1,5 @@
-(req-package mu4e
-  :require smtpmail
+(use-package mu4e
+  :ensure nil ;; Installed outside of emacs
   :commands mu4e
   :config
   (load-private-file)
