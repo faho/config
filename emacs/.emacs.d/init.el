@@ -59,7 +59,7 @@
 (setq package-archives
 	  '(("gnu" . "http://elpa.gnu.org/packages/")
 		("marmalade" . "https://marmalade-repo.org/packages/") 
-		;; ("melpa" . "http://melpa.org/packages/")
+		;; ("melpa" . "http://melpa.org/packages/") ;; This contains packages from git
 		("melpa-stable" . "http://stable.melpa.org/packages/")))
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -210,21 +210,18 @@
 	  (add-hook 'evil-insert-state-entry-hook (lambda () (send-string-to-terminal "\e]50;CursorShape=1\x7")))
 	  ;; Set to box outside of insert-state
 	  (add-hook 'evil-insert-state-exit-hook  (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7"))))
+	;; matchit: A way to jump between matched tags (parens, html tags etc)
+	(use-package evil-matchit
+	  :init
+	  (global-evil-matchit-mode 1))
+
+	;; nerd-commenter: An easy way to comment/uncomment lines
+	(use-package evil-nerd-commenter
+	  :init
+	  ;; Bind "M-;" to commenting the selected lines (vim-style)
+	  (evilnc-default-hotkeys)
+	  )
 	))
-
-;; matchit: A way to jump between matched tags (parens, html tags etc)
-(use-package evil-matchit
-  ;; :require evil
-  :init
-  (global-evil-matchit-mode 1))
-
-;; nerd-commenter: An easy way to comment/uncomment lines
-(use-package evil-nerd-commenter
-  ;; :require evil
-  :init
-  ;; Bind "M-;" to commenting the selected lines (vim-style)
-  (evilnc-default-hotkeys)
-  )
 
 (use-package company
   :diminish company-mode
@@ -280,12 +277,11 @@
 		 (ido-completing-read
 		  "M-x "
 		  (all-completions "" obarray 'commandp))))))
+	(use-package ido-ubiquitous
+	  :init
+	  (ido-ubiquitous-mode t))
   ))
 
-(use-package ido-ubiquitous
-  ;; :require ido
-  :init
-  (ido-ubiquitous-mode t))
 
 ;; Start in org-mode
 ;; (setq initial-major-mode 'org-mode)
