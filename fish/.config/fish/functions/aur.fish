@@ -142,6 +142,17 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 		case update
 			git -C $aurpkgs submodule foreach git pull origin master
 			makepkgs $aurpkgs/*
+		case list ls
+			set -l printqueue
+			set -l printpkgs
+			set -q argv[1]; and switch $argv[1]
+				case "--queueonly"
+					set -e printpkgs
+				case "--pkgsonly"
+					set -e printqueue
+			end
+			set -q printqueue; and ls $aurqueue
+			set -q printpkgs; and ls $aurpkgs
 		case "help" "*" ""
 			echo "Usage: aur <Operation> [...]"
 			echo "Operations:"
