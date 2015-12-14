@@ -265,15 +265,13 @@
 	;; (ido-vertical-mode)
 	(bind-key "<escape>" 'keyboard-quit ido-common-completion-map)
 	;; Make M-x use ido as well
-	(global-set-key
-	 "\M-x"
-	 (lambda ()
-	   (interactive)
-	   (call-interactively
-		(intern
-		 (ido-completing-read
-		  "M-x "
-		  (all-completions "" obarray 'commandp))))))
+	(bind-key "M-x" (lambda ()
+					  (interactive)
+					  (call-interactively
+					   (intern
+						(ido-completing-read
+						 "M-x "
+						 (all-completions "" obarray 'commandp))))))
 	(use-package ido-ubiquitous
 	  :init
 	  (ido-ubiquitous-mode t))
@@ -401,18 +399,18 @@
 			(local-set-key [f8] 'compile)
 			))
 
-(global-set-key [f5] 'revert-buffer)
+(bind-key "<f5>" 'revert-buffer)
 ;;esc quits
-(global-set-key (kbd "<escape>") 'keyboard-quit)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (my-kbd "o") 'xdg-open)
-(global-set-key (kbd "<backtab>") 'indent-according-to-mode)
+(bind-key "<escape>" 'keyboard-quit)
+(bind-key "C-x C-b" 'ibuffer)
+(bind-key (my-kbd "o") 'xdg-open)
+(bind-key "<backtab>" 'indent-according-to-mode)
 ;; Allow elisp evaluation in all major modes
 ;; For quick reconfiguration
-(global-set-key (my-kbd "C-x C-e") 'eval-last-sexp)
-(global-set-key (kbd "M-o") 'other-window)
+(bind-key (my-kbd "C-x C-e") 'eval-last-sexp)
+(bind-key "M-o" 'other-window)
 ;; I literally only start overwrite-mode by accident
-(global-set-key (kbd "<insertchar>") nil)
+(bind-key "<insertchar>" nil)
 
 (add-hook 'dired-mode-hook (lambda ()
 							 (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map)
@@ -435,7 +433,7 @@
 	  ("h" (lambda () (interactive) (enlarge-window -1 t)) nil)
 	  ("l" (lambda () (interactive) (enlarge-window 1 t)) nil)
 	  ("q" nil "cancel" :exit t))
-	(global-set-key (my-kbd "r") 'hydra-window-size/body)
+	(bind-key (my-kbd "r") 'hydra-window-size/body)
 
 	(defhydra hydra-window (:color amaranth)
 	  "
@@ -467,7 +465,7 @@
 	  ("C-j" scroll-other-window nil)
 	  ("C-k" scroll-other-window-down nil)
 	  ("q" nil "cancel"))
-	(global-set-key (my-kbd "w") 'hydra-window/body)
+	(bind-key (my-kbd "w") 'hydra-window/body)
 
 	(defhydra hydra-emms (:color amaranth)
 	  "music"
@@ -484,7 +482,7 @@
 	  ("s" (shell-command "mpc") "Show")
 	  ("l" (shell-command "mpc listall") "Listall")
 	  ("q" nil "cancel"))
-	(global-set-key (my-kbd "e") 'hydra-emms/body)
+	(bind-key (my-kbd "e") 'hydra-emms/body)
 
 	(defhydra hydra-misc-modes (:color blue)
 	  "Misc modes"
@@ -498,7 +496,7 @@
 	  ("m" mu4e "mu4e")
 	  ("p" list-packages "packages")
 	  ("q" nil "cancel"))
-	(global-set-key (my-kbd "m") 'hydra-misc-modes/body)
+	(bind-key (my-kbd "m") 'hydra-misc-modes/body)
 
 	(defhydra hydra-leader (:color blue)
 	  "Leader"
@@ -510,7 +508,7 @@
 	  ("<right>" next-buffer "next buffer")
 	  ("q" nil "cancel")
 	  )
-	(global-set-key (my-kbd "<SPC>") 'hydra-leader/body)))
+	(bind-key (my-kbd "<SPC>") 'hydra-leader/body)))
 
 
 (setq find-file-wildcards t)
@@ -611,13 +609,13 @@ user."
       (setq file (concat "/sudo:root@localhost:" file)))
     (find-file file)))
 ;; C-x f is usually bound to "set-fill-column", which is useless.
-(global-set-key (kbd "C-x f") 'djcb-find-file-as-root)
+(bind-key "C-x f" 'djcb-find-file-as-root)
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
 (use-package neotree
   :init
-  (global-set-key [f9] 'neotree-toggle)
+  (bind-key "<f9>" 'neotree-toggle)
   :config
   (bind-key "l" 'neotree-enter neotree-mode-map)
   ;; I'd like this to _close_ the last node

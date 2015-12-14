@@ -1,7 +1,9 @@
 ;; This is supposed to contain utility functions that don't depend on anything
 (defun my-kbd (chord)
   "Return kbd prefixed with C-c"
-  (kbd (concat "C-c " chord))) (defun xdg-open (&optional filename)
+  (concat "C-c " chord))
+
+(defun xdg-open (&optional filename)
   "Open parameter or current file with xdg-open"
   (interactive)
   (if filename
