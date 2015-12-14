@@ -154,23 +154,20 @@
 	;; Don't signal state in echo area
 	(setq evil-echo-state nil)
 	;; Remove some unhelpful bindings from evil so they are available elsewhere
-	(define-key evil-motion-state-map (kbd "RET") nil)
-	(define-key evil-motion-state-map " " nil)
-	(define-key evil-motion-state-map (kbd "C-e") nil)
-	(define-key evil-insert-state-map (kbd "C-e") nil)
-	(define-key evil-normal-state-map (kbd "TAB") nil)
-	;; Remove macros - there are emacs macros for that and it only confuses me anyway
-	(define-key evil-normal-state-map (kbd "q") nil)
-	(define-key evil-motion-state-map (kbd "TAB") nil)
-	(define-key evil-normal-state-map (kbd "C-M-m") 'scroll-other-window-down) ;; Yes, this scrolls up
-	(define-key evil-normal-state-map (kbd "<escape>") 'keyboard-quit)
-	(define-key evil-visual-state-map (kbd "<escape>") 'keyboard-quit)
-	(define-key evil-visual-state-map (kbd "u") 'undo-tree-undo)
-	(define-key evil-visual-state-map (kbd "+") 'er/expand-region)
+	(bind-key "RET" nil evil-motion-state-map)
+	(bind-key "C-e" nil evil-motion-state-map)
+	(bind-key "C-e" nil evil-insert-state-map)
+	(bind-key "TAB" nil evil-normal-state-map)
+	(bind-key "TAB" nil evil-motion-state-map)
+	(bind-key "C-M-m" 'scroll-other-window-down evil-normal-state-map) ;; Yes, this scrolls up
+	;; (bind-key "<escape>" 'keyboard-quit evil-normal-state-map)
+	;; (bind-key "<escape>" 'keyboard-quit evil-visual-state-map)
 	;; My simple replacement for evil-leader
-	(define-key evil-normal-state-map (kbd "<SPC>") 'hydra-leader/body)
+	(bind-key "SPC" 'hydra-leader/body evil-normal-state-map)
+	(bind-key "u" 'undo-tree-undo evil-visual-state-map)
+	(bind-key "+" 'er/expand-region evil-visual-state-map)
+	(bind-key "q" 'delete-window evil-normal-state-map)
 	(setq evil-want-visual-char-semi-exclusive t)
-	(define-key evil-normal-state-map "q" 'delete-window)
 	(evil-define-key 'motion Info-mode-map
 	  "\t" 'Info-next-reference
 	  "n" 'Info-history-back
@@ -181,8 +178,8 @@
 	  "y" 'evil-yank)
 	;; (evil-set-initial-state 'wdired-mode 'normal)
 	;; "{" and "}" are badly reachable on QWERTZ, "ö" and "Ö" are unused
-	(define-key evil-motion-state-map "ö" 'evil-forward-paragraph)
-	(define-key evil-motion-state-map "Ö" 'evil-backward-paragraph)
+	(bind-key "ö" 'evil-forward-paragraph evil-motion-state-map)
+	(bind-key "Ö" 'evil-backward-paragraph evil-motion-state-map)
 	;; Don't use C-i since that's TAB in a terminal
 	(setq evil-want-C-i-jump nil)
 	;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
@@ -247,13 +244,13 @@
 (setq history-length t)
 (setq history-delete-duplicates t)
 ;; History search (like readline's history-search)
-(define-key minibuffer-local-map (kbd "<up>") 'previous-complete-history-element)
-(define-key minibuffer-local-map (kbd "<down>") 'next-complete-history-element)
-(define-key minibuffer-local-map (kbd "<escape>") 'keyboard-quit)
-(define-key minibuffer-local-ns-map (kbd "<escape>") 'keyboard-quit)
-(define-key minibuffer-local-completion-map (kbd "<escape>") 'keyboard-quit)
-(define-key minibuffer-local-must-match-map (kbd "<escape>") 'keyboard-quit)
-(define-key minibuffer-local-isearch-map (kbd "<escape>") 'keyboard-quit)
+(bind-key "<up>" 'previous-complete-history-element minibuffer-local-map)
+(bind-key "<down>" 'next-complete-history-element minibuffer-local-map)
+(bind-key "<escape>" 'keyboard-quit minibuffer-local-map)
+(bind-key "<escape>" 'keyboard-quit minibuffer-local-ns-map)
+(bind-key "<escape>" 'keyboard-quit minibuffer-local-completion-map)
+(bind-key "<escape>" 'keyboard-quit minibuffer-local-must-match-map)
+(bind-key "<escape>" 'keyboard-quit minibuffer-local-isearch-map)
 
 (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
 ;; ido-mode: Nicer minibuffer completion
@@ -266,7 +263,7 @@
 	;; Let us cycle through instead of opening up a buffer with candidates!
 	(setq ido-cannot-complete-command 'ido-next-match)
 	;; (ido-vertical-mode)
-	(define-key ido-common-completion-map (kbd "<escape>") 'keyboard-quit)
+	(bind-key "<escape>" 'keyboard-quit ido-common-completion-map)
 	;; Make M-x use ido as well
 	(global-set-key
 	 "\M-x"
@@ -418,10 +415,10 @@
 (global-set-key (kbd "<insertchar>") nil)
 
 (add-hook 'dired-mode-hook (lambda ()
-							 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+							 (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map)
 							 (autoload 'wdired-change-to-wdired-mode "wdired" nil t)
-                             (define-key dired-mode-map "U" 'dired-up-directory)
-                             (define-key dired-mode-map "/" 'dired-isearch-filenames)))
+                             (bind-key "U" 'dired-up-directory dired-mode-map)
+                             (bind-key "/" 'dired-isearch-filenames dired-mode-map)))
 
 ;; This seems to be disabled by something else before it
 (line-number-mode)
@@ -559,50 +556,45 @@
   ;;   magit-untracked-section-map
   ;;   with-editor-mode-map))
   ;; Evilify magit - unfortunately this now has a million section-maps
-  (define-key magit-status-mode-map "j" 'evil-next-visual-line)
-  (define-key magit-status-mode-map "k" 'evil-previous-visual-line)
-  (define-key magit-status-mode-map "K" 'magit-discard)
-  (define-key magit-untracked-section-map "j" 'evil-next-visual-line)
-  (define-key magit-untracked-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-untracked-section-map "K" 'magit-discard)
-  (define-key magit-branch-section-map "j" 'evil-next-visual-line)
-  (define-key magit-branch-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-branch-section-map "K" 'magit-branch-delete)
-  (define-key magit-remote-section-map "j" 'evil-next-visual-line)
-  (define-key magit-remote-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-tag-section-map "j" 'evil-next-visual-line)
-  (define-key magit-tag-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-tag-section-map "K" 'magit-tag-delete)
-  (define-key magit-file-section-map "j" 'evil-next-visual-line)
-  (define-key magit-file-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-file-section-map "K" 'magit-discard)
-  (define-key magit-hunk-section-map "j" 'evil-next-visual-line)
-  (define-key magit-hunk-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-hunk-section-map "K" 'magit-discard)
-  (define-key magit-staged-section-map "j" 'evil-next-visual-line)
-  (define-key magit-staged-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-staged-section-map "K" 'magit-discard)
-  (define-key magit-stashes-section-map "j" 'evil-next-visual-line)
-  (define-key magit-stashes-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-stashes-section-map "K" 'magit-stash-clear)
-  (define-key magit-stash-section-map "j" 'evil-next-visual-line)
-  (define-key magit-stash-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-stash-section-map "K" 'magit-stash-drop)
-  (define-key magit-commit-section-map "j" 'evil-next-visual-line)
-  (define-key magit-commit-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-commit-section-map "K" 'magit-discard)
-  (define-key magit-unstaged-section-map "j" 'evil-next-visual-line)
-  (define-key magit-unstaged-section-map "k" 'evil-previous-visual-line)
-  (define-key magit-unstaged-section-map "K" 'magit-discard)
-  (define-key magit-module-commit-section-map "j" 'evil-next-visual-line)
-  (define-key magit-module-commit-section-map "k" 'evil-next-visual-line)
-  (define-key magit-module-commit-section-map "K" 'magit-discard)
+  (bind-key "j" 'evil-next-visual-line magit-status-mode-map)
+  (bind-key "k" 'evil-previous-visual-line magit-status-mode-map)
+  (bind-key "K" 'magit-discard magit-status-mode-map)
+  (bind-key "j" 'evil-next-visual-line magit-untracked-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-untracked-section-map)
+  (bind-key "K" 'magit-discard magit-untracked-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-branch-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-branch-section-map)
+  (bind-key "K" 'magit-branch-delete magit-branch-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-remote-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-remote-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-tag-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-tag-section-map)
+  (bind-key "K" 'magit-tag-delete magit-tag-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-file-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-file-section-map)
+  (bind-key "K" 'magit-discard magit-file-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-hunk-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-hunk-section-map)
+  (bind-key "K" 'magit-discard magit-hunk-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-staged-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-staged-section-map)
+  (bind-key "K" 'magit-discard magit-staged-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-stashes-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-stashes-section-map)
+  (bind-key "K" 'magit-stash-clear magit-stashes-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-stash-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-stash-section-map)
+  (bind-key "K" 'magit-stash-drop magit-stash-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-commit-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-commit-section-map)
+  (bind-key "K" 'magit-discard magit-commit-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-unstaged-section-map)
+  (bind-key "k" 'evil-previous-visual-line magit-unstaged-section-map)
+  (bind-key "K" 'magit-discard magit-unstaged-section-map)
+  (bind-key "j" 'evil-next-visual-line magit-module-commit-section-map)
+  (bind-key "k" 'evil-next-visual-line magit-module-commit-section-map)
+  (bind-key "K" 'magit-discard magit-module-commit-section-map)
   )
-
-(add-hook 'Info-mode-hook
-		  (lambda ()
-			(local-set-key "l" 'Info-next)
-			(local-set-key "h" 'Info-prev)))
 
 ;; (setq frame-resize-pixelwise t)
 
@@ -627,12 +619,11 @@ user."
   :init
   (global-set-key [f9] 'neotree-toggle)
   :config
-  (define-key neotree-mode-map (kbd "l") 'neotree-enter)
+  (bind-key "l" 'neotree-enter neotree-mode-map)
   ;; I'd like this to _close_ the last node
-  ;; (define-key neotree-mode-map (kbd "h") 'neotree-
-  (define-key neotree-mode-map (kbd "j") 'next-line)
-  (define-key neotree-mode-map (kbd "k") 'previous-line))
-
+  ;; (bind-key "h" 'neotree- neotree-mode-map
+  (bind-key "j" 'next-line neotree-mode-map)
+  (bind-key "k" 'previous-line neotree-mode-map))
 
 (use-package fish-mode
   :commands fish-mode)
