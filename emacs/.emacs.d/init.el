@@ -152,19 +152,23 @@
 	;; Don't signal state in echo area
 	(setq evil-echo-state nil)
 	;; Remove some unhelpful bindings from evil so they are available elsewhere
-	(bind-key "RET" nil evil-motion-state-map)
-	(bind-key "C-e" nil evil-motion-state-map)
+	(bind-keys :map evil-motion-state-map
+			   ;; "{" and "}" are badly reachable on QWERTZ, "ö" and "Ö" are unused
+			   ("ö" . evil-forward-paragraph)
+			   ("Ö" . evil-backward-paragraph)
+			   ("RET" . nil)
+			   ("C-e" . nil)
+			   ("TAB" . nil))
 	(bind-key "C-e" nil evil-insert-state-map)
-	(bind-key "TAB" nil evil-normal-state-map)
-	(bind-key "TAB" nil evil-motion-state-map)
-	(bind-key "C-M-m" 'scroll-other-window-down evil-normal-state-map) ;; Yes, this scrolls up
-	;; (bind-key "<escape>" 'keyboard-quit evil-normal-state-map)
-	;; (bind-key "<escape>" 'keyboard-quit evil-visual-state-map)
-	;; My simple replacement for evil-leader
-	(bind-key "SPC" 'hydra-leader/body evil-normal-state-map)
-	(bind-key "u" 'undo-tree-undo evil-visual-state-map)
-	(bind-key "+" 'er/expand-region evil-visual-state-map)
-	(bind-key "q" 'delete-window evil-normal-state-map)
+	(bind-keys :map evil-normal-state-map
+			   ("TAB" . nil)
+			   ("C-M-m" . scroll-other-window-down) ;; Yes, this scrolls up
+			   ;; My simple replacement for evil-leader
+			   ("SPC" . hydra-leader/body)
+			   ("q" . delete-window))
+	(bind-keys :map evil-visual-state-map
+			   ("u" . undo-tree-undo)
+			   ("+" . er/expand-region))
 	(setq evil-want-visual-char-semi-exclusive t)
 	(evil-define-key 'motion Info-mode-map
 	  "\t" 'Info-next-reference
@@ -175,9 +179,6 @@
 	  "d" 'Info-directory
 	  "y" 'evil-yank)
 	;; (evil-set-initial-state 'wdired-mode 'normal)
-	;; "{" and "}" are badly reachable on QWERTZ, "ö" and "Ö" are unused
-	(bind-key "ö" 'evil-forward-paragraph evil-motion-state-map)
-	(bind-key "Ö" 'evil-backward-paragraph evil-motion-state-map)
 	;; Don't use C-i since that's TAB in a terminal
 	(setq evil-want-C-i-jump nil)
 	;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
@@ -383,27 +384,30 @@
 ;;; Keybindings
 (add-hook 'prog-mode-hook
 		  (lambda ()
-			(local-set-key [f8] 'compile)
+			(bind-key "<f8>" 'compile prog-mode-map)
 			))
 
-(bind-key "<f5>" 'revert-buffer)
-;;esc quits
-(bind-key "<escape>" 'keyboard-quit)
-(bind-key "C-x C-b" 'ibuffer)
-(bind-key (my-kbd "o") 'xdg-open)
-(bind-key "<backtab>" 'indent-according-to-mode)
-;; Allow elisp evaluation in all major modes
-;; For quick reconfiguration
-(bind-key (my-kbd "C-x C-e") 'eval-last-sexp)
-(bind-key "M-o" 'other-window)
-;; I literally only start overwrite-mode by accident
-(bind-key "<insertchar>" nil)
+;; Misc global bindings
+(bind-keys
+ ("<f5>" . revert-buffer)
+ ;;esc quits
+ ("<escape>" . keyboard-quit)
+ ("C-x C-b" . ibuffer)
+ ((my-kbd "o") . xdg-open)
+ ("<backtab>" . indent-according-to-mode)
+ ;; Allow elisp evaluation in all major modes
+ ;; For quick reconfiguration
+ ((my-kbd "C-x C-e") . eval-last-sexp)
+ ("M-o" . other-window)
+ ;; I literally only start overwrite-mode by accident
+ ( "<insertchar>" . nil))
 
 (add-hook 'dired-mode-hook (lambda ()
-							 (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map)
 							 (autoload 'wdired-change-to-wdired-mode "wdired" nil t)
-                             (bind-key "U" 'dired-up-directory dired-mode-map)
-                             (bind-key "/" 'dired-isearch-filenames dired-mode-map)))
+							 (bind-keys :map dired-mode-map
+										("r" . wdired-change-to-wdired-mode)
+										("U" . dired-up-directory)
+										("/" . dired-isearch-filenames))))
 
 (use-package hydra
   :init

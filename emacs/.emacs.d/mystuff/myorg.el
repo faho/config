@@ -20,12 +20,13 @@
 			(setq org-default-notes-file (concat org-directory "notes.org"))
 			(add-hook 'org-agenda-mode-hook
 					  (lambda ()
-						(define-key org-agenda-mode-map "p" 'org-agenda-goto-date)
-						;; Vi-style key bindings
-						(define-key org-agenda-mode-map "j" 'org-agenda-next-line)
-						(define-key org-agenda-mode-map "k" 'org-agenda-previous-line)
-						(define-key org-agenda-mode-map "l" 'org-agenda-later)
-						(define-key org-agenda-mode-map "h" 'org-agenda-earlier)))
+						(bind-keys :map org-agenda-mode-map
+								   ;; Vi-style key bindings
+								   ("p" . org-agenda-goto-date)
+								   ("j" . org-agenda-next-line)
+								   ("k" . org-agenda-previous-line)
+								   ("l" . org-agenda-later)
+								   ("h" . org-agenda-earlier))))
 			(setq org-todo-keywords
 				  '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "DONE(d)")))
 			(setq org-todo-keyword-faces
