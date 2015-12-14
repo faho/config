@@ -374,16 +374,7 @@
 			(setq indent-tabs-mode t)
 			(c-set-style "linux-tabs-only")))
 
-;; Open files in external programs
-(use-package openwith
-  :init
-  (progn
-	(setq openwith-associations '(("\\.pdf\\'" "xdg-open" (file))))
-	(openwith-mode t)
-	))
-
 (use-package projectile
-  ;; :require neotree
   :diminish projectile-mode
   :config
   (setq projectile-switch-project-action 'neotree-projectile-action)
@@ -413,9 +404,6 @@
 							 (autoload 'wdired-change-to-wdired-mode "wdired" nil t)
                              (bind-key "U" 'dired-up-directory dired-mode-map)
                              (bind-key "/" 'dired-isearch-filenames dired-mode-map)))
-
-;; This seems to be disabled by something else before it
-(line-number-mode)
 
 (use-package hydra
   :init
@@ -622,9 +610,6 @@ user."
 
 (use-package fish-mode
   :commands fish-mode)
-
-;; This should be the last line, after all use-package calls
-;; (use-package-finish)
 
 ;; Also enable 256 colors on konsole
 (when (string= (tty-type) "konsole-256color")

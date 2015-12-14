@@ -129,17 +129,6 @@
    'mu4e-view-mode-hook
    'epa-mail-decrypt)
 
-  ;; Add some evil-ish keybindings
-  ;; Not using evil-make-overriding-map since it would mean defining mu4e-ish stuff manually
-  ;; It would work like this:
-  ;;(evil-make-overriding-map mu4e-view-mode-map 'normal t)
-  ;;(evil-add-hjkl-bindings mu4e-view-mode-map 'motion "J" 'mu4e-jump-to-maildir)
-  ;; And need this:
-  ;; Allow evil-mode
-  ;;(delete 'mu4e-headers-mode 'evil-emacs-state-modes)
-  ;;(setq evil-motion-state-modes (append evil-motion-state-modes (list 'mu4e-headers-mode
-  ;;																	'mu4e-main-mode
-  ;; 																	'mu4e-view-mode)))
   (eval-after-load 'mu4e
 	'(progn
 	   ;; Use the standard bindings as a base
@@ -203,15 +192,10 @@
   (setq gnus-dired-mail-mode 'mu4e-user-agent)
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
-  ;; Inhibit openwith so messages can actually be sent
-  (require 'mm-util)
-  (add-to-list 'mm-inhibit-file-name-handlers 'openwith-file-handler)
-
   ;; HTML mail
   ;; Use eww's renderer (requires emacs 24.4 IIRC)
   (require 'mu4e-contrib)
   (setq mu4e-html2text-command 'mu4e-shr2text)
-  ;; (setq mu4e-html2text-command "w3m -T text/html")
 
   (defun mu4e-msgv-action-view-in-browser (msg)
 	"View the body of the message in a web browser."
@@ -224,5 +208,6 @@
 	  (browse-url (concat "file://" tmpfile))))
   (add-to-list 'mu4e-view-actions '("View in browser" . mu4e-msgv-action-view-in-browser) t)
   )
+
 (provide 'mymail)
 
