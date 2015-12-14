@@ -112,8 +112,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 		case demote
 			for pkg in $argv
 				[ -d $aurpkgs/$pkg ]
-				and git -C $aurpkgs submodule deinit $pkg
 				and mv $aurpkgs/$pkg $aurqueue/$pkg
+				and git -C $aurpkgs submodule deinit $pkg
 			end
 			return 0
 		case build
