@@ -1,6 +1,5 @@
 function aur --description 'Quite possibly the stupidest aur helper ever invented'
 	# TODO: This does not correctly handle searches with multiple arguments
-	# TODO: Implement "demote" (move from current to new)
 	# TODO: These should be real configuration
 	set -q aurqueue; or set -l aurqueue ~/dev/build/new
 	set -q aurpkgs; or set -l aurpkgs ~/dev/build/current

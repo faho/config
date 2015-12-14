@@ -25,27 +25,30 @@
 ;; Don't warn about advice
 (setq ad-redefinition-action 'accept)
 
-(setq user-cache-directory (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache"))
-(setq user-data-directory (if (getenv "XDG_DATA_HOME") (getenv "XDG_DATA_HOME") "~/.local/share"))
-
-(setq package-user-dir (expand-file-name "emacs" user-data-directory))
-
-;;; Packages
-;; Stuff I wrote
+;;; File Structure
+;; My custom stuff goes to .emacs.d/mystuff
 (add-to-list 'load-path (expand-file-name "mystuff" user-emacs-directory))
-;; Stuff that's not in the repos
+;; My local copies (i.e. stuff that's not in melpa-stable) goes to .emacs.d/local
 (add-to-list 'load-path (expand-file-name "local" user-emacs-directory))
+;; All my packages go to XDG_DATA_HOME/emacs
+(setq user-data-directory (if (getenv "XDG_DATA_HOME") (getenv "XDG_DATA_HOME") "~/.local/share"))
+(setq package-user-dir (expand-file-name "emacs" user-data-directory))
+;; Cache files (e.g. history, autosave, undo) go to XDG_CACHE_HOME/emacs
+(setq user-cache-directory (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache"))
 
 (dolist (dir load-path)
   (make-directory dir t))
 
+;; Hardcode a list of files that aren't in packages so we can bootstrap from this file
 (setq faho-config-files '("local/evil-evilified-state.el"
 						  "mystuff/mymail.el"
 						  "mystuff/myorg.el"
 						  "mystuff/myutil.el"))
 
+;; Yes, that's a hardcoded config repo
 (setq faho-config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
 
+;; Download all files that aren't already here
 (dolist (file faho-config-files)
   (if (not (file-exists-p (expand-file-name file user-emacs-directory)))
   (url-copy-file (concat faho-config-url file) (expand-file-name file user-emacs-directory))))
@@ -99,13 +102,8 @@
 (setq color-theme-is-global t)
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 ;; List of okay themes:
-;; wheatgrass
 ;; cyberpunk
-;; ir-black
-;; ir_black
-;; reverse
-;; ample
-;; flatland-black
+;; wheatgrass ir-black ir_black reverse ample flatland-black
 (use-package cyberpunk-theme
   :init
   (load-theme 'cyberpunk' t)
