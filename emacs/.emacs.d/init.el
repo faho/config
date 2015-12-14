@@ -250,34 +250,32 @@
 (bind-key "<escape>" 'keyboard-quit minibuffer-local-must-match-map)
 (bind-key "<escape>" 'keyboard-quit minibuffer-local-isearch-map)
 
-(setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
 ;; ido-mode: Nicer minibuffer completion
 (use-package ido
   :init
-  (progn
-	(setq ido-enable-flex-matching t)
-	(setq ido-everywhere t)
-	(ido-mode t)
-	;; Let us cycle through instead of opening up a buffer with candidates!
-	(setq ido-cannot-complete-command 'ido-next-match)
-	;; (ido-vertical-mode)
-	(bind-key "<escape>" 'keyboard-quit ido-common-completion-map)
-	;; Make M-x use ido as well
-	(bind-key "M-x" (lambda ()
-					  (interactive)
-					  (call-interactively
-					   (intern
-						(ido-completing-read
-						 "M-x "
-						 (all-completions "" obarray 'commandp))))))
-	(use-package ido-ubiquitous
-	  :init
-	  (ido-ubiquitous-mode t))
-  ))
+  (setq ido-enable-flex-matching t)
+  (ido-mode t)
+  (ido-everywhere)
+  ;; Let us cycle through instead of opening up a buffer with candidates!
+  (setq ido-cannot-complete-command 'ido-next-match)
+  (bind-key "<escape>" 'keyboard-quit ido-common-completion-map)
+  (setq org-completing-use-ido t)
+  (setq magit-completing-read-function 'magit-ido-completing-read)
+  (use-package ido-ubiquitous
+	:init
+	(ido-ubiquitous-mode 1))
+  ;; Make M-x use ido as well
+  (use-package smex
+	:bind ("M-x" . smex))
+  ;; (ido-vertical-mode)
+  ;; This is _quite_ cool!
+  (use-package ido-grid-mode
+	:init
+	(ido-grid-mode))
+  (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
+  )
 
 
-;; Start in org-mode
-;; (setq initial-major-mode 'org-mode)
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 (autoload 'mu4e-compose-mode "muC" "mu4e compose mode." t)
 (autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
