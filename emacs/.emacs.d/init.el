@@ -113,18 +113,9 @@
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
 (use-package nlinum
   :init
-  (global-linum-mode t)
-  ;; Disable linum in select modes
-  ;; and all that aren't derived from prog-mode
-  (defun linum-on ()
-	(if (derived-mode-p 'prog-mode)
-		(if (not (boundp 'linum-disabled-modes-list))
-			(nlinum-mode 1)
-		  (if (eq nil linum-disabled-modes-list)
-			  (nlinum-mode 1)
-			(unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
-			  (nlinum-mode 1))))))
-  )
+  (add-hook 'prog-mode-hook (lambda ()
+							  (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
+								(nlinum-mode 1)))))
 (setq diff-switches "-u")
 
 (use-package rainbow-delimiters
