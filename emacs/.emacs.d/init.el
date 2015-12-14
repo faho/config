@@ -512,10 +512,11 @@
 (setq-default split-width-threshold 100)
 
 (use-package magit
+  :init
+  (delq 'Git vc-handled-backends)
   :commands magit-status
   :config
   ;; Using magit for that - vc-git takes too long to start up and lacks features
-  (delq 'Git vc-handled-backends)
   ;; A list of magit's keymaps (from https://github.com/magit/evil-magit/issues/1)
   ;; (defvar magit-keymaps
   ;; '(git-commit-mode-map
