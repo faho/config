@@ -5,6 +5,6 @@ if ! which stow > /dev/null 2>&1 ; then
 fi
 
 for d in *; do
-    [[ ! -d $d ]] && continue
+    [[ ! -d "$d" ]] && continue
     stow -S -t "$HOME" "$d"
 done
