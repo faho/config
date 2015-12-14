@@ -33,7 +33,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			end
 			# This line dominates the profile, the jshon calls don't matter
 			set -l tmp (curl -G $arg "$aurl&type=search" -s)
-			if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
+			set -l resultcount (echo $tmp | jshon -e resultcount)
+			if [ $resultcount -eq "0" ]
 				echo "No results found"
 				return 1
 			end
@@ -41,7 +42,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			set -l descs (echo $tmp | jshon -e results -a -e Description -u)
 			set -l urls (echo $tmp | jshon -e results -a -e URL -u)
 			set -l versions (echo $tmp | jshon -e results -a -e Version -u)
-			for i in (seq (count $names))
+			for i in (seq $resultcount)
 				printf "%s %s\n\t%s (%s)\n" $bold$names[$i]$normal $green$versions[$i]$normal $descs[$i] $yellow$urls[$i]$normal
 			end
 			return 0
@@ -75,7 +76,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 		case info
 			for pkg in $argv
 				set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
-				if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
+				set -l resultcount (echo $tmp | jshon -e resultcount)
+				if [ $resultcount -eq "0" ]
 					echo "No results found"
 					return 1
 				end
@@ -95,7 +97,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 					end
 				end
 
-				for i in (seq (count $names))
+				for i in (seq $resultcount)
 					printf "$bold%-32s:$normal %s\n" "Name" $names[$i] "Description" $descs[$i] "Version" $versions[$i] "Url: " $urls[$i] \
 					"Dependencies" "$deps" "Makedependencies" "$makedeps" "(Make)-Dependencies from AUR" "$aurdeps"
 				end
