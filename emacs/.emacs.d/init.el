@@ -258,7 +258,10 @@
 	(ido-ubiquitous-mode 1))
   ;; Make M-x use ido as well
   (use-package smex
-	:bind ("M-x" . smex))
+	:bind ("M-X" . smex-major-mode-commands)
+	("M-x" . smex)
+	:config
+	(setq smex-save-file (expand-file-name "emacs/smex-items" user-cache-directory)))
   ;; (ido-vertical-mode)
   ;; This is _quite_ cool!
   (use-package ido-grid-mode
