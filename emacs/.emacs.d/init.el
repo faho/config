@@ -12,6 +12,10 @@
 	)
 (setq-default major-mode 'text-mode)
 
+;; The default setting causes lots of gc-runs during startup
+;; This shaves off about a third of my startup time
+(setq gc-cons-percentage 0.80)
+
 ;; Ask for y/n instead of "yes"/"no"
 (defalias 'yes-or-no-p 'y-or-n-p)
 
