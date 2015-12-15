@@ -400,12 +400,14 @@
  ;; I literally only start overwrite-mode by accident
  ( "<insertchar>" . nil))
 
-(add-hook 'dired-mode-hook (lambda ()
-							 (autoload 'wdired-change-to-wdired-mode "wdired" nil t)
-							 (bind-keys :map dired-mode-map
-										("r" . wdired-change-to-wdired-mode)
-										("U" . dired-up-directory)
-										("/" . dired-isearch-filenames))))
+(use-package dired
+  :ensure nil ;; Included in emacs
+  :commands dired
+  :config
+  (bind-keys :map dired-mode-map
+			 ("r" . wdired-change-to-wdired-mode)
+			 ("U" . dired-up-directory)
+			 ("/" . dired-isearch-filenames)))
 
 (use-package hydra
   :init
