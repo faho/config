@@ -44,8 +44,7 @@
   (make-directory dir t))
 
 ;; Hardcode a list of files that aren't in packages so we can bootstrap from this file
-(setq faho-config-files '("local/evil-evilified-state.el"
-						  "mystuff/mymail.el"
+(setq faho-config-files '("mystuff/mymail.el"
 						  "mystuff/myorg.el"
 						  "mystuff/myutil.el"))
 
@@ -179,9 +178,14 @@
 	;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
 	(setq evil-want-fine-undo 'fine)
 	;;; EVILIFY MODES
-	;; Adds the "evilify" macro to add evil keybindings to modes
-	(require 'evil-evilified-state)
-	(evilify package-menu-mode package-menu-mode-map)
+	(bind-keys :map package-menu-mode-map
+			   ("j" . evil-next-line)
+			   ("k" . evil-previous-line)
+			   ("g g" . evil-goto-first-line)
+			   ("G" . evil-goto-line)
+			   ("/" . evil-search-forward)
+			   ("n" . evil-search-next)
+			   ("N" . evil-search-previous))
 	;; From spacemacs
 	;; default state for additional modes
 	(dolist (mode '(magit-popup-mode
