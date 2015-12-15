@@ -192,8 +192,8 @@
 
   ;; HTML mail
   ;; Use eww's renderer (requires emacs 24.4 IIRC)
-  (require 'mu4e-contrib)
-  (setq mu4e-html2text-command 'mu4e-shr2text)
+  (if (require 'mu4e-contrib nil t)
+	  (setq mu4e-html2text-command 'mu4e-shr2text))
 
   (defun mu4e-msgv-action-view-in-browser (msg)
 	"View the body of the message in a web browser."
