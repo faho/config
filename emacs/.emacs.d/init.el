@@ -613,6 +613,8 @@ user."
   (bind-key "k" 'previous-line neotree-mode-map))
 
 (use-package fish-mode
+  :mode ("\\.fish\\'" . fish-mode)
+  :interpreter ("fish" . fish-mode)
   :commands fish-mode)
 
 ;; Also enable 256 colors on konsole
