@@ -383,7 +383,7 @@
 		projectile-cache-file (expand-file-name "emacs/projectile.cache" user-cache-directory)
 		projectile-known-projects-file (expand-file-name "emacs/projectile-bookmarks.eld" user-cache-directory))
   :config
-  (setq projectile-switch-project-action 'neotree-projectile-action)
+  (setq projectile-switch-project-action '(lambda () (neotree-show) (neotree-refresh)))
   (projectile-global-mode))
 
 ;;; Keybindings
