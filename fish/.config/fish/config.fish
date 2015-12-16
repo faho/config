@@ -108,7 +108,6 @@ if status --is-interactive
 		function fish_right_prompt; end
 		function fish_prompt; echo -n $PWD ">"; end
 	else
-		set -g fish_term24bit 1
 		logo
 	end
 end
