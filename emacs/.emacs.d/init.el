@@ -626,6 +626,6 @@ user."
 
 ;; Also enable 256 colors on konsole
 (when (string= (tty-type) "konsole-256color")
-  (load "term/xterm")
-  (xterm-register-default-colors)
-  (tty-set-up-initial-frame-faces))
+  (if (load "term/xterm" t t) ;; Silence errors and messages
+	  (xterm-register-default-colors)
+	(tty-set-up-initial-frame-faces)))
