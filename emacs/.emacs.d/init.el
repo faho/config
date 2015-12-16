@@ -387,10 +387,7 @@
   (projectile-global-mode))
 
 ;;; Keybindings
-(add-hook 'prog-mode-hook
-		  (lambda ()
-			(bind-key "<f8>" 'compile prog-mode-map)
-			))
+(bind-key "<f8>" 'compile prog-mode-map)
 
 ;; Misc global bindings
 (bind-keys
