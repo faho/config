@@ -378,6 +378,10 @@
 
 (use-package projectile
   :diminish projectile-mode
+  :init
+  (setq projectile-enable-caching t
+		projectile-cache-file (expand-file-name "emacs/projectile.cache" user-cache-directory)
+		projectile-known-projects-file (expand-file-name "emacs/projectile-bookmarks.eld" user-cache-directory))
   :config
   (setq projectile-switch-project-action 'neotree-projectile-action)
   (projectile-global-mode))
