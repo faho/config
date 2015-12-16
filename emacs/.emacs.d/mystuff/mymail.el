@@ -59,26 +59,9 @@
   (setq message-send-mail-function 'smtpmail-send-it
 		smtpmail-auth-credentials "~/.netrc")
 
-  (defun jk-mu4e-set-account ()
-	"Set the account for composing a message."
-	(let* ((account
-			(if mu4e-compose-parent-message
-				(let ((maildir (mu4e-msg-field mu4e-compose-parent-message :maildir)))
-				  (string-match "/\\(.*?\\)/" maildir)
-				  (match-string 1 maildir))
-			  (completing-read (format "Compose with account: (%s) "
-									   (mapconcat #'(lambda (var) (car var)) jk-mu4e-account-alist "/"))
-							   (mapcar #'(lambda (var) (car var)) jk-mu4e-account-alist)
-							   nil t nil nil (caar jk-mu4e-account-alist))))
-		   (account-vars (cdr (assoc account jk-mu4e-account-alist))))
-	  (if account-vars
-		  (mapc #'(lambda (var)
-					(set (car var) (cadr var)))
-				account-vars)))) 
   (defun mu4e-headers-jump-to-next-unread ()
 	(interactive)
 	(search mu4e-headers-new-mark))
-  (add-hook 'mu4e-compose-pre-hook 'jk-mu4e-set-account)
 
   (setq mail-host-address "fordprefect")
   (setq message-kill-buffer-on-exit t)
