@@ -53,12 +53,6 @@ if status --is-interactive
 		emacs --eval "(mu4e)" $argv
 	end
 
-	#alias abs $HOME/dev/abs-replacement/abs.sh
-	function abs
-		~/dev/abs-replacement/abs.sh $argv
-	end
-
-	#alias upo upower -i /org/freedesktop/UPower/devices/battery_BAT0
 	function upo
 		upower -i /org/freedesktop/UPower/devices/battery_BAT0 $argv
 	end
