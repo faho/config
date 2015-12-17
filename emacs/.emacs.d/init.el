@@ -43,7 +43,13 @@
   (make-directory dir t))
 
 ;; Hardcode a list of files that aren't in packages so we can bootstrap from this file
+(add-to-list 'load-path (expand-file-name "local/goto-chg-1.6/" user-emacs-directory))
 (setq faho-config-files '("mystuff/mymail.el"
+						  ;; My local copy of goto-chg, a wiki package
+						  ;; not on melpa-stable
+						  "local/goto-chg-1.6/goto-chg.el"
+						  "local/goto-chg-1.6/goto-chg-pkg.el"
+						  "local/goto-chg-1.6/goto-chg-autoloads.el"
 						  "mystuff/myorg.el"
 						  "mystuff/myutil.el"))
 
@@ -63,7 +69,7 @@
 (require 'package)
 (setq package-archives
 	  '(("gnu" . "http://elpa.gnu.org/packages/")
-		("marmalade" . "https://marmalade-repo.org/packages/") ;; Needed for goto-chg
+		;; ("marmalade" . "https://marmalade-repo.org/packages/") ;; Needed for goto-chg
 		;; ("melpa" . "http://melpa.org/packages/") ;; This contains packages from git
 		("melpa-stable" . "http://stable.melpa.org/packages/")))
 (setq package-enable-at-startup nil)
