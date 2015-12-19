@@ -167,7 +167,8 @@
 			   ("q" . delete-window))
 	(bind-keys :map evil-visual-state-map
 			   ("u" . undo-tree-undo)
-			   ("+" . er/expand-region))
+			   ("v" . er/expand-region)
+			   ("V" . er/contract-region))
 	(setq evil-want-visual-char-semi-exclusive t)
 	(evil-define-key 'motion Info-mode-map
 	  "\t" 'Info-next-reference
