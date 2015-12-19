@@ -2,22 +2,22 @@
 # Init file for fish
 #
 
-set -x LANG de_DE.UTF-8
-set -x LANGUAGE de
-set -x GPGKEY 36EBBDB3
-set -x GPG_TTY (tty)
-set -x GOPATH ~/dev/go
-set -U fish_user_paths ~alfa/.local/bin $GOPATH/bin
-set -x MAIL $HOME/.mail
-set -x MAILDIR $MAIL
-set -x CDPATH . $HOME $HOME/Videos
-set -x WINEDEBUG "-all"
-set -x NO_AT_BRIDGE 1
-set -x EDITOR "emacs -nw"
-set -x MPD_HOST "/run/user/1000/mpd.socket"
-set -x SWT_GTK3 0
-set -x _JAVA_OPTIONS "-Dawt.useSystemAAFontsettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
-set -x PAGER "less"
+set -gx LANG de_DE.UTF-8
+set -gx LANGUAGE de
+set -gx GPGKEY 36EBBDB3
+set -gx GPG_TTY (tty)
+set -gx GOPATH ~/dev/go
+set -U  fish_user_paths ~alfa/.local/bin $GOPATH/bin
+set -gx MAIL $HOME/.mail
+set -gx MAILDIR $MAIL
+set -gx CDPATH . $HOME $HOME/Videos
+set -gx WINEDEBUG "-all"
+set -gx NO_AT_BRIDGE 1
+set -gx EDITOR "emacs -nw"
+set -gx MPD_HOST "/run/user/1000/mpd.socket"
+set -gx SWT_GTK3 0
+set -gx _JAVA_OPTIONS "-Dawt.useSystemAAFontsettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+set -gx PAGER "less"
 
 switch $TERM
 	case "konsole*" "xterm*"
