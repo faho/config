@@ -384,6 +384,7 @@
 			(c-set-style "linux-tabs-only")))
 
 (use-package projectile
+  :bind ("C-x o" . projectile-find-file-in-known-projects)
   :diminish projectile-mode
   :init
   (setq projectile-enable-caching t
