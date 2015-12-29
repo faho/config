@@ -101,7 +101,5 @@ if status --is-interactive
 		function fish_title; end
 		function fish_right_prompt; end
 		function fish_prompt; echo -n $PWD ">"; end
-	else
-		logo
 	end
 end
