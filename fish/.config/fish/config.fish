@@ -94,9 +94,15 @@ if status --is-interactive
 	set -g __fish_git_prompt_describe_style contains
 	set -g __fish_git_prompt_showcolorhints 0
 
-	abbr -a sc=systemctl
-	abbr -a usc="systemctl --user"
-	abbr -a pm="pulsemixer"
+	if not set -q fish_initialized
+		abbr -a sc systemctl
+		abbr -a usc systemctl --user
+		abbr -a pm pulsemixer
+		abbr -a e emacs -nw
+		# Double-escaping needed
+		abbr -a d2 env WINEPREFIX=/home/alfa/.wine32/ wine ~/.wine/drive_c/Program\\ Files\\ \\(x86\\)/Diablo\\ II/Diablo\\ II.exe
+		set -U fish_initialized
+	end
 
 	if set -q SCRIPTHACK
 		function fish_title; end
