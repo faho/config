@@ -3,30 +3,10 @@
   :commands mu4e
   :config
   (load-private-file)
-  ;;; offlineimap
-  ;; (setq mu4e-maildir "~/.mail"
-  ;; 		mu4e-drafts-folder "/main/[Google Mail].Drafts"
-  ;; 		mu4e-trash-folder  "/main/Trash"
-  ;; 		mu4e-sent-folder "/main/[Google Mail].Sent Mail")
-  ;; (setq mu4e-maildir-shortcuts
-  ;; 		'( ("/main/INBOX" . ?i)
-  ;; 		   ("/Uni/INBOX"  . ?n)
-  ;; 		   ("/main/[Google Mail].Drafts" . ?e)
-  ;; 		   ("/main/arch.[arch-projects]" . ?p)
-  ;; 		   ("/main/arch.[arch-dev-public]" . ?d)
-  ;; 		   ("/main/systemd" . ?s)))
-  ;; (add-to-list 'mu4e-bookmarks
-  ;; 			   '("maildir:/Uni/*" "Uni" ?n))
-  ;; (add-to-list 'mu4e-bookmarks
-  ;; 			   '("maildir:/main/arch.*" "Arch lists" ?a))
-  ;; (setq mu4e-get-mail-command "offlineimap -oq")
   ;;; mbsync
   (setq mu4e-maildir "~/.mail"
-  		mu4e-drafts-folder "/gmail/[Google Mail]/.Drafts"
-  		mu4e-trash-folder  "/gmail/Trash"
-		smtpmail-smtp-server "smtp.gmail.com"
-		smtpmail-smtp-service 587
-  		mu4e-sent-folder "/gmail/[Google Mail]/.Sent Mail")
+  		mu4e-drafts-folder "/gmail/[Google Mail].Drafts"
+  		mu4e-trash-folder  "/gmail/Trash")
   (setq mu4e-maildir-shortcuts
   		'( ("/gmail/INBOX" . ?i)
   		   ("/Uni/INBOX"  . ?n)
