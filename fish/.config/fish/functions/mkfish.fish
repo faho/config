@@ -1,5 +1,5 @@
 function mkfish
-	if count $argv > /dev/null
+	if set -q argv[1]
 		cd ~/dev/build/fish-shell-git
 		sed -e "s|source=.*|source=('git+file:///home/alfa/dev/fish-shell#branch=$argv')|" -i PKGBUILD
 		makepkg -sir
