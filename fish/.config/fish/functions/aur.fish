@@ -60,7 +60,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l makedeps (echo $tmp | jshon -e results -a -e MakeDepends -a -u -Q | sort -u)
 				# set -l aurdeps (pacman -Si (string replace -ar '[>=<].*$' '' -- $deps $makedeps) >/dev/null ^| cut -d"'" -f2)
 				# This should handle versioned deps and providers
-				set -l aurdeps (pacman -Spq -- $deps $makedeps >/dev/null ^| string replace -r '^.*: ' '')
+				test -n "$deps$makedeps"
+				and set -l aurdeps (pacman -Spq -- $deps $makedeps >/dev/null ^| string replace -r '^.*: ' '')
 				set -l cloneurls "https://aur.archlinux.org/"(echo $tmp | jshon -e results -a -e PackageBase -u)".git"
 				set -l clonenum 1
 				echo "Aurdeps: $aurdeps"
@@ -69,7 +70,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				# 	echo "Now cloning: $pkg"
 				# 	aur clone (string replace -ar '[>=<].*$' '' -- $pkg)
 				# end
-				[ ! -e $aurqueue/$names ]; and git clone $cloneurls[$clonenum] $aurqueue/$names
+				[ ! -e "$aurqueue/$names" ]; and git clone $cloneurls[$clonenum] $aurqueue/$names
 			end
 			return 0
 		case info
@@ -86,7 +87,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l versions (echo $tmp | jshon -e results -a -e Version -u)
 				set -l deps (echo $tmp | jshon -e results -a -e Depends -a -u -Q | sort -u)
 				set -l makedeps (echo $tmp | jshon -e results -a -e MakeDepends -a -u -Q | sort -u)
-				set -l aurdeps (pacman -Spq -- $deps $makedeps >/dev/null ^| string replace -r '^.*: ' '')
+				test -n "$deps$makedeps"
+				and set -l aurdeps (pacman -Spq -- $deps $makedeps >/dev/null ^| string replace -r '^.*: ' '')
 				for d in $aurdeps
 					if set -l i (contains -i -- $d $deps)
 						set -e deps[$i]
@@ -112,7 +114,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			end
 		case demote
 			for pkg in $argv
-				[ -d $aurpkgs/$pkg ]
+				[ -d "$aurpkgs/$pkg" ]
 				and mv $aurpkgs/$pkg $aurqueue/$pkg
 				and git -C $aurpkgs submodule deinit $pkg
 			end
@@ -121,8 +123,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			for pkg in $argv
 			# Find the package, if it's already cloned
 			set -l dir
-			[ -d $aurpkgs/$pkg ]; and set dir $aurpkgs/$pkg
-			[ -d $aurqueue/$pkg ]; and set dir $aurqueue/$pkg
+			[ -d "$aurpkgs/$pkg" ]; and set dir $aurpkgs/$pkg
+			[ -d "$aurqueue/$pkg" ]; and set dir $aurqueue/$pkg
 			# If necessary, clone it
 			if [ -z "$dir" ]
 				aur clone $pkg
@@ -131,7 +133,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			# Parse SRCINFO for deps
 			set -l aurdeps (string match \t"depends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
 			set aurdeps $aurdeps (string match \t"makedepends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
-			set aurdeps (pacman -Spq -- $aurdeps >/dev/null ^| string replace -r '^.*: ' '')
+			test -n "$deps$makedeps"
+			and set aurdeps (pacman -Spq -- $aurdeps >/dev/null ^| string replace -r '^.*: ' '')
 			[ -n "$aurdeps" ]; and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
 				echo "Building $dep"
 				aur build $dep
