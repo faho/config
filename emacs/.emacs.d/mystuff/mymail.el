@@ -49,14 +49,6 @@
 
   ;; Aesthetics
   (setq mu4e-use-fancy-chars t)
-  (setq mu4e-headers-seen-mark '("S" . "☑")) ;seen
-  (setq mu4e-headers-unseen-mark '("u" . "☐")) ; unseen
-  (setq mu4e-headers-flagged-mark '("F" .  "⚵"))  ;flagged
-  (setq mu4e-headers-new-mark '("N" .  "✉"))  ;new
-  (setq mu4e-headers-replied-mark '("R" . "↵")) ;replied
-  (setq mu4e-headers-passed-mark '("P" . "⇉")) ;passed
-  (setq mu4e-headers-encrypted-mark '("x" . "⚷")) ;encrypted
-  (setq mu4e-headers-signed-mark '("s" . "✍")) ;signed
   (setq mu4e-compose-signature nil)
 
   (setq mu4e-headers-fields
