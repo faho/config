@@ -133,7 +133,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			# Parse SRCINFO for deps
 			set -l aurdeps (string match \t"depends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
 			set aurdeps $aurdeps (string match \t"makedepends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
-			test -n "$deps$makedeps"
+			test -n "$aurdeps"
 			and set aurdeps (pacman -Spq -- $aurdeps >/dev/null ^| string replace -r '^.*: ' '')
 			[ -n "$aurdeps" ]; and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
 				echo "Building $dep"
