@@ -1,36 +1,28 @@
 function fish_prompt --description 'Prompt anzeigen'
 	set -l last_status $status
 
-    set -g __fish_prompt_hostname (hostname)
-    set -g __fish_prompt_normal (set_color normal)
+    set -l normal (set_color normal)
+	set -l usercolor (set_color $fish_color_user)
 
-    set -l delim '➤'
+    # set -l delim '➤'
+	set -l delim "❯"
 
-    switch $USER
-        case root
-            if set -q fish_color_cwd_root
-                set -g __fish_prompt_cwd (set_color $fish_color_cwd_root)
-            else
-                set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-            end
-        case '*'
-            set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-    end
+	set -l cwd (set_color $fish_color_cwd)
+	test $USER = root; and set -q fish_color_cwd_root
+    and set cwd (set_color $fish_color_cwd_root)
 
-    set -l prompt_status
-    if test $last_status -ne 0
-        set -g __fish_prompt_status (set_color $fish_color_status)
-        set prompt_status "$__fish_prompt_status [$last_status]$__fish_prompt_normal"
-    end
+    test $last_status -ne 0; and set -l prompt_status (set_color $fish_color_status)"[$last_status]$normal"
 
-    set -l host
-    if begin set -q SSH_TTY
-            or begin type -q systemd-detect-virt
-                and systemd-detect-virt -q
-            end
-        end
-        set host (set_color $fish_color_user; or echo "")"$USER$__fish_prompt_normal@"(set_color $fish_color_host; or echo "")"$__fish_prompt_hostname$__fish_prompt_normal "
-    end
+	# Only show host if in SSH or container
+	# Cache this in a global variable
+	set -q prompt_host; or begin set -g prompt_host
+		if set -q SSH_TTY
+			or begin type -q systemd-detect-virt
+				and systemd-detect-virt -q
+			end
+			set prompt_host $usercolor$USER$normal@(set_color $fish_color_host)(hostname)(set_color normal)":"
+		end
+	end
 
-    echo -n -s $host "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" "$prompt_status" "$delim" ' '
+    echo -n -s $prompt_host $cwd (prompt_pwd) $normal $prompt_status $delim ' '
 end
