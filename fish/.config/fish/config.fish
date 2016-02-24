@@ -44,13 +44,6 @@ if status --is-interactive
 		sudo systemctl start bumblebeed display-manager
 	end
 
-	function fish_user_key_bindings
-		bind \cx "commandline | xsel --clipboard"
-		bind \cv yank # paste from killring/clipboard
-		bind -k ic yank # insert key
-		bind \ev yank-pop
-	end
-
 	function erase_grep_options --on-variable GREP_OPTIONS --description "Delete GREP_OPTIONS if it is ever set"
 		if set -q GREP_OPTIONS
 			echo "SOMETHING TRIED TO SET GREP_OPTIONS to $GREP_OPTIONS!"
