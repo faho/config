@@ -7,7 +7,6 @@ set -gx GPG_TTY (tty)
 set -gx GOPATH ~/dev/go
 set -gx MAIL $HOME/.mail
 set -gx MAILDIR $MAIL
-set -U  fish_user_paths ~alfa/.local/bin $GOPATH/bin
 set -gx CDPATH . $HOME $HOME/Videos
 set -gx WINEDEBUG "-all"
 set -gx NO_AT_BRIDGE 1
@@ -85,6 +84,7 @@ if status --is-interactive
 	if set -q SCRIPTHACK
 		function fish_title; end
 		function fish_right_prompt; end
+		set -U  fish_user_paths ~alfa/.local/bin $GOPATH/bin
 		function fish_prompt; echo -n $PWD ">"; end
 	end
 end
