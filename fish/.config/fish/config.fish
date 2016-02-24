@@ -2,21 +2,18 @@
 # Init file for fish
 #
 
-set -gx LANG de_DE.UTF-8
-set -gx LANGUAGE de
 set -gx GPGKEY 36EBBDB3
 set -gx GPG_TTY (tty)
 set -gx GOPATH ~/dev/go
-set -U  fish_user_paths ~alfa/.local/bin $GOPATH/bin
 set -gx MAIL $HOME/.mail
 set -gx MAILDIR $MAIL
+set -U  fish_user_paths ~alfa/.local/bin $GOPATH/bin
 set -gx CDPATH . $HOME $HOME/Videos
 set -gx WINEDEBUG "-all"
 set -gx NO_AT_BRIDGE 1
 set -gx EDITOR "emacs -nw"
 set -gx MPD_HOST "/run/user/1000/mpd.socket"
 set -gx SWT_GTK3 0
-set -gx _JAVA_OPTIONS "-Dawt.useSystemAAFontsettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 set -gx PAGER "less"
 set -gx SSH_ASKPASS /usr/bin/ksshaskpass
 
