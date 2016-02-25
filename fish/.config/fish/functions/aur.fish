@@ -157,6 +157,19 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			end
 			set -q printqueue; and ls $aurqueue
 			set -q printpkgs; and ls $aurpkgs
+		case log
+			for pkg in $argv
+				# Find the package, if it's already cloned
+				set -l dir
+				[ -d "$aurpkgs/$pkg" ]; and set dir $aurpkgs/$pkg
+				[ -d "$aurqueue/$pkg" ]; and set dir $aurqueue/$pkg
+				# If necessary, clone it
+				if [ -z "$dir" ]
+					aur clone $pkg
+					set dir $aurqueue/$pkg
+				end
+				test -n "$dir"; and git -C $dir log
+			end
 		case "help" "*" ""
 			echo "Usage: aur <Operation> [...]"
 			echo "Operations:"
@@ -166,6 +179,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			echo "demote <Packages>"
 			echo "rm <Packages>"
 			echo "build <Packages>"
+			echo "log <Packages>"
 			echo "update"
 			return 0
 	end
