@@ -1,0 +1,11 @@
+set -l cmds search clone promote demote rm build update
+complete -c aur -f -n "not __fish_seen_subcommand_from $cmds" -a "search"
+complete -c aur -f -n "not __fish_seen_subcommand_from $cmds" -a "clone"
+complete -c aur -f -n "not __fish_seen_subcommand_from $cmds" -a "promote"
+complete -c aur -f -n "__fish_seen_subcommand_from promote" -a "(aur ls --queueonly)"
+complete -c aur -f -n "not __fish_seen_subcommand_from $cmds" -a "demote"
+complete -c aur -f -n "__fish_seen_subcommand_from demote" -a "(aur ls --pkgsonly)"
+complete -c aur -f -n "not __fish_seen_subcommand_from $cmds" -a "rm"
+complete -c aur -f -n "__fish_seen_subcommand_from rm" -a "(aur ls --queueonly)"
+complete -c aur -f -n "not __fish_seen_subcommand_from $cmds" -a "build"
+complete -c aur -f -n "not __fish_seen_subcommand_from $cmds" -a "update"
