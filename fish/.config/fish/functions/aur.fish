@@ -45,7 +45,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				printf "%s %s\n\t%s (%s)\n" $bold$names[$i]$normal $green$versions[$i]$normal $descs[$i] $yellow$urls[$i]$normal
 			end
 			return 0
-		case clone
+		case clone download
 			for pkg in $argv
 				set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
 				if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
@@ -120,7 +120,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				and git -C $aurpkgs submodule deinit --force $pkg
 			end
 			return 0
-		case build
+		case build install
 			for pkg in $argv
 			# Find the package, if it's already cloned
 			set -l dir
