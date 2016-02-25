@@ -3,21 +3,21 @@
 (if (display-graphic-p)
 	(progn
 	  (menu-bar-mode t)
-	  (if (fboundp 'tool-bar-mode) tool-bar-mode t)
-	  (if (fboundp 'scroll-bar-mode) scroll-bar-mode 'right)
+	  (if (fboundp #'tool-bar-mode) tool-bar-mode t)
+	  (if (fboundp #'scroll-bar-mode) scroll-bar-mode 'right)
 	  )
   (menu-bar-mode -1)
-  (if (fboundp 'tool-bar-mode) tool-bar-mode nil)
-  (if (fboundp 'scroll-bar-mode) scroll-bar-mode nil)
+  (if (fboundp #'tool-bar-mode) tool-bar-mode nil)
+  (if (fboundp #'scroll-bar-mode) scroll-bar-mode nil)
 	)
-(setq-default major-mode 'text-mode)
+(setq-default major-mode #'text-mode)
 
 ;; The default setting causes lots of gc-runs during startup
 ;; This shaves off about a third of my startup time
 (setq gc-cons-percentage 0.80)
 
 ;; Ask for y/n instead of "yes"/"no"
-(defalias 'yes-or-no-p 'y-or-n-p)
+(defalias #'yes-or-no-p #'y-or-n-p)
 
 (setq inhibit-startup-message t
 	  inhibit-splash-screen t
@@ -26,7 +26,7 @@
 	  initial-scratch-message "")
 
 ;; Don't warn about advice
-(setq ad-redefinition-action 'accept)
+(setq ad-redefinition-action #'accept)
 
 ;;; File Structure
 ;; My custom stuff goes to .emacs.d/mystuff
@@ -229,8 +229,8 @@
   :config (progn
 			(setq company-backends (delete 'company-semantic company-backends))
 			;; Tab completion - insert tab at start of line, complete otherwise
-			(setq-default tab-always-indent 'complete)
-			(setq-default c-tab-always-indent 'complete)
+			(setq-default tab-always-indent #'complete)
+			(setq-default c-tab-always-indent #'complete)
 			(global-company-mode t)))
 
 ;; Code Style
@@ -263,10 +263,10 @@
   (ido-mode t)
   (ido-everywhere)
   ;; Let us cycle through instead of opening up a buffer with candidates!
-  (setq ido-cannot-complete-command 'ido-next-match)
+  (setq ido-cannot-complete-command #'ido-next-match)
   (bind-key "<escape>" 'keyboard-quit ido-common-completion-map)
   (setq org-completing-use-ido t)
-  (setq magit-completing-read-function 'magit-ido-completing-read)
+  (setq magit-completing-read-function #'magit-ido-completing-read)
   (use-package ido-ubiquitous
 	:init
 	(ido-ubiquitous-mode 1))
@@ -285,11 +285,11 @@
   )
 
 
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-(autoload 'mu4e-compose-mode "muC" "mu4e compose mode." t)
-(autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
+(autoload #'lua-mode "lua-mode" "Lua editing mode." t)
+(autoload #'mu4e-compose-mode "muC" "mu4e compose mode." t)
+(autoload #'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
 (setq auto-mode-alist (append '(("/PKGBUILD$" . pkgbuild-mode)) auto-mode-alist))
-(require 'generic-x)
+(require #'generic-x)
 
 ;; TeX
 (setq tex-dvi-view-command "xdg-open")
@@ -327,7 +327,7 @@
 
 ;; Save point position between sessions
 ;; Included in emacs, no need to use-package
-(require 'saveplace)
+(require #'saveplace)
 (setq-default save-place t)
 (setq save-place-file (expand-file-name "emacs/places" user-cache-directory))
 
@@ -345,7 +345,7 @@
 ;; Highlight TODO, FIXME, STUB, etc
 ;; FIXME:
 ;; TODO:
-(add-hook 'prog-mode-hook
+(add-hook #'prog-mode-hook
 		  (lambda ()
 			(font-lock-add-keywords nil
 									'(("\\<\\(FIXME\\|BUG\\):" 1 font-lock-warning-face t)))
@@ -369,7 +369,7 @@
 (setq save-interprogram-paste-before-kill t)
 
 ;; Linux kernel coding style
-(add-hook 'c-mode-common-hook
+(add-hook #'c-mode-common-hook
           (lambda ()
             ;; Add kernel style
             (c-add-style
@@ -378,7 +378,7 @@
                         (arglist-cont-nonempty
                          c-lineup-gcc-asm-reg
                          c-lineup-arglist-tabs-only))))))
-(add-hook 'c-mode-hook
+(add-hook #'c-mode-hook
 		  (lambda ()
 			(setq indent-tabs-mode t)
 			(c-set-style "linux-tabs-only")))
@@ -612,7 +612,7 @@ user."
 ;; C-x f is usually bound to "set-fill-column", which is useless.
 (bind-key "C-x f" 'djcb-find-file-as-root)
 
-(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-split-window-function #'split-window-horizontally)
 
 (use-package neotree
   :init
