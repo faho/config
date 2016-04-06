@@ -10,7 +10,7 @@
   (setq mu4e-maildir-shortcuts
   		'( ("/gmail/INBOX" . ?i)
   		   ("/Uni/INBOX"  . ?n)
-  		   ("/gmail/[Google Mail]/.Drafts" . ?e)
+  		   ("/gmail/[Google Mail].Drafts" . ?e)
   		   ("/gmail/arch/.[arch-projects]" . ?p)
   		   ("/gmail/arch/.[arch-dev-public]" . ?d)
 		   ("/gmail/fish" . ?f)
