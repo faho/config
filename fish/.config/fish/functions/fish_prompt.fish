@@ -4,8 +4,7 @@ function fish_prompt --description 'Prompt anzeigen'
     set -l normal (set_color normal)
 	set -l usercolor (set_color $fish_color_user)
 
-    # set -l delim '➤'
-	set -l delim "❯"
+	set -l delim \U25BA
 
 	set -l cwd (set_color $fish_color_cwd)
 	test $USER = root; and set -q fish_color_cwd_root
