@@ -4,7 +4,7 @@ function fish_right_prompt
 	set -q BATTERY_IS_PLUGGED; and set -l plug "⚡"
 	set -l d (set_color brgrey)(date "+%R")(set_color normal)
 	set -l mpc
-	if type -q mpc
+	if type -q mpc; and systemctl --user --quiet is-active mpd >/dev/null ^/dev/null
 		set -l note "♪"
 		if set mpc (mpc status ^/dev/null)
 			if set -q mpc[2]; and string match -q "[playing]*" -- $mpc[2]
