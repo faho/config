@@ -1,13 +1,15 @@
 function mkfish
-	if set -q argv[1]
-		cd ~/dev/build/fish-shell-git
-		sed -e "s|source=.*|source=('git+file:///home/alfa/dev/fish-shell#branch=$argv')|" -i PKGBUILD
-		makepkg -sir
-	else
-		cd ~/dev/fish-shell/
-		git pull origin
-		cd ~/dev/build/fish-shell-git
-		sed -e "s|source=.*|source=('git+file:///home/alfa/dev/fish-shell#branch=master')|" -i PKGBUILD
-		makepkg -sir
+	set -l branch master
+	set -l opts
+	for arg in $argv
+		switch $arg
+			case "-*"
+				set opts $opts $arg
+			case "*"
+				set branch $arg
+		end
 	end
+	cd ~/dev/build/fish-shell-git
+	sed -e "s|source=.*|source=('git+file:///home/alfa/dev/fish-shell#branch=$branch')|" -i PKGBUILD
+	makepkg -sir $opts
 end
