@@ -31,42 +31,42 @@ function battery_update_info
 	if test $OSTYPE = "Darwin"
 		battery_update_info_darwin
 	else
+		if not type -q upower
+			echo "Please install upower"
+			return 1
+		end
 		battery_update_info_linux
 	end
 end
 
 function battery_update_info_linux
-	if not type -q upower
-		echo "Please install upower"
-		return 1
-	end
-	set -l devices (upower -e | grep battery) # This can theoretically be multiple
+	set -l devices (upower -e | string match '*battery*') # This can theoretically be multiple
 	set -l upo (upower -i $devices)
 
 	# Mind the space in " charging", we want to match "charging" but not "discharging"
-	printf "%s"\n $upo | grep -q "state:.* charging\|state:.*fully-charged"
+	printf "%s"\n $upo | string match -rq "state:.* charging\|state:.*fully-charged"
 	and set -g BATTERY_IS_PLUGGED
 	or set -e  BATTERY_IS_PLUGGED
 
-	printf "%s"\n $upo \
-	| grep -q "state:.* charging"
+	printf "%s"\n $upo | string match -rq "state:.* charging"
     and set -g BATTERY_IS_CHARGING
     or set -e  BATTERY_IS_CHARGING
 
 	set -g BATTERY_MAX_CAP (printf "%s\n" $upo \
-	| grep "energy-full:" \
-	| cut -d ":" -f 2)
+	| string match -r "\s*energy-full:.*" \
+	| string replace -r '\s*energy-full:\s*' '')
 
 	set -g BATTERY_CUR_CAP (printf "%s\n" $upo \
-	| grep "energy:" \
-	| cut -d ":" -f 2)
+	| string match -r "\s*energy:.*" \
+	| string replace -r '\s*energy:\s*' '')
 
 	set -g BATTERY_PCT (printf "%s\n" $upo \
-	| grep "percentage:" | cut -d":" -f2 | cut -d"%" -f1)
+	| string match -r '\s*percentage:.*' \
+	| string replace -r '\s*percentage:\s*(.*)%' '$1')
 
 	set -g BATTERY_TIME_LEFT (printf "%s\n" $upo \
-	| grep "time to" \
-	| cut -d":" -f 2)
+	| string match -r ".*time to.*:.*" \
+	| string replace -r '.*time to.*:\s*' '')
 
 	set -g BATTERY_SLOTS (math $BATTERY_PCT / 10)
 end
