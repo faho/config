@@ -44,40 +44,7 @@ if status --is-interactive
 		sudo systemctl start bumblebeed display-manager
 	end
 
-	function erase_grep_options --on-variable GREP_OPTIONS --description "Delete GREP_OPTIONS if it is ever set"
-		if set -q GREP_OPTIONS
-			echo "SOMETHING TRIED TO SET GREP_OPTIONS to $GREP_OPTIONS!"
-			set -e GREP_OPTIONS
-		end
-	end
-
 	# Add path for completions/functions intended to go upstream
 	set fish_function_path ~/.config/fish/test/functions $fish_function_path
 	set fish_complete_path ~/.config/fish/test/completions $fish_complete_path
-
-	set -g __fish_git_prompt_show_informative_status 0
-	set -g __fish_git_prompt_showupstream informative
-	set -g __fish_git_prompt_describe_style contains
-	set -g __fish_git_prompt_showcolorhints 0
-
-	if not set -q fish_initialized
-		abbr -a alsamixer alsamixer -c0
-		abbr -a e emacs -nw
-		abbr -a mu4e emacs --eval "\(mu4e\)"
-		abbr -a pm pulsemixer
-		abbr -a rm rm -I
-		abbr -a sc systemctl
-		abbr -a upo upower -i /org/freedesktop/UPower/devices/battery_BAT0
-		abbr -a usc systemctl --user
-		# Double-escaping needed
-		abbr -a d2 env WINEPREFIX=/home/alfa/.wine32/ wine ~/.wine/drive_c/Program\\ Files\\ \\(x86\\)/Diablo\\ II/Diablo\\ II.exe
-		set -U fish_initialized
-	end
-
-	if set -q SCRIPTHACK
-		function fish_title; end
-		function fish_right_prompt; end
-		set -U  fish_user_paths ~alfa/.local/bin $GOPATH/bin
-		function fish_prompt; echo -n $PWD ">"; end
-	end
 end
