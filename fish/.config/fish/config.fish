@@ -2,8 +2,6 @@
 # Init file for fish
 #
 
-set -gx GPGKEY 36EBBDB3
-set -gx GPG_TTY (tty)
 set -gx GOPATH ~/dev/go
 set -gx MAIL $HOME/.mail
 set -gx MAILDIR $MAIL
@@ -41,6 +39,8 @@ if status --is-interactive
 	end
 
 	function startintel --description "Start X server backed by the intel card"
+	set -gx GPGKEY 36EBBDB3
+	set -gx GPG_TTY (tty)
 		sudo systemctl start bumblebeed display-manager
 	end
 
