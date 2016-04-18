@@ -34,7 +34,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			set -l tmp (curl -G $arg "$aurl&type=search" -s)
 			set -l resultcount (echo $tmp | jshon -e resultcount)
 			if [ $resultcount -eq "0" ]
-				echo "No results found"
+				echo $red"No results found" >&2
 				return 1
 			end
 			set -l names (echo $tmp | jshon -e results -a -e Name -u)
@@ -49,7 +49,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			for pkg in $argv
 				set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
 				if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
-					echo "No results found"
+					echo $red"No results found" >&2
 					return 1
 				end
 				set -l names (echo $tmp | jshon -e results -a -e Name -u)
@@ -78,7 +78,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
 				set -l resultcount (echo $tmp | jshon -e resultcount)
 				if [ $resultcount -eq "0" ]
-					echo "No results found"
+					echo $red"No results found" >&2
 					return 1
 				end
 				set -l names (echo $tmp | jshon -e results -a -e Name -u)
