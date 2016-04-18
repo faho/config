@@ -206,7 +206,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				# If necessary, clone it
 				if [ -z "$dir" ]
 					aur clone $pkg
-					set dir $aurqueue/$pkg
+					and set dir $aurqueue/$pkg
 				end
 				test -n "$dir"; and git -C $dir log
 			end
