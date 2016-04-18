@@ -134,6 +134,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				and mv $aurpkgs/$pkg $aurqueue/$pkg
 				# We've moved it away so we can --force to remove the tree
 				and git -C $aurpkgs submodule deinit --force $pkg
+				and git -C $aurpkgs rm -f $pkg
 			end
 			return 0
 		case build install
