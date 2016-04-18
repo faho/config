@@ -58,10 +58,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l versions (echo $tmp | jshon -e results -a -e Version -u)
 				set -l deps (echo $tmp | jshon -e results -a -e Depends -a -u -Q | sort -u)
 				set -l makedeps (echo $tmp | jshon -e results -a -e MakeDepends -a -u -Q | sort -u)
-				# set -l aurdeps (pacman -Si (string replace -ar '[>=<].*$' '' -- $deps $makedeps) >/dev/null ^| cut -d"'" -f2)
-				# This should handle versioned deps and providers
 				test -n "$deps$makedeps"
-				and set -l aurdeps (pacman -Spq -- $deps $makedeps >/dev/null ^| string replace -r '^.*: ' '')
+				and set -l aurdeps (printf '%s\n' $deps $makedeps | faho_getaurdeps)
 				set -l cloneurls "https://aur.archlinux.org/"(echo $tmp | jshon -e results -a -e PackageBase -u)".git"
 				set -l clonenum 1
 				echo "Aurdeps: $aurdeps"
@@ -88,7 +86,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l deps (echo $tmp | jshon -e results -a -e Depends -a -u -Q | sort -u)
 				set -l makedeps (echo $tmp | jshon -e results -a -e MakeDepends -a -u -Q | sort -u)
 				test -n "$deps$makedeps"
-				and set -l aurdeps (pacman -Spq -- $deps $makedeps >/dev/null ^| string replace -r '^.*: ' '')
+				and set -l aurdeps (printf '%s\n' $deps $makedeps | faho_getaurdeps)
 				for d in $aurdeps
 					if set -l i (contains -i -- $d $deps)
 						set -e deps[$i]
@@ -122,31 +120,47 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			return 0
 		case build install
 			for pkg in $argv
-			# Find the package, if it's already cloned
-			set -l dir
-			[ -d "$aurpkgs/$pkg" ]; and set dir $aurpkgs/$pkg
-			[ -d "$aurqueue/$pkg" ]; and set dir $aurqueue/$pkg
-			# If necessary, clone it
-			if [ -z "$dir" ]
-				aur clone $pkg
-				set dir $aurqueue/$pkg
-			end
-			# Parse SRCINFO for deps
-			set -l aurdeps (string match \t"depends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
-			set aurdeps $aurdeps (string match \t"makedepends =*" < $dir/.SRCINFO | string replace -ar ".*= " "")
-			test -n "$aurdeps"
-			and set aurdeps (pacman -Spq -- $aurdeps >/dev/null ^| string replace -r '^.*: ' '')
-			[ -n "$aurdeps" ]; and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
-				echo "Building $dep"
-				aur build $dep
-			end
-			echo "Making $dir"
-			makepkgs $dir
+				set -l dir (aur_findpkg $pkg)
+				# If necessary, clone it
+				if [ -z "$dir" ]
+					aur clone $pkg; or return 1
+					string match -q 'pkgs/*' -- $pkg; and set dir $aurpkgs/$pkg
+					or set dir $aurqueue/$pkg
+				end
+				if not test -e $dir/.SRCINFO
+					echo $red"SRCINFO does not exist" >&2
+					echo "Please ensure $dir is non-existent or a valid package clone"$normal >&2
+					return 3
+				end
+				# Parse SRCINFO for deps
+				set -l aurdeps (test -r .SRCINFO; or makepkg --printsrcinfo > .SRCINFO; faho_getaurdeps < .SRCINFO)
+				[ -n "$aurdeps" ]; and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
+					echo "Building $dep"
+					aur build $dep
+				end
+				makepkgs $dir
 			end
 			return 0
 		case update
-			git -C $aurpkgs submodule foreach git pull origin master
-			makepkgs $aurpkgs/*
+			if set -q argv[1]
+				set -l packages
+				for pkg in $argv
+					set -l dir (aur_findpkg $pkg)
+					if test -z "$dir"
+						echo "No such package $pkg in $target"
+						return 5
+					end
+					echo ADDING PACKAGE $dir
+					set packages $packages $dir
+				end
+				for pkg in $packages
+					git -C $pkg pull origin master
+				end
+				makepkgs $packages
+			else
+				git -C $aurpkgs submodule foreach git pull origin master
+				makepkgs $aurpkgs/*
+			end
 		case list ls
 			set -l printqueue
 			set -l printpkgs
@@ -160,10 +174,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			set -q printpkgs; and ls $aurpkgs
 		case log
 			for pkg in $argv
-				# Find the package, if it's already cloned
-				set -l dir
-				[ -d "$aurpkgs/$pkg" ]; and set dir $aurpkgs/$pkg
-				[ -d "$aurqueue/$pkg" ]; and set dir $aurqueue/$pkg
+				set -l dir (aur_findpkg $pkg)
 				# If necessary, clone it
 				if [ -z "$dir" ]
 					aur clone $pkg
