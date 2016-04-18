@@ -13,6 +13,7 @@ set -gx MPD_HOST "/run/user/1000/mpd.socket"
 set -gx SWT_GTK3 0
 set -gx PAGER "less"
 set -gx SSH_ASKPASS /usr/bin/ksshaskpass
+set -gx PRIMUS_SYNC 1
 
 # SDL mapping for PS3 controller
 set -x SDL_GAMECONTROLLERCONFIG "030000004c0500006802000011010000,PS3 Controller,a:b14,b:b13,back:b0,dpdown:b6,dpleft:b7,dpright:b5,dpup:b4,guide:b16,leftshoulder:b10,leftstick:b1,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b11,rightstick:b2,righttrigger:b9,rightx:a2,righty:a3,start:b3,x:b15,y:b12,platform:Linux,"
@@ -21,15 +22,18 @@ set -x SDL_GAMECONTROLLERCONFIG "030000004c0500006802000011010000,PS3 Controller
 set -x XDG_CONFIG_HOME "$HOME/.config"
 set -x XDG_DATA_HOME "$HOME/.local/share"
 set -x XDG_CACHE_HOME "$HOME/.cache"
+set -x GTK2_RC_FILES "$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 
 set -x SSH_AUTH_SOCK "$XDG_CONFIG_HOME/gnupg/S.gpg-agent.ssh"
 set -x LESSHISTFILE "-"
 
 set -x ASPROOT ~/packages/asp
 
-set FISH_CLIPBOARD_CMD "cat"
+set -g FISH_CLIPBOARD_CMD "cat"
 
 if status --is-interactive
+	set -gx GPGKEY 36EBBDB3
+	set -gx GPG_TTY (tty)
 	function startnvidia --description "Switch to X server backed by the nvidia card"
 		# sudo systemctl stop bumblebeed display-manager
 		sudo modprobe -r bbswitch
@@ -39,8 +43,6 @@ if status --is-interactive
 	end
 
 	function startintel --description "Start X server backed by the intel card"
-	set -gx GPGKEY 36EBBDB3
-	set -gx GPG_TTY (tty)
 		sudo systemctl start bumblebeed display-manager
 	end
 
