@@ -47,6 +47,15 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			return 0
 		case clone download
 			for pkg in $argv
+				set -l target
+				if string match -q "*/*" -- $pkg
+					set target (string split "/" -- $pkg)[1]
+					if not contains -- $target pkgs queue
+						echo $red"Invalid target: $target from argument $pkg" >&2
+						return 1
+					end
+					set pkg (string split "/" -- $pkg)[2]
+				end
 				set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
 				if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
 					echo $red"No results found" >&2
@@ -68,7 +77,9 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				# 	echo "Now cloning: $pkg"
 				# 	aur clone (string replace -ar '[>=<].*$' '' -- $pkg)
 				# end
-				[ ! -e "$aurqueue/$names" ]; and git clone $cloneurls[$clonenum] $aurqueue/$names
+				[ "$target" != pkgs ]; and set dir $aurqueue/$names
+				or set dir $aurpkgs/$names
+				[ ! -e "$dir" ]; and git clone $cloneurls[$clonenum] $dir
 			end
 			return 0
 		case info
@@ -104,7 +115,14 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			return 0
 		case rm
 			[ -n "$argv" ]
-			and rm -rf $aurqueue/$argv
+			for pkg in $argv
+				set -l dir (aur_findpkg $pkg)
+				if test -z "$dir"
+					echo $red"No such package: "$normal"$pkg" >&2
+					return 4
+				end
+				rm -rf $dir
+			end
 		case promote
 			mv $aurqueue/$argv $aurpkgs
 			for pkg in $argv
@@ -170,8 +188,17 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				case "--pkgsonly"
 					set -e printqueue
 			end
-			set -q printqueue; and ls $aurqueue
-			set -q printpkgs; and ls $aurpkgs
+			if set -q printqueue printpkgs
+				for i in (string replace -- "$aurqueue/" "" $aurqueue/*)
+					echo queue/$i
+				end
+				for i in (string replace -- "$aurpkgs/" "" $aurpkgs/*)
+					echo pkgs/$i
+				end
+			else
+				set -q printqueue; and ls $aurqueue
+				set -q printpkgs; and ls $aurpkgs
+			end
 		case log
 			for pkg in $argv
 				set -l dir (aur_findpkg $pkg)
