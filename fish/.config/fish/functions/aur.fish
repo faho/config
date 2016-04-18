@@ -209,6 +209,16 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				end
 				test -n "$dir"; and git -C $dir log
 			end
+		case show
+			for pkg in $argv
+				set -l dir (aur_findpkg $pkg)
+				# If necessary, clone it
+				if [ -z "$dir" ]
+					aur clone $pkg
+					and set dir $aurqueue/$pkg
+				end
+				test -n "$dir"; and eval $EDITOR (string escape -- $dir)
+			end
 		case "help" "*" ""
 			echo "Usage: aur <Operation> [...]"
 			echo "Operations:"
@@ -220,6 +230,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			echo "build <Packages>"
 			echo "log <Packages>"
 			echo "update"
+			echo "show <Packages>"
 			return 0
 	end
 end
