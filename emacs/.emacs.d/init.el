@@ -228,6 +228,12 @@
   :diminish company-mode
   :config (progn
 			(setq company-backends (delete 'company-semantic company-backends))
+			(use-package company-shell
+			  :ensure nil
+			  :init
+			  (require 'cl-lib)
+			  (require 'dash)
+			  (add-to-list 'company-backends 'company-fish-shell))
 			;; Tab completion - insert tab at start of line, complete otherwise
 			(setq-default tab-always-indent #'complete)
 			(setq-default c-tab-always-indent #'complete)
