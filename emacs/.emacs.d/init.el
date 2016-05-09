@@ -636,6 +636,11 @@ user."
   :interpreter ("fish" . fish-mode)
   :commands fish-mode)
 
+(use-package which-key
+  :init (which-key-mode)
+  :bind ("<f7>" . which-key-show-top-level)
+  )
+
 ;; Also enable 256 colors on konsole
 (when (string= (tty-type) "konsole-256color")
   (if (load "term/xterm" t t) ;; Silence errors and messages
