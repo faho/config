@@ -615,14 +615,15 @@ user."
 (setq ediff-split-window-function #'split-window-horizontally)
 
 (use-package neotree
-  :init
-  (bind-key "<f9>" 'neotree-toggle)
+  :bind 
+  ("<f9>" . neotree-toggle)
   :config
-  (bind-key "l" 'neotree-enter neotree-mode-map)
-  ;; I'd like this to _close_ the last node
-  ;; (bind-key "h" 'neotree- neotree-mode-map
-  (bind-key "j" 'next-line neotree-mode-map)
-  (bind-key "k" 'previous-line neotree-mode-map))
+  (bind-keys :map neotree-mode-map
+  ;; I'd like "h" to _close_ the last node
+			 ("." . neotree-hidden-file-toggle)
+			 ("l" . neotree-enter)
+			 ("j" . next-line)
+			 ("k" . previous-line)))
 
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
