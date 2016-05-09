@@ -646,3 +646,6 @@ user."
   (if (load "term/xterm" t t) ;; Silence errors and messages
 	  (xterm-register-default-colors)
 	(tty-set-up-initial-frame-faces)))
+
+(remove-hook 'find-file-hook 'vc-find-file-hook)
+(setq vc-handled-backends nil)
