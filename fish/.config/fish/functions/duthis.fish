@@ -1,6 +1,4 @@
-function duthis --wraps "du"
-    if [ -z $argv ]
-        set argv ./* ./.*
-    end
+function duthis
+	set -q argv[1]; or set argv * .*
     du -sch $argv | sort -h
 end
