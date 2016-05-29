@@ -26,6 +26,7 @@ function makepkgs --description 'Build multiple packages with makepkg'
 			if set -l aurdeps (test -r .SRCINFO; or makepkg --printsrcinfo > .SRCINFO; faho_getaurdeps < .SRCINFO)
 				if not set -l missing (pacman -T -- $aurdeps)
 					if not set -q packages[2]
+						echo "Missing dependencies: $missing" >&2
 						# Abort instead of skipping if we are the last pkg - or we'd loop endlessly
 						set failed $failed $pkg
 						set -e packages
