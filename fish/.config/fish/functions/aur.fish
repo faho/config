@@ -67,8 +67,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l versions (echo $tmp | jshon -e results -a -e Version -u)
 				set -l deps (echo $tmp | jshon -e results -a -e Depends -a -u -Q | sort -u)
 				set -l makedeps (echo $tmp | jshon -e results -a -e MakeDepends -a -u -Q | sort -u)
-				test -n "$deps$makedeps"
-				and set -l aurdeps (printf '%s\n' $deps $makedeps | faho_getaurdeps)
+				set -l aurdeps (printf '%s\n' $deps $makedeps | faho_getaurdeps)
 				set -l cloneurls "https://aur.archlinux.org/"(echo $tmp | jshon -e results -a -e PackageBase -u)".git"
 				set -l clonenum 1
 				echo "Aurdeps: $aurdeps"
@@ -96,8 +95,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l versions (echo $tmp | jshon -e results -a -e Version -u)
 				set -l deps (echo $tmp | jshon -e results -a -e Depends -a -u -Q | sort -u)
 				set -l makedeps (echo $tmp | jshon -e results -a -e MakeDepends -a -u -Q | sort -u)
-				test -n "$deps$makedeps"
-				and set -l aurdeps (printf '%s\n' $deps $makedeps | faho_getaurdeps)
+				set -l aurdeps (printf '%s\n' $deps $makedeps | faho_getaurdeps)
 				for d in $aurdeps
 					if set -l i (contains -i -- $d $deps)
 						set -e deps[$i]
