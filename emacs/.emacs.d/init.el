@@ -634,7 +634,11 @@ user."
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
   :interpreter ("fish" . fish-mode)
-  :commands fish-mode)
+  :commands fish-mode
+  :init
+  ;; Fish style is 4-space indentation
+  (setq-default indent-tabs-mode nil)
+  )
 
 (use-package which-key
   :init (which-key-mode)
