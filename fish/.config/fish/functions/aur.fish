@@ -114,10 +114,9 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			end
 			return 0
 		case rm
-			[ -n "$argv" ]
 			for pkg in $argv
 				set -l dir (aur_findpkg $pkg)
-				if test -z "$dir"
+				if not set -q dir[1]
 					echo $red"No such package: "$normal"$pkg" >&2
 					return 4
 				end
@@ -141,19 +140,14 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			for pkg in $argv
 				set -l dir (aur_findpkg $pkg)
 				# If necessary, clone it
-				if [ -z "$dir" ]
+                if set -q dir[1]
 					aur clone $pkg; or return 1
 					string match -q 'pkgs/*' -- $pkg; and set dir $aurpkgs/$pkg
 					or set dir $aurqueue/$pkg
 				end
-				if not test -e $dir/.SRCINFO
-					echo $red"SRCINFO does not exist" >&2
-					echo "Please ensure $dir is non-existent or a valid package clone"$normal >&2
-					return 3
-				end
 				# Parse SRCINFO for deps
-				set -l aurdeps (test -r .SRCINFO; or makepkg --printsrcinfo > .SRCINFO; faho_getaurdeps < .SRCINFO)
-				[ -n "$aurdeps" ]; and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
+				set -l aurdeps (test -r $dir/.SRCINFO; or makepkg --printsrcinfo > $dir/.SRCINFO; faho_getaurdeps < $dir/.SRCINFO)
+				set -q aurdeps[1]; and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
 					echo "Building $dep"
 					aur build $dep
 				end
@@ -165,11 +159,10 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 				set -l packages
 				for pkg in $argv
 					set -l dir (aur_findpkg $pkg)
-					if test -z "$dir"
+					if not set -q dir[1]
 						echo "No such package $pkg in $target"
 						return 5
 					end
-					echo ADDING PACKAGE $dir
 					set packages $packages $dir
 				end
 				for pkg in $packages
@@ -204,21 +197,21 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			for pkg in $argv
 				set -l dir (aur_findpkg $pkg)
 				# If necessary, clone it
-				if [ -z "$dir" ]
+				if not set -q dir[1]
 					aur clone $pkg
 					and set dir $aurqueue/$pkg
 				end
-				test -n "$dir"; and git -C $dir log
+                set -q dir[1]; and git -C $dir log
 			end
 		case show
 			for pkg in $argv
 				set -l dir (aur_findpkg $pkg)
 				# If necessary, clone it
-				if [ -z "$dir" ]
+				if not set -q dir[1]
 					aur clone $pkg
 					and set dir $aurqueue/$pkg
 				end
-				test -n "$dir"; and eval $EDITOR (string escape -- $dir)
+				set -q dir[1]; and eval $EDITOR (string escape -- $dir)
 			end
 		case "help" "*" ""
 			echo "Usage: aur <Operation> [...]"
