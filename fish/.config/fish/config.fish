@@ -29,8 +29,6 @@ set -x LESSHISTFILE "-"
 
 set -x ASPROOT ~/packages/asp
 
-set -g FISH_CLIPBOARD_CMD "cat"
-
 if status --is-interactive
 	set -gx GPGKEY 36EBBDB3
 	set -gx GPG_TTY (tty)
