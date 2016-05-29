@@ -4,7 +4,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 	set -q aurqueue; or set -l aurqueue ~/dev/build/new
 	set -q aurpkgs; or set -l aurpkgs ~/dev/build/current
 	# For some reason only explicitly encoding the version gets us deps
-	set -q aurl; or set -l aurl "https://aur.archlinux.org/rpc.php?v=4"
+	set -q aurl; or set -l aurl "https://aur.archlinux.org/rpc.php?v=5"
 
 	# Enable color when in terminal
 	set -l yellow ""
