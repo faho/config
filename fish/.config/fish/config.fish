@@ -47,4 +47,12 @@ if status --is-interactive
 	# Add path for completions/functions intended to go upstream
 	set fish_function_path ~/.config/fish/test/functions $fish_function_path
 	set fish_complete_path ~/.config/fish/test/completions $fish_complete_path
+	# Make fish < 2.3.0 work a bit nicer with this config
+	if not type -q string
+		function fish_prompt
+			echo (prompt_pwd)">"
+		end
+		function fish_right_prompt
+		end
+	end
 end
