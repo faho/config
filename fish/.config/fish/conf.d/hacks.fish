@@ -8,10 +8,4 @@ if status --is-interactive
 		function fish_right_prompt; end
 		function fish_prompt; echo -n $PWD ">"; end
 	end
-	function erase_grep_options --on-variable GREP_OPTIONS --description "Delete GREP_OPTIONS if it is ever set"
-		if set -q GREP_OPTIONS
-			echo "SOMETHING TRIED TO SET GREP_OPTIONS to $GREP_OPTIONS!"
-			set -e GREP_OPTIONS
-		end
-	end
 end
