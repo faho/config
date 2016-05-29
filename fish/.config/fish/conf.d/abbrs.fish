@@ -1,7 +1,6 @@
 if not set -q fish_initialized
 	abbr -a alsamixer alsamixer -c0
 	abbr -a e emacs -nw
-	abbr -a \$EDITOR $EDITOR
 	abbr -a \$PAGER less
 	abbr -a mu4e emacs --eval "\(mu4e\)"
 	abbr -a pm pulsemixer
