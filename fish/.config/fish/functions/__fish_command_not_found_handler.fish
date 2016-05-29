@@ -1,9 +1,4 @@
 function __fish_command_not_found_handler --on-event fish_command_not_found
-	set -q argv[2]; or if string match -qr -- '^(-|.*/|\.+)$' $argv
-		cd $argv
-		return 0
-	end
-		
 	set -l paths $argv[1]
 	# If we've not been given an absolute path, try $PATH as the starting point
 	string match -q '/*' -- $argv[1]; or set paths $PATH/$argv[1]
