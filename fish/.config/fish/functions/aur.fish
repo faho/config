@@ -138,7 +138,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			for pkg in $argv
 				set -l dir (aur_findpkg $pkg)
 				# If necessary, clone it
-                if set -q dir[1]
+                if not set -q dir[1]
 					aur clone $pkg; or return 1
 					string match -q 'pkgs/*' -- $pkg; and set dir $aurpkgs/$pkg
 					or set dir $aurqueue/$pkg
