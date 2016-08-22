@@ -423,10 +423,14 @@
   :ensure nil ;; Included in emacs
   :commands dired
   :config
+  ;; (dired-hide-details-mode)
+  ;; Would be nice, but it's a wiki package
+  ;; (use-package dired+)
   (bind-keys :map dired-mode-map
 			 ("r" . wdired-change-to-wdired-mode)
 			 ("U" . dired-up-directory)
-			 ("/" . dired-isearch-filenames)))
+			 ("/" . dired-isearch-filenames)
+			 ((my-kbd "x") . hydra-dired/body)))
 
 (use-package hydra
   :init
