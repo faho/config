@@ -84,6 +84,23 @@
    'mu4e-view-mode-hook
    'epa-mail-decrypt)
 
+  (defhydra hydra-mu4e-mark (:color blue)
+    "Mu4e marks"
+    (";"  mu4e-context-switch)
+    ("!"  mu4e-headers-mark-for-read "Read")
+    ("r"  mu4e-headers-mark-for-refile)
+    ("t"  mu4e-headers-mark-subthread)
+    ("u"  mu4e-headers-mark-for-unmark)
+    ("<backspace>"     mu4e-headers-mark-for-trash)
+    ("<delete>"        mu4e-headers-mark-for-delete)
+    ("#"  mu4e-mark-resolve-deferred-marks "Resolve deferred")
+    ("$"  mu4e-show-log)
+    ("%"  mu4e-headers-mark-pattern)
+    ("&"  mu4e-headers-mark-custom)
+    ("*"  mu4e-headers-mark-for-something "Something")
+    ("+"  mu4e-headers-mark-for-flag "Flag")
+    ("-"  mu4e-headers-mark-for-unflag "Unflag"))
+
   ;; Yes, up and down are reversed (i.e. it's saying where the _text_ scrolls, not the view)
   (bind-keys :map mu4e-view-mode-map
 			 ("j" . scroll-up-line)
@@ -99,6 +116,7 @@
 			 ("Q" . mu4e-raw-view-quit-buffer)
 			 ("i" . mu4e~view-quit-buffer)
 			 ("<RET>" . my-mu4e-open-or-browse)
+             ("<SPC>" . hydra-mu4e-mark/body)
 			 ("C" . mu4e-compose-new))
   (bind-keys :map mu4e-headers-mode-map
 			 ("J" . mu4e~headers-jump-to-maildir)
@@ -111,6 +129,7 @@
 			 ("U" . mu4e-update-mail-and-index)
 			 ("o" . mu4e-view-message)
 			 ("i" . mu4e~headers-quit-buffer)
+             ("<SPC>" . hydra-mu4e-mark/body)
 			 ((my-kbd "C-a") . mml-attach-file))
   ;; Make mu4e-compose-reply keep the message in a window
   (defadvice mu4e-compose-reply (before reply-in-other-window)
