@@ -226,6 +226,9 @@
 	  ;; Bind "M-;" to commenting the selected lines (vim-style)
 	  (evilnc-default-hotkeys)
 	  )
+    (use-package evil-surround
+      :init
+      (global-evil-surround-mode t))
 	))
 
 (use-package company
