@@ -3,6 +3,8 @@
   :commands mu4e
   :config
   (load-private-file)
+  ;; Default to the first context, don't ask every start
+  (setq mu4e-context-policy 'pick-first)
   ;;; mbsync
   (setq mu4e-maildir "~/.mail"
   		mu4e-drafts-folder "/gmail/[Google Mail].Drafts"
