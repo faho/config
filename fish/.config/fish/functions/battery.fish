@@ -68,7 +68,7 @@ function battery_update_info_linux
 	| string match -r ".*time to.*:.*" \
 	| string replace -r '.*time to.*:\s*' '')
 
-	set -g BATTERY_SLOTS (math $BATTERY_PCT / 10)
+	set -g BATTERY_SLOTS (math "$BATTERY_PCT" / 10)
 end
 
 function battery_update_info_darwin
@@ -147,7 +147,7 @@ function battery -a \
   end
 
   for n in (seq 10)
-    if test $n -eq $BATTERY_SLOTS
+    if test $n -eq "$BATTERY_SLOTS"
 		if type -q bar
 			printf "$color"
 			bar (string sub -s -1 -l 1 $BATTERY_PCT)0
@@ -155,7 +155,7 @@ function battery -a \
 		else
 			printf "$color$filled_slot_ch$normal"
 		end
-    else if test $n -lt $BATTERY_SLOTS
+    else if test $n -lt "$BATTERY_SLOTS"
 		printf "$color$filled_slot_ch$normal"
 	else
       if test $show_empty_slots = true
