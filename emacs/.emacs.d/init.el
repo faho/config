@@ -629,8 +629,17 @@ user."
   :bind 
   ("<f9>" . neotree-toggle)
   :config
+  (setq neo-smart-open t)
+  (defun my-neotree-collapse-node () (interactive)
+         ;; (unless (neo-buffer--expanded-node-p)
+           (neotree-select-up-node)
+           (neotree-enter))
   (bind-keys :map neotree-mode-map
   ;; I'd like "h" to _close_ the last node
+             ("h" . my-neotree-collapse-node)
+             ("TAB" . neotree-enter)
+             ("SPC" . neotree-enter)
+             ("q" . neotree-hide)
 			 ("." . neotree-hidden-file-toggle)
 			 ("l" . neotree-enter)
 			 ("j" . next-line)
