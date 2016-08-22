@@ -5,7 +5,7 @@ function fish_right_prompt
 	set -q BATTERY_IS_PLUGGED; and set -l plug "⚡"
 	set -l d (set_color brgrey)(date "+%R")(set_color normal)
 	# A simpler version for stupid locales
-	if not string match -qi '*.utf-8' -- $LANG
+	if not string match -qir '.*\.utf-?8' -- $LANG
 		set note ""
 		set plug "p"
 		set bat (printf '%03d%%\n' $BATTERY_PCT)
