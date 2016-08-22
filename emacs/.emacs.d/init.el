@@ -68,10 +68,14 @@
 
 (require 'package)
 (setq package-archives
-	  '(("gnu" . "http://elpa.gnu.org/packages/")
+	  '(("gnu" . "https://elpa.gnu.org/packages/")
 		;; ("marmalade" . "https://marmalade-repo.org/packages/") ;; Needed for goto-chg
-		;; ("melpa" . "http://melpa.org/packages/") ;; This contains packages from git
-		("melpa-stable" . "http://stable.melpa.org/packages/")))
+		("melpa" . "http://melpa.org/packages/") ;; This contains packages from git
+		("melpa-stable" . "https://stable.melpa.org/packages/")))
+(setq package-archive-priorities
+	  '(("melpa-stable" . 20)
+		("melpa" . 0)
+		("gnu" . 20)))
 (setq package-enable-at-startup nil)
 (package-initialize)
 
