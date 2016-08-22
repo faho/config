@@ -240,11 +240,9 @@
 			(global-company-mode t)))
 
 ;; Code Style
-(setq c-default-style "k&r")
 (setq-default tab-width 4)
 (setq-default standard-indent 4)
-(setq-default indent-tabs-mode t)
-;;(add-hook 'prog-mode-hook 'c-guess-buffer)
+(setq-default indent-tabs-mode nil)
 
 ;; Minibuffer
 ;; Save mini buffer history
@@ -384,10 +382,6 @@
                         (arglist-cont-nonempty
                          c-lineup-gcc-asm-reg
                          c-lineup-arglist-tabs-only))))))
-(add-hook #'c-mode-hook
-		  (lambda ()
-			(setq indent-tabs-mode t)
-			(c-set-style "linux-tabs-only")))
 
 (use-package projectile
   :bind ("C-x o" . projectile-find-file-in-known-projects)
