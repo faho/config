@@ -410,9 +410,10 @@
  ;; Allow elisp evaluation in all major modes
  ;; For quick reconfiguration
  ((my-kbd "C-x C-e") . eval-last-sexp)
- ("M-o" . other-window)
+ ;; Better with C-w C-w (from evil)
+ ;; ("M-o" . other-window)
  ;; I literally only start overwrite-mode by accident
- ( "<insertchar>" . nil))
+ ("<insertchar>" . nil))
 
 (use-package dired
   :ensure nil ;; Included in emacs
