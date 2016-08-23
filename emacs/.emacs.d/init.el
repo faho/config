@@ -147,11 +147,6 @@
   :config
   (progn
 	(evil-mode t)
-	;; Clipboard
-	(defadvice evil-yank (after clipboard)
-	  ()
-	  (copy-to-clipboard))
-	(ad-activate 'evil-yank)
 	;; Don't signal state in echo area
 	(setq evil-echo-state nil)
 	;; Remove some unhelpful bindings from evil so they are available elsewhere
