@@ -123,11 +123,11 @@
 
 ;; This should be outside of use-package so we can add to it from outside
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
-(use-package nlinum
+(use-package nlinum-relative
   :init
   (add-hook 'prog-mode-hook (lambda ()
 							  (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
-								(nlinum-mode 1)))))
+								(nlinum-relative-mode 1)))))
 (setq diff-switches "-u")
 
 (use-package rainbow-delimiters
