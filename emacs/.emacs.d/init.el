@@ -663,6 +663,8 @@ user."
   )
 
 (use-package which-key
-  :init (which-key-mode)
+  :init
+  (setq which-key-idle-delay 0.3)
+  (which-key-mode)
   :bind ("<f7>" . which-key-show-top-level)
   )
