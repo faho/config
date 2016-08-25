@@ -597,7 +597,7 @@
   (bind-key "k" 'evil-previous-visual-line magit-untracked-section-map)
   )
 
-;; (setq frame-resize-pixelwise t)
+(setq frame-resize-pixelwise t)
 
 (setq tramp-persistency-file-name (expand-file-name "tramp" user-cache-directory))
 (setq tramp-default-method "ssh")
