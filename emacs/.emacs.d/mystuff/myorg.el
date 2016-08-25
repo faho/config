@@ -4,6 +4,7 @@
   :config (progn
 			(setq org-ellipsis "…") ;; Nice unicode ellipsis in one character
 			(setq org-src-fontify-natively t)
+            ;; TODO: Make this system-independent
 			(setq org-directory "~/docs/org/")
 			(setq org-mobile-directory "~/owncloud/MobileOrg")
 			(setq org-mobile-inbox-for-pull (concat org-directory "index.org"))
@@ -17,7 +18,8 @@
 			(setq calendar-date-style 'european)
 			(setq org-agenda-include-diary t)
 			(setq diary-file (concat org-directory "diary.org"))
-			(setq org-default-notes-file (concat org-directory "notes.org"))
+			(setq org-default-notes-file (concat org-directory "TODO.org"))
+			(setq org-agenda-files (list (concat org-directory "TODO.org")))
 			(add-hook 'org-agenda-mode-hook
 					  (lambda ()
 						(bind-keys :map org-agenda-mode-map
