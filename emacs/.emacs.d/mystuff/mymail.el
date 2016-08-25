@@ -77,10 +77,10 @@
   ;; Encryption/Signing
   (setq pgp-gpg-use-agent t
 		mu4e-decryption-policy 'ask)
-  (add-hook
-   'message-send-hook
-   ;; Unfortunately I can't figure out how to encrypt-if-possible
-   'mml-secure-message-sign)
+  ;; (add-hook
+  ;;  'message-send-hook
+  ;;  ;; Unfortunately I can't figure out how to encrypt-if-possible
+  ;;  'mml-secure-message-sign)
   ;; Automatically decrypt inline-pgp
   (add-hook
    'mu4e-view-mode-hook
