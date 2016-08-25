@@ -493,7 +493,7 @@
 	  ("m" mu4e "mu4e")
 	  ("p" list-packages "packages")
 	  ("q" nil "cancel"))
-	(bind-key (my-kbd "m") 'hydra-misc-modes/body)
+	(bind-key (faho/kbd "m") 'hydra-misc-modes/body)
 
 	(defhydra hydra-leader (:color blue)
 	  "Leader"
