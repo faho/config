@@ -410,8 +410,8 @@
  ;; Allow elisp evaluation in all major modes
  ;; For quick reconfiguration
  ((my-kbd "C-x C-e") . eval-last-sexp)
- ;; Better with C-w C-w (from evil)
- ;; ("M-o" . other-window)
+ ;; It'd be nice to use evil's C-w C-w here, but I don't enable evil-mode in e.g. magit
+ ("M-o" . other-window)
  ;; I literally only start overwrite-mode by accident
  ("<insertchar>" . nil))
 
