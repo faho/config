@@ -33,6 +33,7 @@
   (setq mu4e-view-show-addresses t)
   (setq mu4e-headers-visible-columns 72)
   (setq mu4e-headers-visible-lines 10)
+  (setq mu4e-attachment-dir "~/Downloads")
 
   ;; Make it so the older messages are on top, so the reading direction matches
   (setq mu4e-headers-sort-direction 'ascending)
