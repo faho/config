@@ -39,6 +39,9 @@
 ;; Cache files (e.g. history, autosave, undo) go to XDG_CACHE_HOME/emacs
 (setq user-cache-directory (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache"))
 
+;; I hate custom
+(setq custom-file "/dev/null")
+
 (dolist (dir load-path)
   (make-directory dir t))
 
