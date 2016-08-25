@@ -121,6 +121,12 @@
   (load-theme 'cyberpunk' t)
   )
 
+;; Also enable 256 colors on konsole
+(when (string= (tty-type) "konsole-256color")
+  (if (load "term/xterm" t t) ;; Silence errors and messages
+	  (xterm-register-default-colors)
+	(tty-set-up-initial-frame-faces)))
+
 ;; This should be outside of use-package so we can add to it from outside
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
 (use-package nlinum-relative
@@ -522,6 +528,12 @@
 (which-function-mode 1)
 (setq-default split-width-threshold 100)
 
+;; Remove some vc stuff to improve performance
+;; This is better handled by magit (for git),
+;; but even without it I don't use vc, so this is useless
+(remove-hook 'find-file-hook 'vc-find-file-hook)
+(setq vc-handled-backends nil)
+
 (use-package magit
   :init
   (delq 'Git vc-handled-backends)
@@ -654,12 +666,3 @@ user."
   :init (which-key-mode)
   :bind ("<f7>" . which-key-show-top-level)
   )
-
-;; Also enable 256 colors on konsole
-(when (string= (tty-type) "konsole-256color")
-  (if (load "term/xterm" t t) ;; Silence errors and messages
-	  (xterm-register-default-colors)
-	(tty-set-up-initial-frame-faces)))
-
-(remove-hook 'find-file-hook 'vc-find-file-hook)
-(setq vc-handled-backends nil)
