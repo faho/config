@@ -379,17 +379,6 @@
 
 (setq save-interprogram-paste-before-kill t)
 
-;; Linux kernel coding style
-(add-hook #'c-mode-common-hook
-          (lambda ()
-            ;; Add kernel style
-            (c-add-style
-             "linux-tabs-only"
-             '("linux" (c-offsets-alist
-                        (arglist-cont-nonempty
-                         c-lineup-gcc-asm-reg
-                         c-lineup-arglist-tabs-only))))))
-
 (use-package projectile
   :bind ("C-x o" . projectile-find-file-in-known-projects)
   :diminish projectile-mode
@@ -481,13 +470,6 @@
 
 	(defhydra hydra-emms (:color amaranth)
 	  "music"
-	  ;; Unfortunately emms doesn't handle unix sockets
-	  ;; so the mpd connection doesn't work with my config
-	  ;; ("P" (expose-partially 'my-emms-call 'emms-pause) "Pause")
-	  ;; ("p" (expose-partially 'my-emms-call 'emms-previous) "Prev")
-	  ;; ("n" (expose-partially 'my-emms-call 'emms-next) "Next")
-	  ;; ("b" (expose-partially 'my-emms-call 'emms-smart-browse) "Browse")
-	  ;; ("d" (expose-partially 'my-emms-call 'emms-play-dired) "Dired")
 	  ("P" (shell-command "mpc toggle") "Toggle")
 	  ("p" (shell-command "mpc prev") "Prev")
 	  ("n" (shell-command "mpc next") "Next")

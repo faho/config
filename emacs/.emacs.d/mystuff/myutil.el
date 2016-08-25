@@ -64,15 +64,6 @@
   (interactive)
   (expose (apply-partially function arg)))
 
-;; SUPERSEDED by evilify from spacemacs
-;; Vim-ify some modes
-;; (defun evilize-map (mode-map)
-;;   (progn
-;; 	 (define-key mode-map "j" 'next-line)
-;; 	 (define-key mode-map "k" 'previous-line)
-;; 	 (define-key mode-map "/" 'isearch-forward)
-;; 	 (define-key mode-map "n" 'isearch-resume)))
-
 (defun rename-file-and-buffer ()
   "Rename the current buffer and file it is visiting."
   (interactive)
@@ -134,16 +125,7 @@
   (interactive)
   (insert (shell-command-to-string (format "git format-patch --stdout" (ido-completing-read "Commit start:" '("HEAD~" "origin/master") 'nil)))))
 
-(defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists by tabs, not spaces"
-  (let* ((anchor (c-langelem-pos c-syntactic-element))
-		 (column (c-langelem-2nd-pos c-syntactic-element))
-		 (offset (- (1+ column) anchor))
-		 (steps (floor offset c-basic-offset)))
-    (* (max steps 1)
-       c-basic-offset)))
-
-(defun my-emms-call (func) 
+(defun faho/emms-call (func) 
   "Load emms and call argument"
   (interactive)
   (require 'myemms)
