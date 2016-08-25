@@ -288,7 +288,6 @@
 	("M-x" . smex)
 	:config
 	(setq smex-save-file (expand-file-name "emacs/smex-items" user-cache-directory)))
-  ;; (ido-vertical-mode)
   ;; This is _quite_ cool!
   (use-package ido-grid-mode
 	:init
@@ -539,7 +538,6 @@
   (delq 'Git vc-handled-backends)
   :commands magit-status
   :config
-  ;; Using magit for that - vc-git takes too long to start up and lacks features
   ;; A list of magit's keymaps (from https://github.com/magit/evil-magit/issues/1)
   ;; (defvar magit-keymaps
   ;; '(git-commit-mode-map
