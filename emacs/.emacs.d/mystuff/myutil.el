@@ -1,5 +1,5 @@
 ;; This is supposed to contain utility functions that don't depend on anything
-(defun my-kbd (chord)
+(defun faho/kbd (chord)
   "Return kbd prefixed with C-c"
   (concat "C-c " chord))
 
@@ -149,9 +149,9 @@
   (require 'myemms)
   (funcall func))
 
-(defun my-mpd ()
+(defun faho/mpd ()
   (interactive)
-  (my-emms-call 'emms-smart-browse))
+  (faho/emms-call 'emms-smart-browse))
 
 (defun load-private-file ()
   (interactive)

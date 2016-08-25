@@ -117,7 +117,7 @@
 			 ("e" . mu4e-view-save-attachment)
 			 ("Q" . mu4e-raw-view-quit-buffer)
 			 ("i" . mu4e~view-quit-buffer)
-			 ("<RET>" . my-mu4e-open-or-browse)
+			 ("<RET>" . faho/mu4e-open-or-browse)
              ("<SPC>" . hydra-mu4e-mark/body)
 			 ("C" . mu4e-compose-new))
   (bind-keys :map mu4e-headers-mode-map
@@ -132,14 +132,14 @@
 			 ("o" . mu4e-view-message)
 			 ("i" . mu4e~headers-quit-buffer)
              ("<SPC>" . hydra-mu4e-mark/body)
-			 ((my-kbd "C-a") . mml-attach-file))
+			 ((faho/kbd "C-a") . mml-attach-file))
   ;; Make mu4e-compose-reply keep the message in a window
   (defadvice mu4e-compose-reply (before reply-in-other-window)
 	()
 	(split-window-right))
   (ad-activate 'mu4e-compose-reply)
 
-  (defun my-mu4e-open-or-browse () 
+  (defun faho/mu4e-open-or-browse () 
 	"Open point in browser or as an attachment"
 	(interactive)
 	(unless (mu4e~view-browse-url-from-binding)

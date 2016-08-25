@@ -44,7 +44,7 @@
 
 ;; Hardcode a list of files that aren't in packages so we can bootstrap from this file
 (add-to-list 'load-path (expand-file-name "local/goto-chg-1.6/" user-emacs-directory))
-(setq faho-config-files '("mystuff/mymail.el"
+(setq faho/config-files '("mystuff/mymail.el"
 						  ;; My local copy of goto-chg, a wiki package
 						  ;; not on melpa-stable
 						  "local/goto-chg-1.6/goto-chg.el"
@@ -54,7 +54,7 @@
 						  "mystuff/myutil.el"))
 
 ;; Yes, that's a hardcoded config repo
-(setq faho-config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
+(setq faho/config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
 
 ;; Download all files that aren't already here
 (dolist (file faho-config-files)
@@ -410,11 +410,11 @@
  ;;esc quits
  ("<escape>" . keyboard-quit)
  ("C-x C-b" . ibuffer)
- ((my-kbd "o") . xdg-open)
+ ((faho/kbd "o") . xdg-open)
  ("<backtab>" . indent-according-to-mode)
  ;; Allow elisp evaluation in all major modes
  ;; For quick reconfiguration
- ((my-kbd "C-x C-e") . eval-last-sexp)
+ ((faho/kbd "C-x C-e") . eval-last-sexp)
  ;; It'd be nice to use evil's C-w C-w here, but I don't enable evil-mode in e.g. magit
  ("M-o" . other-window)
  ;; I literally only start overwrite-mode by accident
@@ -431,7 +431,7 @@
 			 ("r" . wdired-change-to-wdired-mode)
 			 ("U" . dired-up-directory)
 			 ("/" . dired-isearch-filenames)
-			 ((my-kbd "x") . hydra-dired/body)))
+			 ((faho/kbd "x") . hydra-dired/body)))
 
 (use-package hydra
   :init
@@ -445,7 +445,7 @@
 	  ("h" (lambda () (interactive) (enlarge-window -1 t)) nil)
 	  ("l" (lambda () (interactive) (enlarge-window 1 t)) nil)
 	  ("q" nil "cancel" :exit t))
-	(bind-key (my-kbd "r") 'hydra-window-size/body)
+	(bind-key (faho/kbd "r") 'hydra-window-size/body)
 
 	(defhydra hydra-window (:color amaranth)
 	  "
@@ -477,7 +477,7 @@
 	  ("C-j" scroll-other-window nil)
 	  ("C-k" scroll-other-window-down nil)
 	  ("q" nil "cancel"))
-	(bind-key (my-kbd "w") 'hydra-window/body)
+	(bind-key (faho/kbd "w") 'hydra-window/body)
 
 	(defhydra hydra-emms (:color amaranth)
 	  "music"
@@ -494,7 +494,7 @@
 	  ("s" (shell-command "mpc") "Show")
 	  ("l" (shell-command "mpc listall") "Listall")
 	  ("q" nil "cancel"))
-	(bind-key (my-kbd "e") 'hydra-emms/body)
+	(bind-key (faho/kbd "e") 'hydra-emms/body)
 
 	(defhydra hydra-misc-modes (:color blue)
 	  "Misc modes"
@@ -520,7 +520,7 @@
 	  ("<right>" next-buffer "next buffer")
 	  ("q" nil "cancel")
 	  )
-	(bind-key (my-kbd "<SPC>") 'hydra-leader/body)))
+	(bind-key (faho/kbd "<SPC>") 'hydra-leader/body)))
 
 
 (setq find-file-wildcards t)
@@ -636,13 +636,13 @@ user."
   ("<f9>" . neotree-toggle)
   :config
   (setq neo-smart-open t)
-  (defun my-neotree-collapse-node () (interactive)
+  (defun faho/neotree-collapse-node () (interactive)
          ;; (unless (neo-buffer--expanded-node-p)
            (neotree-select-up-node)
            (neotree-enter))
   (bind-keys :map neotree-mode-map
   ;; I'd like "h" to _close_ the last node
-             ("h" . my-neotree-collapse-node)
+             ("h" . faho/neotree-collapse-node)
              ("TAB" . neotree-enter)
              ("SPC" . neotree-enter)
              ("q" . neotree-hide)
