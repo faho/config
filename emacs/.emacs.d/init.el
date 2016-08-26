@@ -10,7 +10,7 @@
   (menu-bar-mode -1)
   (if (fboundp #'tool-bar-mode) tool-bar-mode nil)
   (if (fboundp #'scroll-bar-mode) scroll-bar-mode nil)
-	)
+  )
 
 ;; The normal default is fundamental-mode, which does basically nothing
 ;; Orgmode is also an option, but that's slow to load.
@@ -66,7 +66,7 @@
 ;; Download all files that aren't already here
 (dolist (file faho/config-files)
   (if (not (file-exists-p (expand-file-name file user-emacs-directory)))
-  (url-copy-file (concat faho/config-url file) (expand-file-name file user-emacs-directory))))
+      (url-copy-file (concat faho/config-url file) (expand-file-name file user-emacs-directory))))
 
 ;; Utility functions - always load
 (require 'myutil)
@@ -616,12 +616,14 @@
   ("<f9>" . neotree-toggle)
   :config
   (setq neo-smart-open t)
-  (defun faho/neotree-collapse-node () (interactive)
-         ;; (unless (neo-buffer--expanded-node-p)
-           (neotree-select-up-node)
-           (neotree-enter))
+  (defun faho/neotree-collapse-node ()
+    "Close the current parent node"
+    (interactive)
+    ;; (unless (neo-buffer--expanded-node-p)
+    (neotree-select-up-node)
+    (neotree-enter))
   (bind-keys :map neotree-mode-map
-  ;; I'd like "h" to _close_ the last node
+             ;; I'd like "h" to _close_ the last node
              ("h" . faho/neotree-collapse-node)
              ("TAB" . neotree-enter)
              ("SPC" . neotree-enter)
