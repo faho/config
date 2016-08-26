@@ -1,4 +1,5 @@
 ;;;Emacs configuration
+;; Remove scroll/tool/menubars in terminal
 ;; Set these first so we don't see them flicker
 (if (display-graphic-p)
 	(progn
@@ -10,6 +11,9 @@
   (if (fboundp #'tool-bar-mode) tool-bar-mode nil)
   (if (fboundp #'scroll-bar-mode) scroll-bar-mode nil)
 	)
+
+;; The normal default is fundamental-mode, which does basically nothing
+;; Orgmode is also an option, but that's slow to load.
 (setq-default major-mode #'text-mode)
 
 ;; The default setting causes lots of gc-runs during startup
@@ -31,7 +35,7 @@
 ;;; File Structure
 ;; My custom stuff goes to .emacs.d/mystuff
 (add-to-list 'load-path (expand-file-name "mystuff" user-emacs-directory))
-;; My local copies (i.e. stuff that's not in melpa-stable) goes to .emacs.d/local
+;; My local copies (i.e. stuff that's not in the repos melpa-stable) goes to .emacs.d/local
 (add-to-list 'load-path (expand-file-name "local" user-emacs-directory))
 ;; All my packages go to XDG_DATA_HOME/emacs
 (setq user-data-directory (if (getenv "XDG_DATA_HOME") (getenv "XDG_DATA_HOME") "~/.local/share"))
@@ -72,7 +76,9 @@
 (require 'package)
 (setq package-archives
 	  '(("gnu" . "https://elpa.gnu.org/packages/")
-		;; ("marmalade" . "https://marmalade-repo.org/packages/") ;; Needed for goto-chg
+        ;; Either melpa or marmalade are needed for goto-chg, but melpa contains moar stuff
+        ;; including nlinum-relative.
+		;; ("marmalade" . "https://marmalade-repo.org/packages/")
 		("melpa" . "http://melpa.org/packages/") ;; This contains packages from git
 		("melpa-stable" . "https://stable.melpa.org/packages/")))
 (setq package-archive-priorities
@@ -84,6 +90,7 @@
 
 ;; Pinning packages to repos
 ;; Useful because ox-reveal may depend on _really_ new org features
+;; TODO: Reevaluate with emacs 25.1
 ;; (setq package-pinned-packages '((ox-reveal . "melpa-stable")))
 
 ;; Install use-package because that installs everything else
@@ -130,7 +137,7 @@
 	  (xterm-register-default-colors)
 	(tty-set-up-initial-frame-faces)))
 
-;; This should be outside of use-package so we can add to it from outside
+;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
 (use-package nlinum-relative
   :init
@@ -139,12 +146,17 @@
 								(nlinum-relative-mode 1)))))
 (setq diff-switches "-u")
 
+;; Highlight matching parens in different colors
 (use-package rainbow-delimiters
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   )
 (show-paren-mode t) ;; Highlight matching parens
 
+;; Display current function in modeline (for supporting major-modes)
+(which-function-mode 1)
+
+;; Make modeline less crowded by removing minormodes
 (use-package diminish)
 
 (use-package expand-region)
@@ -186,7 +198,6 @@
 	  "h" 'Info-prev
 	  "d" 'Info-directory
 	  "y" 'evil-yank)
-	;; (evil-set-initial-state 'wdired-mode 'normal)
 	;; Don't use C-i since that's TAB in a terminal
 	(setq evil-want-C-i-jump nil)
 	;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
@@ -238,12 +249,11 @@
 (use-package company
   :diminish company-mode
   :config (progn
+            ;; Semantic is slow
 			(setq company-backends (delete 'company-semantic company-backends))
 			(use-package company-shell
 			  :ensure t
 			  :init
-			  (require 'cl-lib)
-			  (require 'dash)
               (add-to-list 'company-backends 'company-fish-shell))
 			;; Tab completion - insert tab at start of line, complete otherwise
 			(setq-default tab-always-indent #'complete)
@@ -299,10 +309,12 @@
   )
 
 
+;; Misc language modes
 (autoload #'lua-mode "lua-mode" "Lua editing mode." t)
 (autoload #'mu4e-compose-mode "muC" "mu4e compose mode." t)
 (autoload #'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
 (setq auto-mode-alist (append '(("/PKGBUILD$" . pkgbuild-mode)) auto-mode-alist))
+;; Adds basic highlighting for a bunch of files
 (require #'generic-x)
 
 ;; TeX
@@ -323,27 +335,22 @@
 (setq backup-dir (expand-file-name "emacs/backup" user-cache-directory))
 (setq backup-by-copying-when-linked t)
 (make-directory backup-dir t)
-(setq backup-directory-alist
-      `((".*" . ,backup-dir))
-      )
+(setq backup-directory-alist `((".*" . ,backup-dir)))
 (setq autosave-dir (expand-file-name "emacs/save" user-cache-directory))
 (setq auto-save-list-file-prefix autosave-dir)
 (make-directory autosave-dir t)
-(setq auto-save-file-name-transforms
-      `((".*" ,autosave-dir t))
-      )
+(setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
 (setq undo-dir (expand-file-name "emacs/undo" user-cache-directory))
 (setq undo-tree-auto-save-history t)
 (make-directory undo-dir t)
-(setq undo-tree-history-directory-alist
-      `((".*" . ,undo-dir))
-      )
+(setq undo-tree-history-directory-alist `((".*" . ,undo-dir)))
 
 ;; Save point position between sessions
-;; Included in emacs, no need to use-package
-(require #'saveplace)
-(setq-default save-place t)
-(setq save-place-file (expand-file-name "emacs/places" user-cache-directory))
+(use-package saveplace
+  :ensure nil
+  :init
+  (setq-default save-place t)
+  (setq save-place-file (expand-file-name "emacs/places" user-cache-directory)))
 
 (setq bookmark-default-file (expand-file-name "emacs/bookmark" user-cache-directory))
 (setq delete-old-versions -1)
@@ -357,8 +364,6 @@
 (setq flymake-gui-warnings-enabled nil)
 
 ;; Highlight TODO, FIXME, STUB, etc
-;; FIXME:
-;; TODO:
 (add-hook #'prog-mode-hook
 		  (lambda ()
 			(font-lock-add-keywords nil
@@ -371,8 +376,8 @@
 			(subword-mode))) ; Count CamelCase as two words
 
 ;; Spelling
-;;(setq-default ispell-program-name "aspell")
-;;(setq ispell-list-command "list")
+;; (setq-default ispell-program-name "aspell")
+;; (setq ispell-list-command "list")
 ;; (setq ispell-alternate-dictionary "english")
 ;; (setq ispell-dictionary "deutsch")
 ;; (add-hook 'text-mode-hook 'set-dict)
@@ -512,7 +517,6 @@
 
 
 (setq find-file-wildcards t)
-(which-function-mode 1)
 (setq-default split-width-threshold 100)
 
 ;; Remove some vc stuff to improve performance
