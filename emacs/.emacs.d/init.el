@@ -409,6 +409,9 @@
  ((faho/kbd "C-x C-e") . eval-last-sexp)
  ;; It'd be nice to use evil's C-w C-w here, but I don't enable evil-mode in e.g. magit
  ("M-o" . other-window)
+ ;; C-x f is usually bound to "set-fill-column", which is useless.
+ ("C-x f" . 'djcb-find-file-as-root)
+
  ;; I literally only start overwrite-mode by accident
  ("<insertchar>" . nil))
 
@@ -601,18 +604,6 @@
 
 (setq tramp-persistency-file-name (expand-file-name "tramp" user-cache-directory))
 (setq tramp-default-method "ssh")
-
-(defun djcb-find-file-as-root ()
-  "Like `ido-find-file, but automatically edit the file with
-root-privileges (using tramp/sudo), if the file is not writable by
-user."
-  (interactive)
-  (let ((file (ido-read-file-name "Edit as root: ")))
-    (unless (file-writable-p file)
-      (setq file (concat "/sudo:root@localhost:" file)))
-    (find-file file)))
-;; C-x f is usually bound to "set-fill-column", which is useless.
-(bind-key "C-x f" 'djcb-find-file-as-root)
 
 (setq ediff-split-window-function #'split-window-horizontally)
 
