@@ -60,9 +60,9 @@
 (setq faho/config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
 
 ;; Download all files that aren't already here
-(dolist (file faho-config-files)
+(dolist (file faho/config-files)
   (if (not (file-exists-p (expand-file-name file user-emacs-directory)))
-  (url-copy-file (concat faho-config-url file) (expand-file-name file user-emacs-directory))))
+  (url-copy-file (concat faho/config-url file) (expand-file-name file user-emacs-directory))))
 
 ;; Utility functions - always load
 (require 'myutil)
