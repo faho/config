@@ -19,13 +19,13 @@ The biggest thing here is an emacs configuration that
 - Uses vim-like keys (by using evil, a vim-implementation for emacs) for low-level commands and emacs-like keys for higher-level things
 
   I don't quite have the brainpower it takes to memorize "C-u 0 C-c C-x C-e", so I use "M-x" for many things.
-  Guide-key-mode and hydra help a bunch, though.
+  [Which-key](https://github.com/justbur/emacs-which-key) and [hydra](https://github.com/abo-abo/hydra) help a bunch, though.
 
 - Bootstraps itself from just init.el
 
   You only need to download init.el, put it into ~/.emacs.d/init.el, and it will download the other files here and all the packages it needs.
 
-- Starts in 1.1 seconds on my system (thanks to the magic of req-package)
+- Starts in 0.7 seconds on my system (thanks to the magic of [use-package](https://github.com/jwiegley/use-package))
 
   (This is of course only if it doesn't need to download anything)
 
@@ -44,9 +44,9 @@ Fish
 
 Fish (the **F**riendly **I**nteractive **SH**ell) doesn't need much configuration, but setting a few variables is always nice.
 
-It also has a few functions, like "makepkgs", a stupid makepkg-wrapper to try to build multiple packages.
+It also has a few functions, like "makepkgs", a stupid makepkg-wrapper to try to build multiple packages, and `aur`, a stupid aur helper using git.
 
-I currently (May 2015) use fish built from git.
+I currently (August 2016) use fish built from git.
 
 Git
 ====
