@@ -116,10 +116,9 @@
 (use-package cyberpunk-theme)
 
 ;; Also enable 256 colors on konsole
+;; This is an awful hack, but I can't find a way to change just the colors
 (when (string= (tty-type) "konsole-256color")
-  (if (load "term/xterm" t t) ;; Silence errors and messages
-	  (xterm-register-default-colors)
-	(tty-set-up-initial-frame-faces)))
+  (tty-run-terminal-initialization (selected-frame) "xterm-256color"))
 
 ;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
