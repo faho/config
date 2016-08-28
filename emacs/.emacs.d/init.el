@@ -124,6 +124,7 @@
 ;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
 (use-package nlinum-relative
+  :mode "prog-mode"
   :init
   (add-hook 'prog-mode-hook (lambda ()
 							  (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
@@ -132,9 +133,11 @@
 
 ;; Highlight matching parens in different colors
 (use-package rainbow-delimiters
+  :mode "prog-mode"
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   )
+
 (show-paren-mode t) ;; Highlight matching parens
 
 ;; Display current function in modeline (for supporting major-modes)
@@ -237,6 +240,7 @@
 			(setq company-backends (delete 'company-semantic company-backends))
 			(use-package company-shell
 			  :ensure t
+              :mode "fish-mode"
 			  :init
               (add-to-list 'company-backends 'company-fish-shell))
 			;; Tab completion - insert tab at start of line, complete otherwise
