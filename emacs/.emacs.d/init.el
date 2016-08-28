@@ -153,85 +153,81 @@
 (use-package evil
   :diminish (undo-tree-mode . "")
   :config
-  (progn
-	(evil-mode t)
-	;; Don't signal state in echo area
-	(setq evil-echo-state nil)
-	;; Remove some unhelpful bindings from evil so they are available elsewhere
-	(bind-keys :map evil-motion-state-map
-			   ;; "{" and "}" are badly reachable on QWERTZ, "ö" and "Ö" are unused
-			   ("ö" . evil-forward-paragraph)
-			   ("Ö" . evil-backward-paragraph)
-			   ("RET" . nil)
-			   ("C-e" . nil)
-			   ("TAB" . nil))
-	(bind-key "C-e" nil evil-insert-state-map)
-	(bind-keys :map evil-normal-state-map
-			   ("TAB" . nil)
-			   ("C-M-m" . scroll-other-window-down) ;; Yes, this scrolls up
-			   ;; My simple replacement for evil-leader
-			   ("SPC" . hydra-leader/body)
-			   ("q" . delete-window))
-	(bind-keys :map evil-visual-state-map
-			   ("u" . undo-tree-undo)
-			   ("v" . er/expand-region)
-			   ("V" . er/contract-region))
-	(setq evil-want-visual-char-semi-exclusive t)
-	(evil-define-key 'motion Info-mode-map
-	  "\t" 'Info-next-reference
-	  "n" 'Info-history-back
-	  "/" 'Info-history-forward
-	  "l" 'Info-next
-	  "h" 'Info-prev
-	  "d" 'Info-directory
-	  "y" 'evil-yank)
-	;; Don't use C-i since that's TAB in a terminal
-	(setq evil-want-C-i-jump nil)
-	;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
-	(setq evil-want-fine-undo 'fine)
+  (evil-mode t)
+  ;; Don't signal state in echo area
+  (setq evil-echo-state nil)
+  ;; Remove some unhelpful bindings from evil so they are available elsewhere
+  (bind-keys :map evil-motion-state-map
+             ;; "{" and "}" are badly reachable on QWERTZ, "ö" and "Ö" are unused
+             ("ö" . evil-forward-paragraph)
+             ("Ö" . evil-backward-paragraph)
+             ("RET" . nil)
+             ("C-e" . nil)
+             ("TAB" . nil))
+  (bind-key "C-e" nil evil-insert-state-map)
+  (bind-keys :map evil-normal-state-map
+             ("TAB" . nil)
+             ("C-M-m" . scroll-other-window-down) ;; Yes, this scrolls up
+             ;; My simple replacement for evil-leader
+             ("SPC" . hydra-leader/body)
+             ("q" . delete-window))
+  (bind-keys :map evil-visual-state-map
+             ("u" . undo-tree-undo))
+  (setq evil-want-visual-char-semi-exclusive t)
+  (evil-define-key 'motion Info-mode-map
+    "\t" 'Info-next-reference
+    "n" 'Info-history-back
+    "/" 'Info-history-forward
+    "l" 'Info-next
+    "h" 'Info-prev
+    "d" 'Info-directory
+    "y" 'evil-yank)
+  ;; Don't use C-i since that's TAB in a terminal
+  (setq evil-want-C-i-jump nil)
+  ;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
+  (setq evil-want-fine-undo 'fine)
 	;;; EVILIFY MODES
-	(bind-keys :map package-menu-mode-map
-			   ("j" . evil-next-line)
-			   ("k" . evil-previous-line)
-			   ("g g" . evil-goto-first-line)
-			   ("G" . evil-goto-line)
-			   ("/" . evil-search-forward)
-			   ("n" . evil-search-next)
-			   ("N" . evil-search-previous))
-	;; From spacemacs
-	;; default state for additional modes
-	(dolist (mode '(magit-popup-mode
-					git-rebase-mode
-					comint-mode
-					shell-mode
-					term-mode
-					neotree-mode
-					magit-popup-sequence-mode))
-	  (add-to-list 'evil-emacs-state-modes mode))
-	;; Set cursor when in evil-insert mode
-	;; This works for KDE4 Konsole
-	(unless (display-graphic-p)
-	  ;; Reset on exit
-	  (add-hook 'kill-emacs-hook (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7")))
-	  ;; Set to thin line in insert-state
-	  (add-hook 'evil-insert-state-entry-hook (lambda () (send-string-to-terminal "\e]50;CursorShape=1\x7")))
-	  ;; Set to box outside of insert-state
-	  (add-hook 'evil-insert-state-exit-hook  (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7"))))
-	;; matchit: A way to jump between matched tags (parens, html tags etc)
-	(use-package evil-matchit
-	  :init
-	  (global-evil-matchit-mode 1))
-
-	;; nerd-commenter: An easy way to comment/uncomment lines
-	(use-package evil-nerd-commenter
-	  :init
-	  ;; Bind "M-;" to commenting the selected lines (vim-style)
-	  (evilnc-default-hotkeys)
-	  )
-    (use-package evil-surround
-      :init
-      (global-evil-surround-mode t))
-	))
+  (bind-keys :map package-menu-mode-map
+             ("j" . evil-next-line)
+             ("k" . evil-previous-line)
+             ("g g" . evil-goto-first-line)
+             ("G" . evil-goto-line)
+             ("/" . evil-search-forward)
+             ("n" . evil-search-next)
+             ("N" . evil-search-previous))
+  ;; From spacemacs
+  ;; default state for additional modes
+  (dolist (mode '(magit-popup-mode
+                  git-rebase-mode
+                  comint-mode
+                  shell-mode
+                  term-mode
+                  neotree-mode
+                  magit-popup-sequence-mode))
+    (add-to-list 'evil-emacs-state-modes mode))
+  ;; Set cursor when in evil-insert mode
+  ;; This works for KDE4 Konsole
+  (unless (display-graphic-p)
+    ;; Reset on exit
+    (add-hook 'kill-emacs-hook (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7")))
+    ;; Set to thin line in insert-state
+    (add-hook 'evil-insert-state-entry-hook (lambda () (send-string-to-terminal "\e]50;CursorShape=1\x7")))
+    ;; Set to box outside of insert-state
+    (add-hook 'evil-insert-state-exit-hook  (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7"))))
+  ;; matchit: A way to jump between matched tags (parens, html tags etc)
+  (use-package evil-matchit
+    :init
+    (global-evil-matchit-mode 1))
+  ;; nerd-commenter: An easy way to comment/uncomment lines
+  (use-package evil-nerd-commenter
+    :init
+    ;; Bind "M-;" to commenting the selected lines (vim-style)
+    (evilnc-default-hotkeys)
+    )
+  (use-package evil-surround
+    :init
+    (global-evil-surround-mode t))
+  )
 
 (use-package company
   :diminish company-mode
@@ -270,10 +266,11 @@
 (bind-key "<escape>" 'keyboard-quit minibuffer-local-isearch-map)
 
 ;; ido-mode: Nicer minibuffer completion
-(use-package ido
+;; ido-grid-mode makes it a grid.
+(use-package ido-grid-mode
   :init
+  (ido-grid-mode)
   (setq ido-enable-flex-matching t)
-  (ido-mode t)
   (ido-everywhere)
   ;; Let us cycle through instead of opening up a buffer with candidates!
   (setq ido-cannot-complete-command #'ido-next-match)
@@ -289,10 +286,6 @@
 	("M-x" . smex)
 	:config
 	(setq smex-save-file (expand-file-name "emacs/smex-items" user-cache-directory)))
-  ;; This is _quite_ cool!
-  (use-package ido-grid-mode
-	:init
-	(ido-grid-mode))
   (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
   )
 
