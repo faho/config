@@ -146,8 +146,6 @@
 ;; Make modeline less crowded by removing minormodes
 (use-package diminish)
 
-(use-package expand-region)
-
 ;;; Minor Modes:
 ;; Vim-Mode
 (use-package evil
@@ -411,8 +409,7 @@
   (bind-keys :map dired-mode-map
 			 ("r" . wdired-change-to-wdired-mode)
 			 ("U" . dired-up-directory)
-			 ("/" . dired-isearch-filenames)
-			 ((faho/kbd "x") . hydra-dired/body)))
+			 ("/" . dired-isearch-filenames)))
 
 (use-package hydra
   :init
