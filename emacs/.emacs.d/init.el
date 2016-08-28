@@ -18,6 +18,9 @@
 	  inhibit-default-init t ; Don't read default.el - I like my settings to be mine
 	  initial-scratch-message "")
 
+;; Kill the "Have you HURD of our savior GNU" message with fire
+(fset 'display-startup-echo-area-message #'ignore)
+
 ;; Don't warn about advice
 (setq ad-redefinition-action #'accept)
 
