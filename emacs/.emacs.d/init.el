@@ -108,20 +108,12 @@
 	(sml/setup)
 	))
 (column-number-mode t)
-(display-time-mode t)
-(setq-default display-time-24hr-format t)
-(setq-default display-time-format nil)
 (global-hl-line-mode t)
 ;; Colors
-(setq color-theme-is-global t)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 ;; List of okay themes:
 ;; cyberpunk
 ;; wheatgrass ir-black ir_black reverse ample flatland-black
-(use-package cyberpunk-theme
-  :init
-  (load-theme 'cyberpunk' t)
-  )
+(use-package cyberpunk-theme)
 
 ;; Also enable 256 colors on konsole
 (when (string= (tty-type) "konsole-256color")
