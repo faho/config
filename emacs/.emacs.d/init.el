@@ -630,6 +630,13 @@
   (setq-default indent-tabs-mode nil)
   )
 
+(use-package web-mode
+  :mode (("\\.html\\'" . web-mode)
+         ("\\.php\\'" . web-mode)
+         ("\\.css\\'" . web-mode))
+  :config
+  (setq web-mode-enable-css-colorization t))
+
 (use-package which-key
   :init
   (setq which-key-idle-delay 0.3)
