@@ -266,6 +266,7 @@
 ;; ido-grid-mode makes it a grid.
 (use-package ido-grid-mode
   :init
+  (ido-mode t)
   (ido-grid-mode)
   (setq ido-enable-flex-matching t)
   (ido-everywhere)
