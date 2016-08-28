@@ -1,16 +1,5 @@
 ;;;Emacs configuration
-;; Remove scroll/tool/menubars in terminal
-;; Set these first so we don't see them flicker
-(if (display-graphic-p)
-	(progn
-	  (menu-bar-mode t)
-	  (if (fboundp #'tool-bar-mode) tool-bar-mode t)
-	  (if (fboundp #'scroll-bar-mode) scroll-bar-mode 'right)
-	  )
-  (menu-bar-mode -1)
-  (if (fboundp #'tool-bar-mode) tool-bar-mode nil)
-  (if (fboundp #'scroll-bar-mode) scroll-bar-mode nil)
-  )
+(menu-bar-mode -1)
 
 ;; The normal default is fundamental-mode, which does basically nothing
 ;; Orgmode is also an option, but that's slow to load.
