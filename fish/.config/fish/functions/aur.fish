@@ -26,10 +26,13 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 	set -e argv[1]
 	switch "$mode"
 		case search
-			set -l arg
-			for a in $argv
-				set arg --data-urlencode "arg=$a" $arg
-			end
+            if not set -q argv[1]
+                echo $red"Please supply at least one command" >&2
+                return 1
+            end
+            # TODO: A "--name-only" argument to only search by name
+			set -l arg --data-urlencode "arg=$argv[1]"
+            set -e argv[1]
 			# This line dominates the profile, the jshon calls don't matter
 			set -l tmp (curl -G $arg "$aurl&type=search" -s)
 			set -l resultcount (echo $tmp | jshon -e resultcount)
@@ -42,7 +45,19 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 			set -l urls (echo $tmp | jshon -e results -a -e URL -u)
 			set -l versions (echo $tmp | jshon -e results -a -e Version -u)
 			for i in (seq $resultcount)
-				printf "%s %s\n\t%s (%s)\n" $bold$names[$i]$normal $green$versions[$i]$normal $descs[$i] $yellow$urls[$i]$normal
+                # Unfortunately the AUR rpc does not support multiple search arguments
+                # So we have to do searches for everything but the first ourselves
+                set -l printp true
+                for a in $argv
+                    if not string match -q "*$a*" -- $names[$i] $descs[$i]
+                        set printp
+                        break
+                    end
+                end
+
+                if set -q printp[1]
+				    printf "%s %s\n\t%s (%s)\n" $bold$names[$i]$normal $green$versions[$i]$normal $descs[$i] $yellow$urls[$i]$normal
+                end
 			end
 			return 0
 		case clone download
