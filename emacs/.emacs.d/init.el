@@ -13,10 +13,10 @@
 (defalias #'yes-or-no-p #'y-or-n-p)
 
 (setq inhibit-startup-message t
-	  inhibit-splash-screen t
-	  inhibit-startup-buffer-menu t ; Don't show buffer list when opening multiple files
-	  inhibit-default-init t ; Don't read default.el - I like my settings to be mine
-	  initial-scratch-message "")
+      inhibit-splash-screen t
+      inhibit-startup-buffer-menu t ; Don't show buffer list when opening multiple files
+      inhibit-default-init t ; Don't read default.el - I like my settings to be mine
+      initial-scratch-message "")
 
 ;; Kill the "Have you HURD of our savior GNU" message with fire
 (fset 'display-startup-echo-area-message #'ignore)
@@ -44,13 +44,13 @@
 ;; Hardcode a list of files that aren't in packages so we can bootstrap from this file
 (add-to-list 'load-path (expand-file-name "local/goto-chg-1.6/" user-emacs-directory))
 (setq faho/config-files '("mystuff/mymail.el"
-						  ;; My local copy of goto-chg, a wiki package
-						  ;; not on melpa-stable
-						  "local/goto-chg-1.6/goto-chg.el"
-						  "local/goto-chg-1.6/goto-chg-pkg.el"
-						  "local/goto-chg-1.6/goto-chg-autoloads.el"
-						  "mystuff/myorg.el"
-						  "mystuff/myutil.el"))
+                          ;; My local copy of goto-chg, a wiki package
+                          ;; not on melpa-stable
+                          "local/goto-chg-1.6/goto-chg.el"
+                          "local/goto-chg-1.6/goto-chg-pkg.el"
+                          "local/goto-chg-1.6/goto-chg-autoloads.el"
+                          "mystuff/myorg.el"
+                          "mystuff/myutil.el"))
 
 ;; Yes, that's a hardcoded config repo
 (setq faho/config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
@@ -68,16 +68,16 @@
 (require 'package)
 (setq tls-checktrust t)
 (setq package-archives
-	  '(("gnu" . "https://elpa.gnu.org/packages/")
+      '(("gnu" . "https://elpa.gnu.org/packages/")
         ;; Either melpa or marmalade are needed for goto-chg, but melpa contains moar stuff
         ;; including nlinum-relative.
-		;; ("marmalade" . "https://marmalade-repo.org/packages/")
-		("melpa" . "https://melpa.org/packages/") ;; This contains packages from git
-		("melpa-stable" . "https://stable.melpa.org/packages/")))
+        ;; ("marmalade" . "https://marmalade-repo.org/packages/")
+        ("melpa" . "https://melpa.org/packages/") ;; This contains packages from git
+        ("melpa-stable" . "https://stable.melpa.org/packages/")))
 (setq package-archive-priorities
-	  '(("melpa-stable" . 20)
-		("melpa" . 0)
-		("gnu" . 20)))
+      '(("melpa-stable" . 20)
+        ("melpa" . 0)
+        ("gnu" . 20)))
 (setq package-enable-at-startup nil)
 (package-initialize)
 
@@ -104,10 +104,10 @@
 (use-package smart-mode-line
   :init
   (progn
-	(setq sml/theme 'respectful)
-	(setq sml/no-confirm-load-theme t)
-	(sml/setup)
-	))
+    (setq sml/theme 'respectful)
+    (setq sml/no-confirm-load-theme t)
+    (sml/setup)
+    ))
 (column-number-mode t)
 (global-hl-line-mode t)
 ;; Colors
@@ -127,8 +127,8 @@
   :mode "prog-mode"
   :init
   (add-hook 'prog-mode-hook (lambda ()
-							  (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
-								(nlinum-relative-mode 1)))))
+                              (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
+                                (nlinum-relative-mode 1)))))
 (setq diff-switches "-u")
 
 ;; Highlight matching parens in different colors
@@ -188,7 +188,7 @@
   (setq evil-want-C-i-jump nil)
   ;; http://emacs.stackexchange.com/questions/3358/how-can-i-get-undo-behavior-in-evil-similar-to-vims
   (setq evil-want-fine-undo 'fine)
-	;;; EVILIFY MODES
+    ;;; EVILIFY MODES
   (bind-keys :map package-menu-mode-map
              ("j" . evil-next-line)
              ("k" . evil-previous-line)
@@ -235,16 +235,16 @@
   :diminish company-mode
   :config (progn
             ;; Semantic is slow
-			(setq company-backends (delete 'company-semantic company-backends))
-			(use-package company-shell
-			  :ensure t
+            (setq company-backends (delete 'company-semantic company-backends))
+            (use-package company-shell
+              :ensure t
               :mode "fish-mode"
-			  :init
+              :init
               (add-to-list 'company-backends 'company-fish-shell))
-			;; Tab completion - insert tab at start of line, complete otherwise
-			(setq-default tab-always-indent #'complete)
-			(setq-default c-tab-always-indent #'complete)
-			(global-company-mode t)))
+            ;; Tab completion - insert tab at start of line, complete otherwise
+            (setq-default tab-always-indent #'complete)
+            (setq-default c-tab-always-indent #'complete)
+            (global-company-mode t)))
 
 ;; Code Style
 (setq-default tab-width 4)
@@ -281,14 +281,14 @@
   (setq org-completing-use-ido t)
   (setq magit-completing-read-function #'magit-ido-completing-read)
   (use-package ido-ubiquitous
-	:init
-	(ido-ubiquitous-mode 1))
+    :init
+    (ido-ubiquitous-mode 1))
   ;; Make M-x use ido as well
   (use-package smex
-	:bind ("M-X" . smex-major-mode-commands)
-	("M-x" . smex)
-	:config
-	(setq smex-save-file (expand-file-name "emacs/smex-items" user-cache-directory)))
+    :bind ("M-X" . smex-major-mode-commands)
+    ("M-x" . smex)
+    :config
+    (setq smex-save-file (expand-file-name "emacs/smex-items" user-cache-directory)))
   (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
   )
 
@@ -306,14 +306,14 @@
 (setq TeX-PDF-mode t)
 (setq TeX-view-program-selection
       '((output-pdf "xdg-open")
-		(output-html "xdg-open")
-		(output-dvi "xdg-open")))
+        (output-html "xdg-open")
+        (output-dvi "xdg-open")))
 
 ;; Backup/Autosave etc
 (setq version-control t ;; versioned backups
-	  delete-old-versions t
-	  kept-new-versions 6
-	  kept-old-versions 2)
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2)
 
 ;; Move temporary files out of the way (to $XDG_CACHE_HOME/emacs/$type)
 (setq backup-dir (expand-file-name "emacs/backup" user-cache-directory))
@@ -349,15 +349,15 @@
 
 ;; Highlight TODO, FIXME, STUB, etc
 (add-hook #'prog-mode-hook
-		  (lambda ()
-			(font-lock-add-keywords nil
-									'(("\\<\\(FIXME\\|BUG\\):" 1 font-lock-warning-face t)))
-			(font-lock-add-keywords nil
-									'(("\\<\\(WTF\\|TODO\\|STUB\\|HACK\\):" 1 font-lock-keyword-face t))
-									)
-			;;(flyspell-prog-mode) ; Spellcheck comments and strings
-			;;(whitespace-mode) ; Show whitespace (not sure if this isn't too annoying)
-			(subword-mode))) ; Count CamelCase as two words
+          (lambda ()
+            (font-lock-add-keywords nil
+                                    '(("\\<\\(FIXME\\|BUG\\):" 1 font-lock-warning-face t)))
+            (font-lock-add-keywords nil
+                                    '(("\\<\\(WTF\\|TODO\\|STUB\\|HACK\\):" 1 font-lock-keyword-face t))
+                                    )
+            ;;(flyspell-prog-mode) ; Spellcheck comments and strings
+            ;;(whitespace-mode) ; Show whitespace (not sure if this isn't too annoying)
+            (subword-mode))) ; Count CamelCase as two words
 
 ;; Spelling
 ;; (setq-default ispell-program-name "aspell")
@@ -376,8 +376,8 @@
   :diminish projectile-mode
   :init
   (setq projectile-enable-caching t
-		projectile-cache-file (expand-file-name "emacs/projectile.cache" user-cache-directory)
-		projectile-known-projects-file (expand-file-name "emacs/projectile-bookmarks.eld" user-cache-directory))
+        projectile-cache-file (expand-file-name "emacs/projectile.cache" user-cache-directory)
+        projectile-known-projects-file (expand-file-name "emacs/projectile-bookmarks.eld" user-cache-directory))
   :config
   (setq projectile-switch-project-action (lambda () (neotree-show) (neotree-refresh)))
   (projectile-global-mode))
@@ -412,92 +412,92 @@
   ;; Would be nice, but it's a wiki package
   ;; (use-package dired+)
   (bind-keys :map dired-mode-map
-			 ("r" . wdired-change-to-wdired-mode)
-			 ("U" . dired-up-directory)
-			 ("/" . dired-isearch-filenames)))
+             ("r" . wdired-change-to-wdired-mode)
+             ("U" . dired-up-directory)
+             ("/" . dired-isearch-filenames)))
 
 (use-package hydra
   :init
   (progn
-	(defhydra hydra-window-size (:color amaranth)
-	  "Resize window: h:Left l:Right j:Down k:Up
+    (defhydra hydra-window-size (:color amaranth)
+      "Resize window: h:Left l:Right j:Down k:Up
    q: Quit"
-	  ;; These have problems when the selected window isn't top left
-	  ("j" (lambda () (interactive) (enlarge-window 1)) nil)
-	  ("k" (lambda () (interactive) (enlarge-window -1)) nil)
-	  ("h" (lambda () (interactive) (enlarge-window -1 t)) nil)
-	  ("l" (lambda () (interactive) (enlarge-window 1 t)) nil)
-	  ("q" nil "cancel" :exit t))
-	(bind-key (faho/kbd "r") 'hydra-window-size/body)
+      ;; These have problems when the selected window isn't top left
+      ("j" (lambda () (interactive) (enlarge-window 1)) nil)
+      ("k" (lambda () (interactive) (enlarge-window -1)) nil)
+      ("h" (lambda () (interactive) (enlarge-window -1 t)) nil)
+      ("l" (lambda () (interactive) (enlarge-window 1 t)) nil)
+      ("q" nil "cancel" :exit t))
+    (bind-key (faho/kbd "r") 'hydra-window-size/body)
 
-	(defhydra hydra-window (:color amaranth)
-	  "
+    (defhydra hydra-window (:color amaranth)
+      "
    Split:  _v_ert   _x_:horz
    Delete: _o_nly   _d_el
    Select: _h_:Left _l_:Right _j_:Down _k_:Up 
    Scroll other window: _C-j_:Down _C-k_:Up
    _r_: Resize
    "
-	  ("h" windmove-left nil)
-	  ("j" windmove-down nil)
-	  ("k" windmove-up nil)
-	  ("l" windmove-right nil)
-	  ("v" (lambda ()
-			 (interactive)
-			 (split-window-right)
-			 (windmove-right)) nil)
-	  ("x" (lambda ()
-			 (interactive)
-			 (split-window-below)
-			 (windmove-down)) nil)
-	  ("o" delete-other-windows :color blue)
-	  ("a" ace-window "ace")
-	  ("s" ace-swap-window "swap")
-	  ("d" ace-delete-window nil)
-	  ("i" ace-maximize-window "ace-one" :color blue)
-	  ("b" ido-switch-buffer "buf")
-	  ("r" hydra-window-size/body "resize" :exit t)
-	  ("C-j" scroll-other-window nil)
-	  ("C-k" scroll-other-window-down nil)
-	  ("q" nil "cancel"))
-	(bind-key (faho/kbd "w") 'hydra-window/body)
+      ("h" windmove-left nil)
+      ("j" windmove-down nil)
+      ("k" windmove-up nil)
+      ("l" windmove-right nil)
+      ("v" (lambda ()
+             (interactive)
+             (split-window-right)
+             (windmove-right)) nil)
+      ("x" (lambda ()
+             (interactive)
+             (split-window-below)
+             (windmove-down)) nil)
+      ("o" delete-other-windows :color blue)
+      ("a" ace-window "ace")
+      ("s" ace-swap-window "swap")
+      ("d" ace-delete-window nil)
+      ("i" ace-maximize-window "ace-one" :color blue)
+      ("b" ido-switch-buffer "buf")
+      ("r" hydra-window-size/body "resize" :exit t)
+      ("C-j" scroll-other-window nil)
+      ("C-k" scroll-other-window-down nil)
+      ("q" nil "cancel"))
+    (bind-key (faho/kbd "w") 'hydra-window/body)
 
-	(defhydra hydra-emms (:color amaranth)
-	  "music"
-	  ("P" (shell-command "mpc toggle") "Toggle")
-	  ("p" (shell-command "mpc prev") "Prev")
-	  ("n" (shell-command "mpc next") "Next")
-	  ("s" (shell-command "mpc") "Show")
-	  ("l" (shell-command "mpc listall") "Listall")
-	  ("q" nil "cancel"))
-	(bind-key (faho/kbd "e") 'hydra-emms/body)
+    (defhydra hydra-emms (:color amaranth)
+      "music"
+      ("P" (shell-command "mpc toggle") "Toggle")
+      ("p" (shell-command "mpc prev") "Prev")
+      ("n" (shell-command "mpc next") "Next")
+      ("s" (shell-command "mpc") "Show")
+      ("l" (shell-command "mpc listall") "Listall")
+      ("q" nil "cancel"))
+    (bind-key (faho/kbd "e") 'hydra-emms/body)
 
-	(defhydra hydra-misc-modes (:color blue)
-	  "Misc modes"
-	  ("a" org-agenda "agenda")
-	  ("A" org-capture "capture")
-	  ("b" diff-buffer-with-file "diff buffer with file")
-	  ("c" calc "calc")
-	  ("d" dired "dired")
-	  ("e" ediff "ediff")
-	  ("g" magit-status "magit")
-	  ("m" mu4e "mu4e")
-	  ("p" list-packages "packages")
-	  ("q" nil "cancel"))
-	(bind-key (faho/kbd "m") 'hydra-misc-modes/body)
+    (defhydra hydra-misc-modes (:color blue)
+      "Misc modes"
+      ("a" org-agenda "agenda")
+      ("A" org-capture "capture")
+      ("b" diff-buffer-with-file "diff buffer with file")
+      ("c" calc "calc")
+      ("d" dired "dired")
+      ("e" ediff "ediff")
+      ("g" magit-status "magit")
+      ("m" mu4e "mu4e")
+      ("p" list-packages "packages")
+      ("q" nil "cancel"))
+    (bind-key (faho/kbd "m") 'hydra-misc-modes/body)
 
-	(defhydra hydra-leader (:color blue)
-	  "Leader"
-	  ("c" copy-to-clipboard "copy")
-	  ("v" paste-from-clipboard "paste")
-	  ("w" hydra-window/body "window" :exit t)
-	  ("m" hydra-misc-modes/body "modes" :exit t)
-	  ("<left>" previous-buffer "previous buffer")
-	  ("<right>" next-buffer "next buffer")
-	  ("d" which-key-show-top-level "show toplevel")
-	  ("q" nil "cancel")
-	  )
-	(bind-key (faho/kbd "<SPC>") 'hydra-leader/body)))
+    (defhydra hydra-leader (:color blue)
+      "Leader"
+      ("c" copy-to-clipboard "copy")
+      ("v" paste-from-clipboard "paste")
+      ("w" hydra-window/body "window" :exit t)
+      ("m" hydra-misc-modes/body "modes" :exit t)
+      ("<left>" previous-buffer "previous buffer")
+      ("<right>" next-buffer "next buffer")
+      ("d" which-key-show-top-level "show toplevel")
+      ("q" nil "cancel")
+      )
+    (bind-key (faho/kbd "<SPC>") 'hydra-leader/body)))
 
 
 (setq find-file-wildcards t)
@@ -541,10 +541,10 @@
              ("TAB" . neotree-enter)
              ("SPC" . neotree-enter)
              ("q" . neotree-hide)
-			 ("." . neotree-hidden-file-toggle)
-			 ("l" . neotree-enter)
-			 ("j" . next-line)
-			 ("k" . previous-line)))
+             ("." . neotree-hidden-file-toggle)
+             ("l" . neotree-enter)
+             ("j" . next-line)
+             ("k" . previous-line)))
 
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
