@@ -508,78 +508,7 @@
   (delq 'Git vc-handled-backends)
   :commands magit-status
   :config
-  ;; A list of magit's keymaps (from https://github.com/magit/evil-magit/issues/1)
-  ;; (defvar magit-keymaps
-  ;; '(git-commit-mode-map
-  ;;   git-rebase-mode-map
-  ;;   magit-blame-mode-map
-  ;;   magit-blob-mode-map
-  ;;   magit-branch-section-map
-  ;;   magit-cherry-mode-map
-  ;;   magit-commit-section-map
-  ;;   magit-diff-mode-map
-  ;;   magit-file-mode-map
-  ;;   magit-file-section-map
-  ;;   magit-hunk-section-map
-  ;;   magit-log-mode-map
-  ;;   magit-log-read-revs-map
-  ;;   magit-log-select-mode-map
-  ;;   magit-minibuffer-local-ns-map
-  ;;   magit-module-commit-section-map
-  ;;   magit-popup-mode-map
-  ;;   magit-process-mode-map
-  ;;   magit-reflog-mode-map
-  ;;   magit-refs-mode-map
-  ;;   magit-remote-section-map
-  ;;   magit-staged-section-map
-  ;;   magit-stash-section-map
-  ;;   magit-stashes-section-map
-  ;;   magit-status-mode-map
-  ;;   magit-tag-section-map
-  ;;   magit-unpulled-section-map
-  ;;   magit-unpushed-section-map
-  ;;   magit-unstaged-section-map
-  ;;   magit-untracked-section-map
-  ;;   with-editor-mode-map))
-  ;; Evilify magit - unfortunately this now has a million section-maps
-  (bind-key "K" 'magit-branch-delete magit-branch-section-map)
-  (bind-key "K" 'magit-discard magit-commit-section-map)
-  (bind-key "K" 'magit-discard magit-file-section-map)
-  (bind-key "K" 'magit-discard magit-hunk-section-map)
-  (bind-key "K" 'magit-discard magit-module-commit-section-map)
-  (bind-key "K" 'magit-discard magit-staged-section-map)
-  (bind-key "K" 'magit-discard magit-status-mode-map)
-  (bind-key "K" 'magit-discard magit-unstaged-section-map)
-  (bind-key "K" 'magit-discard magit-untracked-section-map)
-  (bind-key "K" 'magit-stash-clear magit-stashes-section-map)
-  (bind-key "K" 'magit-stash-drop magit-stash-section-map)
-  (bind-key "K" 'magit-tag-delete magit-tag-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-branch-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-commit-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-file-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-hunk-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-module-commit-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-remote-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-staged-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-stash-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-stashes-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-status-mode-map)
-  (bind-key "j" 'evil-next-visual-line magit-tag-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-unstaged-section-map)
-  (bind-key "j" 'evil-next-visual-line magit-untracked-section-map)
-  (bind-key "k" 'evil-next-visual-line magit-module-commit-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-branch-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-commit-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-file-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-hunk-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-remote-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-staged-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-stash-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-stashes-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-status-mode-map)
-  (bind-key "k" 'evil-previous-visual-line magit-tag-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-unstaged-section-map)
-  (bind-key "k" 'evil-previous-visual-line magit-untracked-section-map)
+  (use-package evil-magit)
   )
 
 (setq frame-resize-pixelwise t)
