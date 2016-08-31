@@ -494,6 +494,7 @@
 	  ("m" hydra-misc-modes/body "modes" :exit t)
 	  ("<left>" previous-buffer "previous buffer")
 	  ("<right>" next-buffer "next buffer")
+	  ("d" which-key-show-top-level "show toplevel")
 	  ("q" nil "cancel")
 	  )
 	(bind-key (faho/kbd "<SPC>") 'hydra-leader/body)))
