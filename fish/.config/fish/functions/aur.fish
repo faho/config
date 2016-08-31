@@ -238,18 +238,30 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 set -q dir[1]
                 and eval $EDITOR (string escape -- $dir)
             end
-        case "help" "*" ""
-            echo "Usage: aur <Operation> [...]"
-            echo "Operations:"
-            echo "search <keywords>"
-            echo "clone <Packages>"
-            echo "promote <Packages>"
-            echo "demote <Packages>"
-            echo "rm <Packages>"
-            echo "build <Packages>"
-            echo "log <Packages>"
-            echo "update"
-            echo "show <Packages>"
+        case "help" "*"
+            echo $bold"aur.fish $normal -- The stupidest aur helper"
+            echo
+            echo $bold"Usage:$normal aur <Operation> [...]"
+            echo
+            echo $bold"Operations:$normal"
+            echo $bold"    search$normal <Keywords>"
+            echo "         Search the AUR for packages matching all given keywords in name or description"
+            echo $bold"    clone$normal <Packages>"
+            echo "         Clone packages to the queue directory"
+            echo $bold"    promote$normal <Packages>"
+            echo "         Move a package from the queue to the pkg directory"
+            echo $bold"    demote$normal <Packages>"
+            echo "         Move a package from the pkg to the queue directory"
+            echo $bold"    rm$normal <Packages>"
+            echo "         Remove a package from the queue directory"
+            echo $bold"    build$normal <Packages>"
+            echo "         Build and install packages"
+            echo $bold"    log$normal <Packages>"
+            echo "         Show the git log for packages"
+            echo $bold"    update$normal <Packages>"
+            echo "         Update and install all given packages"
+            echo $bold"    show$normal <Packages>"
+            echo "         Open the package's directory in \$EDITOR"
             return 0
     end
 end
