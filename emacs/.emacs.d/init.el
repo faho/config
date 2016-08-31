@@ -478,6 +478,7 @@
       ("A" org-capture "capture")
       ("b" diff-buffer-with-file "diff buffer with file")
       ("c" calc "calc")
+      ("C" faho/configure "configure")
       ("d" dired "dired")
       ("e" ediff "ediff")
       ("g" magit-status "magit")

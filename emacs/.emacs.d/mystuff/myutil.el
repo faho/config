@@ -15,10 +15,24 @@
   (interactive (list (read-file-name "Enter filename:")))
   (xdg-open filename))
 
-(defun configure ()
-  "Open user-init-file"
+(defun faho/list-recursively (dir)
+  "Return all files in a directory or child-directories as a flat list"
+  (interactive "f")
+  (unless (member (file-name-nondirectory dir) '("." ".."))
+    (if (file-directory-p dir)
+       (-flatten (mapcar 'faho/list-recursively (directory-files dir t)))
+      dir)))
+
+;; TODO: Pass an argument to reverse direction
+(defun faho/configure ()
+  "Switch through configuration files"
   (interactive)
-  (find-file user-init-file))
+  (let ((file (when buffer-file-truename (file-truename buffer-file-truename)))
+        (files (mapcar 'file-truename (faho/list-recursively user-emacs-directory))))
+    (let ((next (cadr (member file files))))
+      (if next
+            (find-file next)
+        (find-file user-init-file)))))
 
 (defun tags ()
   "Search for tags like FIXME, HACK or TODO"
