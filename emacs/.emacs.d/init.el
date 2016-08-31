@@ -172,6 +172,10 @@
   (bind-keys :map evil-visual-state-map
              ("u" . undo-tree-undo))
   (setq evil-want-visual-char-semi-exclusive t)
+  (use-package evil-vimish-fold
+    :init
+    (evil-vimish-fold-mode 1))
+
   (evil-define-key 'motion Info-mode-map
     "\t" 'Info-next-reference
     "n" 'Info-history-back
