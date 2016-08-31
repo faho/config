@@ -66,12 +66,13 @@
 (setq load-prefer-newer t)
 
 (require 'package)
+(setq tls-checktrust t)
 (setq package-archives
 	  '(("gnu" . "https://elpa.gnu.org/packages/")
         ;; Either melpa or marmalade are needed for goto-chg, but melpa contains moar stuff
         ;; including nlinum-relative.
 		;; ("marmalade" . "https://marmalade-repo.org/packages/")
-		("melpa" . "http://melpa.org/packages/") ;; This contains packages from git
+		("melpa" . "https://melpa.org/packages/") ;; This contains packages from git
 		("melpa-stable" . "https://stable.melpa.org/packages/")))
 (setq package-archive-priorities
 	  '(("melpa-stable" . 20)
