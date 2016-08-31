@@ -30,7 +30,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
     switch "$mode"
         case search
             if not set -q argv[1]
-                echo $red"Please supply at least one command" >&2
+                echo $red"Please supply at least one keyword" >&2
                 return 1
             end
             # TODO: A "--name-only" argument to only search by name
