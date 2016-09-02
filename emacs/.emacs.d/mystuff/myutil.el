@@ -167,4 +167,19 @@ user."
       (setq file (concat "/sudo:root@localhost:" file)))
     (find-file file)))
 
+;; From https://www.emacswiki.org/emacs/BrowseKillRing
+;; My enhancements: Require 'cl (for delete-duplicates)
+;; Don't read when killring is empty, abort with message instead
+(defun konix/kill-ring-insert ()
+  (interactive)
+  (require 'cl)
+  (let ((kr (delete-duplicates kill-ring :test #'equal)))
+    (if (null kr)
+        (message "Killring empty")
+      (let ((to_insert (completing-read "Yank : " kr)))
+        (when (and to_insert (region-active-p))
+          ;; the currently highlighted section is to be replaced by the yank
+          (delete-region (region-beginning) (region-end)))
+        (insert to_insert)))))
+
 (provide 'myutil)

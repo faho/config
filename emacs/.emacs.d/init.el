@@ -387,6 +387,7 @@
 
 ;; Misc global bindings
 (bind-keys
+ ("M-y" . konix/kill-ring-insert)
  ("<f5>" . revert-buffer)
  ;;esc quits
  ("<escape>" . keyboard-quit)
