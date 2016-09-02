@@ -258,14 +258,14 @@
 ;; Minibuffer
 ;; Save mini buffer history
 ;; savehist-file needs to be set _before_ enabling the mode
-(setq savehist-file (expand-file-name "emacs/history" user-cache-directory ))
-(setq savehist-additional-variables '(kill-ring
+(setq savehist-file (expand-file-name "emacs/history" user-cache-directory )
+      history-length t
+      history-delete-duplicates t
+      savehist-additional-variables '(kill-ring
                                       search-ring
-                                      regex-search-ring
+                                      regexp-search-ring
                                       extended-command-history))
 (savehist-mode t)
-(setq history-length t)
-(setq history-delete-duplicates t)
 ;; History search (like readline's history-search)
 (bind-key "<up>" 'previous-complete-history-element minibuffer-local-map)
 (bind-key "<down>" 'next-complete-history-element minibuffer-local-map)
