@@ -542,14 +542,24 @@
   :config
   (setq neo-smart-open t)
   (defun faho/neotree-collapse-node ()
+    ;; TODO: This always goes to the parent
+    ;; With save-excursion, it reacts badly when it
+    ;; actually closes
+    ;; Also, it never closes the current node
     "Close the current parent node"
     (interactive)
-    ;; (unless (neo-buffer--expanded-node-p)
-    (neotree-select-up-node)
-    (neotree-enter))
+    (let ((indentation (if (not (looking-at ""))
+                           (current-indentation)
+                         (skip-chars-forward "\s\t\n")
+                         (current-indentation))))
+      (when (> indentation 0)
+        (while (and (not (bobp))
+                    (<= indentation (current-indentation)))
+          (forward-line -1))
+        (neotree-enter))))
   (bind-keys :map neotree-mode-map
-             ;; I'd like "h" to _close_ the last node
-             ("h" . faho/neotree-collapse-node)
+             ("h" . neotree-select-up-node)
+             ("H" . faho/neotree-collapse-node)
              ("TAB" . neotree-enter)
              ("SPC" . neotree-enter)
              ("q" . neotree-hide)
