@@ -164,12 +164,14 @@
              ("TAB" . nil))
   (bind-key "C-e" nil evil-insert-state-map)
   (bind-keys :map evil-normal-state-map
+             ("U" . undo-tree-visualize)
              ("TAB" . nil)
              ("C-M-m" . scroll-other-window-down) ;; Yes, this scrolls up
              ;; My simple replacement for evil-leader
              ("SPC" . hydra-leader/body)
              ("q" . delete-window))
   (bind-keys :map evil-visual-state-map
+             ("U" . undo-tree-visualize)
              ("u" . undo-tree-undo))
   (setq evil-want-visual-char-semi-exclusive t)
   (use-package evil-vimish-fold
