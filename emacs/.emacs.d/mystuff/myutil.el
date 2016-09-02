@@ -18,6 +18,7 @@
 (defun faho/list-recursively (dir)
   "Return all files in a directory or child-directories as a flat list"
   (interactive "f")
+  (require 'dash)
   (unless (member (file-name-nondirectory dir) '("." ".."))
     (if (file-directory-p dir)
        (-flatten (mapcar 'faho/list-recursively (directory-files dir t)))
@@ -50,8 +51,14 @@
         (progn
           (shell-command-on-region
 		   ;; Use evil-visual if possible, else fallback to region
-		   (or evil-visual-beginning region-beginning)
-		   (or evil-visual-end region-end)
+           (cond ((boundp 'evil-visual-beginning)
+                 evil-visual-beginning)
+                 ((boundp 'region-beginning)
+                 region-beginning))
+           (cond ((boundp 'evil-visual-end)
+                 evil-visual-end)
+                 ((boundp 'region-end)
+                 region-end))
 		   "xsel -i -b")
 		  ;; Supress "Shell command completed with no output"
 		  (message "")))))
@@ -64,19 +71,6 @@
 		)
 	(insert (shell-command-to-string "xsel -o -b"))
 	))
-
-;; From http://nullprogram.com/blog/2010/09/29/
-(defun expose (function)
-  "Return an interactive version of FUNCTION."
-  (lexical-let ((lex-func function))
-    (lambda ()
-      (interactive)
-      (funcall lex-func))))
-
-(defun expose-partially (function &optional arg)
-  "Return an interactive version of an applied FUNCTION"
-  (interactive)
-  (expose (apply-partially function arg)))
 
 (defun rename-file-and-buffer ()
   "Rename the current buffer and file it is visiting."
@@ -137,7 +131,7 @@
 (defun insert-format-patch ()
   "Insert a git patch"
   (interactive)
-  (insert (shell-command-to-string (format "git format-patch --stdout" (ido-completing-read "Commit start:" '("HEAD~" "origin/master") 'nil)))))
+  (insert (shell-command-to-string (format "git format-patch --stdout %s" (ido-completing-read "Commit start:" '("HEAD~" "origin/master") 'nil)))))
 
 (defun faho/emms-call (func) 
   "Load emms and call argument"
@@ -172,8 +166,7 @@ user."
 ;; Don't read when killring is empty, abort with message instead
 (defun konix/kill-ring-insert ()
   (interactive)
-  (require 'cl)
-  (let ((kr (delete-duplicates kill-ring :test #'equal)))
+  (let ((kr (delete-dups kill-ring)))
     (if (null kr)
         (message "Killring empty")
       (let ((to_insert (completing-read "Yank : " kr)))
