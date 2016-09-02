@@ -174,10 +174,12 @@
              ("U" . undo-tree-visualize)
              ("u" . undo-tree-undo))
   (setq evil-want-visual-char-semi-exclusive t)
-  (use-package evil-vimish-fold
+  (use-package origami
+    :config
+    ;; (let ((fish-parser (origami-markers-parser "begin" "end")))
+    ;;   (add-to-list 'origami-parser-alist '(fish-mode . fish-parser)))
     :init
-    (evil-vimish-fold-mode 1))
-
+    (global-origami-mode))
   (evil-define-key 'motion Info-mode-map
     "\t" 'Info-next-reference
     "n" 'Info-history-back
