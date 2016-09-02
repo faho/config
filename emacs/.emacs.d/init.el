@@ -596,3 +596,10 @@
   (which-key-mode)
   :bind ("<f7>" . which-key-show-top-level)
   )
+
+(use-package flycheck
+  :config
+  ;; I'm not writing a package, I don't need headers and footers and such
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  :init
+  (add-hook #'prog-mode-hook 'flycheck-mode))
