@@ -1,4 +1,9 @@
 ;;;Emacs configuration
+(setq frame-resize-pixelwise t)
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode)
+(scroll-bar-mode -1))
 (menu-bar-mode -1)
 
 ;; The normal default is fundamental-mode, which does basically nothing
@@ -529,8 +534,6 @@
   :config
   (use-package evil-magit)
   )
-
-(setq frame-resize-pixelwise t)
 
 (setq tramp-persistency-file-name (expand-file-name "tramp" user-cache-directory))
 (setq tramp-default-method "ssh")
