@@ -533,6 +533,8 @@
 (setq tramp-default-method "ssh")
 
 (setq ediff-split-window-function #'split-window-horizontally)
+;; Always use a separate window, not frame, for ediff
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
 (use-package neotree
   :bind 
