@@ -255,6 +255,10 @@
 ;; Save mini buffer history
 ;; savehist-file needs to be set _before_ enabling the mode
 (setq savehist-file (expand-file-name "emacs/history" user-cache-directory ))
+(setq savehist-additional-variables '(kill-ring
+                                      search-ring
+                                      regex-search-ring
+                                      extended-command-history))
 (savehist-mode t)
 (setq history-length t)
 (setq history-delete-duplicates t)
