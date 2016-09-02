@@ -238,6 +238,11 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 set -q dir[1]
                 and eval $EDITOR (string escape -- $dir)
             end
+        case "cd"
+            set -l dir (aur_findpkg $argv[1])
+            if set -q dir[1]
+                cd $dir
+            end
         case "help" "*"
             echo $bold"aur.fish $normal -- The stupidest aur helper"
             echo
