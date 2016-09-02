@@ -146,6 +146,7 @@
 ;; Make modeline less crowded by removing minormodes
 (use-package diminish)
 
+(use-package avy)
 ;;; Minor Modes:
 ;; Vim-Mode
 (use-package evil
@@ -164,6 +165,8 @@
              ("TAB" . nil))
   (bind-key "C-e" nil evil-insert-state-map)
   (bind-keys :map evil-normal-state-map
+             ;; Usually "evil-join", which I always forget
+             ("J" . avy-goto-char-2)
              ("U" . undo-tree-visualize)
              ("TAB" . nil)
              ("C-M-m" . scroll-other-window-down) ;; Yes, this scrolls up
