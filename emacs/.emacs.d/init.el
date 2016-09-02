@@ -535,6 +535,11 @@
   (use-package evil-magit)
   )
 
+;; This actually goes through the shell
+;; since I use fish, the default is borked.
+(setq grep-find-template
+      "find . <X> -type f <F> -exec grep <C> -nH -e <R> \\{\\} +")
+
 (setq tramp-persistency-file-name (expand-file-name "tramp" user-cache-directory))
 (setq tramp-default-method "ssh")
 
