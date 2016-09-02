@@ -30,10 +30,10 @@
 ;; My local copies (i.e. stuff that's not in the repos melpa-stable) goes to .emacs.d/local
 (add-to-list 'load-path (expand-file-name "local" user-emacs-directory))
 ;; All my packages go to XDG_DATA_HOME/emacs
-(setq user-data-directory (if (getenv "XDG_DATA_HOME") (getenv "XDG_DATA_HOME") "~/.local/share"))
+(defconst user-data-directory (if (getenv "XDG_DATA_HOME") (getenv "XDG_DATA_HOME") "~/.local/share"))
 (setq package-user-dir (expand-file-name "emacs" user-data-directory))
 ;; Cache files (e.g. history, autosave, undo) go to XDG_CACHE_HOME/emacs
-(setq user-cache-directory (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache"))
+(defconst user-cache-directory (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache"))
 
 ;; I hate custom
 (setq custom-file "/dev/null")
@@ -43,7 +43,7 @@
 
 ;; Hardcode a list of files that aren't in packages so we can bootstrap from this file
 (add-to-list 'load-path (expand-file-name "local/goto-chg-1.6/" user-emacs-directory))
-(setq faho/config-files '("mystuff/mymail.el"
+(defconst faho/config-files '("mystuff/mymail.el"
                           ;; My local copy of goto-chg, a wiki package
                           ;; not on melpa-stable
                           "local/goto-chg-1.6/goto-chg.el"
@@ -53,7 +53,7 @@
                           "mystuff/myutil.el"))
 
 ;; Yes, that's a hardcoded config repo
-(setq faho/config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
+(defconst faho/config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
 
 ;; Download all files that aren't already here
 (dolist (file faho/config-files)
