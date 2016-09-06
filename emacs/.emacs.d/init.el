@@ -423,6 +423,7 @@
   ;; Would be nice, but it's a wiki package
   ;; (use-package dired+)
   (bind-keys :map dired-mode-map
+             ("<SPC>" . hydra-leader/body)
              ("r" . wdired-change-to-wdired-mode)
              ("U" . dired-up-directory)
              ("/" . dired-isearch-filenames)))
