@@ -277,11 +277,6 @@
 ;; History search (like readline's history-search)
 (bind-key "<up>" 'previous-complete-history-element minibuffer-local-map)
 (bind-key "<down>" 'next-complete-history-element minibuffer-local-map)
-(bind-key "<escape>" 'keyboard-quit minibuffer-local-map)
-(bind-key "<escape>" 'keyboard-quit minibuffer-local-ns-map)
-(bind-key "<escape>" 'keyboard-quit minibuffer-local-completion-map)
-(bind-key "<escape>" 'keyboard-quit minibuffer-local-must-match-map)
-(bind-key "<escape>" 'keyboard-quit minibuffer-local-isearch-map)
 
 ;; ido-mode: Nicer minibuffer completion
 ;; ido-grid-mode makes it a grid.
@@ -293,7 +288,6 @@
   (ido-everywhere)
   ;; Let us cycle through instead of opening up a buffer with candidates!
   (setq ido-cannot-complete-command #'ido-next-match)
-  (bind-key "<escape>" 'keyboard-quit ido-common-completion-map)
   (setq org-completing-use-ido t)
   (setq magit-completing-read-function #'magit-ido-completing-read)
   (use-package ido-ubiquitous
