@@ -262,6 +262,7 @@
 (setq-default tab-width 4)
 (setq-default standard-indent 4)
 (setq-default indent-tabs-mode nil)
+(setq-default c-basic-offset 4)
 
 ;; Minibuffer
 ;; Save mini buffer history
