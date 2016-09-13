@@ -131,6 +131,7 @@
 (use-package nlinum-relative
   :mode "prog-mode"
   :init
+  (use-package nlinum)
   (add-hook 'prog-mode-hook (lambda ()
                               (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
                                 (nlinum-relative-mode 1)))))
@@ -244,7 +245,7 @@
     :init
     (evil-commentary-mode))
   (use-package evil-surround
-    :init
+    :config
     (global-evil-surround-mode t))
   )
 
@@ -295,6 +296,7 @@
   ;; Let us cycle through instead of opening up a buffer with candidates!
   (setq ido-cannot-complete-command #'ido-next-match)
   (setq org-completing-use-ido t)
+  (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
   (setq magit-completing-read-function #'magit-ido-completing-read)
   (use-package ido-ubiquitous
     :init
@@ -305,9 +307,7 @@
     ("M-x" . smex)
     :config
     (setq smex-save-file (expand-file-name "emacs/smex-items" user-cache-directory)))
-  (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
   )
-
 
 ;; Misc language modes
 (autoload #'lua-mode "lua-mode" "Lua editing mode." t)
@@ -582,7 +582,7 @@
   :mode ("\\.fish\\'" . fish-mode)
   :interpreter ("fish" . fish-mode)
   :commands fish-mode
-  :init
+  :config
   ;; Fish style is 4-space indentation
   (setq-default indent-tabs-mode nil)
   )
