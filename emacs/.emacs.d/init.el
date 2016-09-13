@@ -169,6 +169,11 @@
              ("C-e" . nil)
              ("TAB" . nil))
   (bind-key "C-e" nil evil-insert-state-map)
+  ;; Enable C-w C-w for window-switching _everywhere_
+  ;; First remove the default binding (kill-region) so C-w can be used as a prefix
+  (bind-key "C-w" nil)
+  (bind-key "C-w w" 'evil-window-next)
+  (bind-key "C-w C-w" 'evil-window-next)
   (bind-keys :map evil-normal-state-map
              ("Q" . avy-goto-char-2)
              ("U" . undo-tree-visualize)
