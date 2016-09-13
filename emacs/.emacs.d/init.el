@@ -32,8 +32,6 @@
 ;;; File Structure
 ;; My custom stuff goes to .emacs.d/mystuff
 (add-to-list 'load-path (expand-file-name "mystuff" user-emacs-directory))
-;; My local copies (i.e. stuff that's not in the repos melpa-stable) goes to .emacs.d/local
-(add-to-list 'load-path (expand-file-name "local" user-emacs-directory))
 ;; All my packages go to XDG_DATA_HOME/emacs
 (defconst user-data-directory (if (getenv "XDG_DATA_HOME") (getenv "XDG_DATA_HOME") "~/.local/share"))
 (setq package-user-dir (expand-file-name "emacs" user-data-directory))
@@ -46,14 +44,7 @@
 (dolist (dir load-path)
   (make-directory dir t))
 
-;; Hardcode a list of files that aren't in packages so we can bootstrap from this file
-(add-to-list 'load-path (expand-file-name "local/goto-chg-1.6/" user-emacs-directory))
 (defconst faho/config-files '("mystuff/mymail.el"
-                          ;; My local copy of goto-chg, a wiki package
-                          ;; not on melpa-stable
-                          "local/goto-chg-1.6/goto-chg.el"
-                          "local/goto-chg-1.6/goto-chg-pkg.el"
-                          "local/goto-chg-1.6/goto-chg-autoloads.el"
                           "mystuff/myorg.el"
                           "mystuff/myutil.el"))
 
@@ -76,7 +67,6 @@
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ;; Either melpa or marmalade are needed for goto-chg, but melpa contains moar stuff
         ;; including nlinum-relative.
-        ;; ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "https://melpa.org/packages/") ;; This contains packages from git
         ("melpa-stable" . "https://stable.melpa.org/packages/")))
 (setq package-archive-priorities
