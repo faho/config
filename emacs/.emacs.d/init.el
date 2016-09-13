@@ -3,7 +3,7 @@
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode)
-(scroll-bar-mode -1))
+  (scroll-bar-mode -1))
 (menu-bar-mode -1)
 
 ;; The normal default is fundamental-mode, which does basically nothing
@@ -45,8 +45,8 @@
   (make-directory dir t))
 
 (defconst faho/config-files '("mystuff/mymail.el"
-                          "mystuff/myorg.el"
-                          "mystuff/myutil.el"))
+                              "mystuff/myorg.el"
+                              "mystuff/myutil.el"))
 
 ;; Yes, that's a hardcoded config repo
 (defconst faho/config-url "https://raw.githubusercontent.com/faho/config/master/emacs/.emacs.d/")
