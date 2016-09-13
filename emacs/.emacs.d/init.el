@@ -239,12 +239,9 @@
   (use-package evil-matchit
     :init
     (global-evil-matchit-mode 1))
-  ;; nerd-commenter: An easy way to comment/uncomment lines
-  (use-package evil-nerd-commenter
+  (use-package evil-commentary
     :init
-    ;; Bind "M-;" to commenting the selected lines (vim-style)
-    (evilnc-default-hotkeys)
-    )
+    (evil-commentary-mode))
   (use-package evil-surround
     :init
     (global-evil-surround-mode t))
