@@ -607,3 +607,6 @@
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   :init
   (add-hook #'prog-mode-hook 'flycheck-mode))
+
+;; This is needed to make sentence movement work with evil
+(setq sentence-end-double-space nil)
