@@ -167,6 +167,8 @@
              ("Ö" . evil-backward-paragraph)
              ("RET" . nil)
              ("C-e" . nil)
+             ;; This is supposed to be bound to C-i, but that's TAB in a terminal
+             ("M-o" . evil-jump-forward)
              ("TAB" . nil))
   (bind-key "C-e" nil evil-insert-state-map)
   ;; Enable C-w C-w for window-switching _everywhere_
@@ -413,8 +415,6 @@
  ;; Allow elisp evaluation in all major modes
  ;; For quick reconfiguration
  ((faho/kbd "C-x C-e") . eval-last-sexp)
- ;; It'd be nice to use evil's C-w C-w here, but I don't enable evil-mode in e.g. magit
- ("M-o" . other-window)
  ;; C-x f is usually bound to "set-fill-column", which is useless.
  ("C-x f" . 'djcb-find-file-as-root)
 
