@@ -185,6 +185,7 @@
              ("SPC" . hydra-leader/body)
              ("q" . delete-window))
   (bind-keys :map evil-visual-state-map
+             ("SPC" . hydra-leader/body)
              ("Q" . avy-goto-char-2)
              ("U" . undo-tree-visualize)
              ("u" . undo-tree-undo))
