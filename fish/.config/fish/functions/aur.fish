@@ -38,6 +38,10 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             set -e argv[1]
             # This line dominates the profile, the jshon calls don't matter
             set -l tmp (curl -G $arg "$aurl&type=search" -s)
+            if test $status -gt 0
+                echo "Could not contact AUR" >&2
+                return 1
+            end
             set -l resultcount (echo $tmp | jshon -e resultcount)
             if [ $resultcount -eq "0" ]
                 echo $red"No results found" >&2
@@ -75,6 +79,10 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     set pkg (string split "/" -- $pkg)[2]
                 end
                 set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
+                if test $status -gt 0
+                    echo "Could not contact AUR" >&2
+                    return 1
+                end
                 if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
                     echo $red"No results found" >&2
                     return 1
@@ -104,6 +112,10 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
         case info
             for pkg in $argv
                 set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
+                if test $status -gt 0
+                    echo "Could not contact AUR" >&2
+                    return 1
+                end
                 set -l resultcount (echo $tmp | jshon -e resultcount)
                 if [ $resultcount -eq "0" ]
                     echo $red"No results found" >&2
