@@ -162,8 +162,7 @@ function battery -a \
   set -l normal   (set_color normal)
   set -l color    $green
 
-  # HACK: Always use linux since I always use linux - skips a fork.
-  battery_update_info_linux
+  battery_update_info
   set -q BATTERY_SLOTS; or return
   string match -qr '^[0-9]+$' -- $BATTERY_SLOTS; or return
   switch "$BATTERY_SLOTS"
