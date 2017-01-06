@@ -1,6 +1,10 @@
 function psgrep
-	[ -z $argv ]; and return
-	set -l p (pgrep -f $argv)
-	or return 1
-	ps up $p
+	set -l ret 1
+    for i in $argv
+	    if set -l p (pgrep -f $i)
+            set ret 0
+	        ps up $p
+        end
+    end
+    return $ret
 end

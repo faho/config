@@ -1,8 +1,9 @@
 function fish_right_prompt
 	set -l note "♪"
-	type -q __fish_vcs_prompt; and set -l vcs (__fish_vcs_prompt)
+	type -q __fish_vcs_prompt; and set -l vcs (__fish_vcs_prompt ^/dev/null)
 	set -l bat (battery)
-	set -q BATTERY_IS_PLUGGED; and set -l plug "⚡"
+    set -l plug ""
+	set -q BATTERY_IS_PLUGGED; and set plug "⚡"
 	set -l d (set_color brgrey)(date "+%R")(set_color normal)
 	# A simpler version for stupid locales
 	if not string match -qir '.*\.utf-?8' -- $LANG

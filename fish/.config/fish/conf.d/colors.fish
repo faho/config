@@ -15,11 +15,12 @@ if not set -q faho_colors_set
 	set -U fish_color_cwd 0A0 # green
 	set -U fish_color_cwd_root A00 # red
 
+    set -U fish_color_status --background=red white
 	# Background color for matching quotes and parenthesis
 	set -U fish_color_match 0AA # cyan
 
 	# Background color for search matches
-	set -U fish_color_search_match --background=B218B2 # --background=purple
+	set -U fish_color_search_match --background=533 # --background=purple
 
 	# Background color for selections
 	set -U fish_color_selection --background=B218B2 # --background=purple

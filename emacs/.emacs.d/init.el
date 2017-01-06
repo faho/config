@@ -36,10 +36,10 @@
 (defconst user-data-directory (if (getenv "XDG_DATA_HOME") (getenv "XDG_DATA_HOME") "~/.local/share"))
 (setq package-user-dir (expand-file-name "emacs" user-data-directory))
 ;; Cache files (e.g. history, autosave, undo) go to XDG_CACHE_HOME/emacs
-(defconst user-cache-directory (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache"))
+(defconst user-cache-directory (expand-file-name "emacs" (if (getenv "XDG_CACHE_HOME") (getenv "XDG_CACHE_HOME") "~/.cache")))
 
 ;; I hate custom
-(setq custom-file "/dev/null")
+(setq custom-file (expand-file-name "custom" user-cache-directory))
 
 (dolist (dir load-path)
   (make-directory dir t))
@@ -82,6 +82,8 @@
 ;; (setq package-pinned-packages '((ox-reveal . "melpa-stable")))
 
 ;; Install use-package because that installs everything else
+;; This could also use `package-selected-packages (introduced in 25.1),
+;; but that prints an annoying message when nothing needs to be done.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -97,7 +99,7 @@
 ;;; Aesthetics
 ;; Mode line
 (use-package smart-mode-line
-  :init
+  :config
   (progn
     (setq sml/theme 'respectful)
     (setq sml/no-confirm-load-theme t)
@@ -111,10 +113,8 @@
 ;; wheatgrass ir-black ir_black reverse ample flatland-black
 (use-package cyberpunk-theme)
 
-;; Also enable 256 colors on konsole
-;; This is an awful hack, but I can't find a way to change just the colors
-(when (string= (tty-type) "konsole-256color")
-  (tty-run-terminal-initialization (selected-frame) "xterm-256color"))
+;; Also enable 256 colors on konsole (needs emacs 25.1)
+(add-to-list 'term-file-aliases '("konsole-256color" . "xterm-256color"))
 
 ;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
@@ -135,6 +135,8 @@
   )
 
 (show-paren-mode t) ;; Highlight matching parens
+(setq show-paren-when-point-in-periphery t
+      show-paren-when-point-inside-paren t)
 
 ;; Display current function in modeline (for supporting major-modes)
 (which-function-mode 1)
@@ -236,7 +238,7 @@
     (evil-commentary-mode))
   (use-package evil-surround
     :config
-    (global-evil-surround-mode t))
+   (global-evil-surround-mode t))
   )
 
 (use-package company
@@ -263,7 +265,7 @@
 ;; Minibuffer
 ;; Save mini buffer history
 ;; savehist-file needs to be set _before_ enabling the mode
-(setq savehist-file (expand-file-name "emacs/history" user-cache-directory )
+(setq savehist-file (expand-file-name "history" user-cache-directory )
       history-length t
       history-delete-duplicates t
       savehist-additional-variables '(kill-ring
@@ -286,7 +288,7 @@
   ;; Let us cycle through instead of opening up a buffer with candidates!
   (setq ido-cannot-complete-command #'ido-next-match)
   (setq org-completing-use-ido t)
-  (setq ido-save-directory-list-file (expand-file-name "emacs/ido.last" user-cache-directory))
+  (setq ido-save-directory-list-file (expand-file-name "ido.last" user-cache-directory))
   (setq magit-completing-read-function #'magit-ido-completing-read)
   (use-package ido-ubiquitous
     :init
@@ -296,7 +298,7 @@
     :bind ("M-X" . smex-major-mode-commands)
     ("M-x" . smex)
     :config
-    (setq smex-save-file (expand-file-name "emacs/smex-items" user-cache-directory)))
+    (setq smex-save-file (expand-file-name "smex-items" user-cache-directory)))
   )
 
 ;; Misc language modes
@@ -322,27 +324,56 @@
       kept-old-versions 2)
 
 ;; Move temporary files out of the way (to $XDG_CACHE_HOME/emacs/$type)
-(setq backup-dir (expand-file-name "emacs/backup" user-cache-directory))
+(setq backup-dir (expand-file-name "backup" user-cache-directory))
 (setq backup-by-copying-when-linked t)
 (make-directory backup-dir t)
 (setq backup-directory-alist `((".*" . ,backup-dir)))
-(setq autosave-dir (expand-file-name "emacs/save" user-cache-directory))
+(setq autosave-dir (expand-file-name "save" user-cache-directory))
 (setq auto-save-list-file-prefix autosave-dir)
 (make-directory autosave-dir t)
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
-(setq undo-dir (expand-file-name "emacs/undo" user-cache-directory))
+(setq undo-dir (expand-file-name "undo" user-cache-directory))
 (setq undo-tree-auto-save-history t)
 (make-directory undo-dir t)
 (setq undo-tree-history-directory-alist `((".*" . ,undo-dir)))
+
+;; Some more paths to check
+;; From https://github.com/tarsius/no-littering/blob/master/no-littering.el
+;; (setq abbrev-file-name                 (var "abbrev.el"))
+;; (setq bookmark-default-file            (var "bookmark-default.el"))
+;; (eval-after-load 'desktop
+;;   `(make-directory ,(var "desktop/") t))
+;; (setq desktop-path                     (list (var "desktop/")))
+;; (setq eshell-directory-name            (var "eshell/"))
+;; (eval-after-load 'eww
+;;   `(make-directory ,(var "eww/") t))
+;; (setq eww-bookmarks-directory          (var "eww/"))
+;; (setq gamegrid-user-score-file-directory (var "gamegrid-user-score/"))
+;; (setq ido-save-directory-list-file     (var "ido-save-directory-list.el"))
+;; (setq org-clock-persist-file           (var "org/clock-persist.el"))
+;; (setq org-id-locations-file            (var "org/id-locations.el"))
+;; (setq org-registry-file                (var "org/registry.el"))
+;; (setq recentf-save-file                (var "recentf-save.el"))
+;; (setq save-place-file                  (var "save-place.el"))
+;; (setq savehist-file                    (var "savehist.el"))
+;; (setq semanticdb-default-save-directory (var "semantic/"))
+;; (setq shared-game-score-directory      (var "shared-game-score/"))
+;; (setq tramp-persistency-file-name      (var "tramp-persistency.el"))
+;; (setq trash-directory                  (var "trash/"))
+;; (setq emms-directory                   (var "emms/"))
+;; (setq irony-user-dir                   (var "irony/"))
+;; (setq mc/list-file                     (var "mc-list.el"))
+;; (setq persistent-scratch-save-file     (var "persistent-scratch.el"))
+;; (setq yas-snippet-dirs                 (list (etc "yas-snippets/") 'yas-installed-snippets-dir))
 
 ;; Save point position between sessions
 (use-package saveplace
   :ensure nil
   :init
   (setq-default save-place t)
-  (setq save-place-file (expand-file-name "emacs/places" user-cache-directory)))
+  (setq save-place-file (expand-file-name "places" user-cache-directory)))
 
-(setq bookmark-default-file (expand-file-name "emacs/bookmark" user-cache-directory))
+(setq bookmark-default-file (expand-file-name "bookmark" user-cache-directory))
 (setq delete-old-versions -1)
 
 ;; Make backups even when the file is in version control
@@ -382,10 +413,9 @@
   :diminish projectile-mode
   :init
   (setq projectile-enable-caching t
-        projectile-cache-file (expand-file-name "emacs/projectile.cache" user-cache-directory)
-        projectile-known-projects-file (expand-file-name "emacs/projectile-bookmarks.eld" user-cache-directory))
-  :config
-  (setq projectile-switch-project-action (lambda () (neotree-show) (neotree-refresh)))
+        projectile-cache-file (expand-file-name "projectile.cache" user-cache-directory)
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-directory)
+        projectile-switch-project-action (lambda () (neotree-show) (neotree-refresh)))
   (projectile-global-mode))
 
 ;;; Keybindings
@@ -488,6 +518,7 @@
       ("d" dired "dired")
       ("e" ediff "ediff")
       ("g" magit-status "magit")
+      ("G" git-timemachine "git-timemachine")
       ("m" mu4e "mu4e")
       ("p" list-packages "packages")
       ("q" nil "cancel"))
@@ -517,12 +548,14 @@
 (setq vc-handled-backends nil)
 
 (use-package magit
-  :init
-  (delq 'Git vc-handled-backends)
   :commands magit-status
   :config
   (use-package evil-magit)
   )
+
+;; git-timemachine - stepping through git history
+;; This is a minor mode, so it's tricky to get it to work with evil
+(use-package git-timemachine)
 
 ;; This actually goes through the shell
 ;; since I use fish, the default is borked.
@@ -600,3 +633,16 @@
 
 ;; This is needed to make sentence movement work with evil
 (setq sentence-end-double-space nil)
+
+;; (use-package xterm-color
+;;   :init
+;;   (progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+;;          (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+  
+;;   (use-package eshell
+;;     :ensure nil
+;;     :config
+;;     (add-hook 'eshell-mode-hook
+;;               (lambda ()
+;;                 (setq xterm-color-preserve-properties t)))
+;;     (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)))

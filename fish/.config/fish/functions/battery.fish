@@ -55,8 +55,8 @@ function battery_update_info_termux
 
     # No capacity info availabe, so just fake it.
     set -g BATTERY_MAX_CAP 100
-    set -g BATTERY_CUR_CAP (string match -r '"percentage":' -- $output \
-    | string replace -r '"percentage".*"(\d+)".*' '$1')
+    set -g BATTERY_CUR_CAP (string match -r '"percentage":.*' -- $output \
+    | string replace -r '"percentage".* (\d+),.*' '$1')
     set -g BATTERY_PCT $BATTERY_CUR_CAP
 	set -g BATTERY_SLOTS (math "$BATTERY_PCT" / 10)
 end

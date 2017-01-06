@@ -12,13 +12,13 @@ function fish_prompt
     test $USER = root; and set -q fish_color_cwd_root
     and set cwd (set_color $fish_color_cwd_root)
 
-    test $last_status -ne 0; and set -l prompt_status (set_color $fish_color_status)"[$last_status]$normal"
+    test $last_status -ne 0; and set -l prompt_status (set_color $fish_color_error)"[$last_status]$normal"
 
     # Only show host if in SSH or container
     # Store this in a global variable because it's slow and unchanging
     set -q prompt_host; or begin set -g prompt_host ""
         if set -q SSH_TTY
-            or begin type -q systemd-detect-virt
+            or begin command -s systemd-detect-virt >/dev/null
                 and systemd-detect-virt -q
             end
             set prompt_host $usercolor$USER$normal@(set_color $fish_color_host)(hostname)$normal":"

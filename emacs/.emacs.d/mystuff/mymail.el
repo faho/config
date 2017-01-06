@@ -76,12 +76,15 @@
 														mu4e~update-mail-mode)))
 
   ;; Encryption/Signing
-  (setq pgp-gpg-use-agent t
-		mu4e-decryption-policy 'ask)
-  ;; (add-hook
-  ;;  'message-send-hook
-  ;;  ;; Unfortunately I can't figure out how to encrypt-if-possible
-  ;;  'mml-secure-message-sign)
+  (unless (version< emacs-version "25.1")
+    (require 'pinentry)
+    (pinentry-start t)
+    (setq pgp-gpg-use-agent t
+          mu4e-decryption-policy 'ask)
+    (add-hook
+     'message-send-hook
+     ;; Unfortunately I can't figure out how to encrypt-if-possible
+     'mml-secure-message-sign))
   ;; Automatically decrypt inline-pgp
   (add-hook
    'mu4e-view-mode-hook
@@ -89,19 +92,30 @@
 
   (defhydra hydra-mu4e-mark (:color blue)
     "Mu4e marks"
-    (";"  mu4e-context-switch)
+    ("q" nil "cancel")
+    ("<SPC>" hydra-leader/body "leader")
+    (";"  mu4e-context-switch "Switch context")
     ("!"  mu4e-headers-mark-for-read "Read")
-    ("r"  mu4e-headers-mark-for-refile)
-    ("t"  mu4e-headers-mark-subthread)
-    ("u"  mu4e-headers-mark-for-unmark)
-    ("<backspace>"     mu4e-headers-mark-for-trash)
-    ("<delete>"        mu4e-headers-mark-for-delete)
+    ("r"  mu4e-headers-mark-for-refile "Refile")
+    ("t"  mu4e-headers-mark-subthread "Subthread")
+    ("u"  mu4e-headers-mark-for-unmark "Unmark")
+    ("<backspace>"     mu4e-headers-mark-for-trash "Trash")
+    ("<delete>"        mu4e-headers-mark-for-delete "Delete")
     ("#"  mu4e-mark-resolve-deferred-marks "Resolve deferred")
-    ("$"  mu4e-show-log)
-    ("%"  mu4e-headers-mark-pattern)
-    ("&"  mu4e-headers-mark-custom)
+    ("%"  mu4e-headers-mark-pattern "Mark pattern")
+    ("&"  mu4e-headers-mark-custom "Mark Custom")
     ("*"  mu4e-headers-mark-for-something "Something")
     ("+"  mu4e-headers-mark-for-flag "Flag")
+    ("m" mu4e-headers-mark-for-move)
+    ("T" mu4e-headers-mark-thread)
+    ("/" mu4e-headers-search-narrow)
+    ("?" mu4e-headers-mark-for-unread)
+    ("A" mu4e-headers-mark-for-action)
+    ("O" mu4e-headers-change-sorting)
+    ("P" mu4e-headers-toggle-threading)
+    ("Q" mu4e-headers-toggle-full-search)
+    ("V" mu4e-headers-toggle-skip-duplicates)
+    ("W" mu4e-headers-toggle-include-related)
     ("-"  mu4e-headers-mark-for-unflag "Unflag"))
 
   ;; Yes, up and down are reversed (i.e. it's saying where the _text_ scrolls, not the view)

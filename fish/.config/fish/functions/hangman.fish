@@ -8,12 +8,15 @@ function hangman
 	# Match \p{L&} because that includes utf-8 letters like "ö"
 	set -l legal '^\p{L&}+$'
 	# With a proper word list this should succeed immediately
+    # set -l w (string match -r $legal < /usr/share/dict/words)
+    # while read -l www; set w $w $www; end < /usr/share/dict/words
 	while set -l w (shuf -n 1 /usr/share/dict/words)
 		if string match -qr $legal $w
 			set word $w
 			break
 		end
 	end
+    set word (random choice $w)
 	set word (string split -- "" $word)
 	set -l restword $word # if we'd like to keep the word
 	set -l solved (string replace -r -- '.' '_' $word)

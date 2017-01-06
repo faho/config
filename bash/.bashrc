@@ -17,7 +17,7 @@ fi
 # Do this first so user-config takes precedence
 source /etc/bash.bashrc
 
-source ~/.shrc
+# source ~/.shrc
 #########################
 # Variables and aliases #
 #########################
