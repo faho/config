@@ -6,7 +6,7 @@ set -gx MICRO_TRUECOLOR $fish_term24bit
 set -gx GOPATH ~/dev/go
 set -gx MAIL $HOME/.mail
 set -gx MAILDIR $MAIL
-set -gx CDPATH . $HOME $HOME/Videos
+set -gx CDPATH . $HOME (test -e $HOME/Videos; and echo $HOME/Videos)
 set -gx WINEDEBUG "-all"
 set -gx NO_AT_BRIDGE 1
 set -gx EDITOR "emacs -nw"
