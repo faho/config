@@ -2,33 +2,29 @@
 # Init file for fish
 #
 
-set -gx MICRO_TRUECOLOR $fish_term24bit
+set -gx ASPROOT ~/packages/asp
+set -gx CDPATH . ~ (test -e ~/Videos; and echo ~/Videos)
+set -gx EDITOR "emacs -nw"
 set -gx GOPATH ~/dev/go
+set -gx GTK2_RC_FILES "$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+set -gx LESSHISTFILE "-"
 set -gx MAIL ~/.mail
 set -gx MAILDIR $MAIL
-set -gx CDPATH . ~ (test -e ~/Videos; and echo ~/Videos)
-set -gx WINEDEBUG "-all"
-set -gx NO_AT_BRIDGE 1
-set -gx EDITOR "emacs -nw"
+set -gx MICRO_TRUECOLOR $fish_term24bit
 set -gx MPD_HOST "/run/user/1000/mpd.socket"
-set -gx SWT_GTK3 0
+set -gx NO_AT_BRIDGE 1
 set -gx PAGER "less"
-set -gx SSH_ASKPASS /usr/bin/ksshaskpass
 set -gx PRIMUS_SYNC 1
+set -gx SSH_ASKPASS /usr/bin/ksshaskpass
+set -gx SSH_AUTH_SOCK "$XDG_CONFIG_HOME/gnupg/S.gpg-agent.ssh"
+set -gx SWT_GTK3 0
+set -gx WINEDEBUG "-all"
+set -gx XDG_CACHE_HOME "$HOME/.cache"
+set -gx XDG_CONFIG_HOME "$HOME/.config"
+set -gx XDG_DATA_HOME "$HOME/.local/share"
 
 # SDL mapping for PS3 controller
 # set -x SDL_GAMECONTROLLERCONFIG "030000004c0500006802000011010000,PS3 Controller,a:b14,b:b13,back:b0,dpdown:b6,dpleft:b7,dpright:b5,dpup:b4,guide:b16,leftshoulder:b10,leftstick:b1,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b11,rightstick:b2,righttrigger:b9,rightx:a2,righty:a3,start:b3,x:b15,y:b12,platform:Linux,"
-
-# XDG
-set -x XDG_CONFIG_HOME "$HOME/.config"
-set -x XDG_DATA_HOME "$HOME/.local/share"
-set -x XDG_CACHE_HOME "$HOME/.cache"
-set -x GTK2_RC_FILES "$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-set -x SSH_AUTH_SOCK "$XDG_CONFIG_HOME/gnupg/S.gpg-agent.ssh"
-
-set -x LESSHISTFILE "-"
-
-set -x ASPROOT ~/packages/asp
 
 if status --is-interactive
     set -gx GPGKEY 36EBBDB3
@@ -59,5 +55,3 @@ if status --is-interactive
     type -q fzf_key_bindings
     and fzf_key_bindings
 end
-
-set fish_cursor_insert line
