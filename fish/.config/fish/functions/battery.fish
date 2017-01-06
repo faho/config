@@ -2,7 +2,7 @@
 #   battery [arguments]
 #
 # SYNOPSIS
-#   OS X and Linux compatible battery utility.
+#   OS X, Linux and termux compatible battery utility.
 #
 # USAGE
 #   if available battery
@@ -27,16 +27,38 @@ function init --on-event init_battery
 end
 
 function battery_update_info
-	test -z "$OSTYPE"; and set OSTYPE (uname)
-	if test $OSTYPE = "Darwin"
+	if command -s ioreg >/dev/null
 		battery_update_info_darwin
-	else
-		if not type -q upower
-			echo "Please install upower"
-			return 1
-		end
+	else if command -s upower >/dev/null
 		battery_update_info_linux
+    else if command -s termux-battery-status >/dev/null
+        # Termux, an Android terminal emulator and debian-chrooty-thingy.
+        # Warning: If the "termux:api" system package isn't installed,
+        # `termux-battery-status` will hang forever.
+        battery_update_info_termux
 	end
+end
+
+function battery_update_info_termux
+    # This is json output, looks like
+    # {
+    #     "health": "GOOD",
+    #     "percentage": 32,
+    #     "plugged": "UNPLUGGED", # Or "PLUGGED_AC"
+    #     "status": "DISCHARGING", # Or "CHARGING"
+    #     "temperature": 15.199999809265137
+    # }
+    set -l output (termux-battery-status)
+    string match '"CHARGING"' -- $output
+    and set -g BATTERY_IS_PLUGGED
+    or set -e BATTERY_IS_PLUGGED
+
+    # No capacity info availabe, so just fake it.
+    set -g BATTERY_MAX_CAP 100
+    set -g BATTERY_CUR_CAP (string match -r '"percentage":' -- $output \
+    | string replace -r '"percentage".*"(\d+)".*' '$1')
+    set -g BATTERY_PCT $BATTERY_CUR_CAP
+	set -g BATTERY_SLOTS (math "$BATTERY_PCT" / 10)
 end
 
 function battery_update_info_linux
@@ -68,6 +90,7 @@ function battery_update_info_linux
 	| string match -r ".*time to.*:.*" \
 	| string replace -r '.*time to.*:\s*' '')
 
+    string match -qr '^[0-9]+$' -- $BATTERY_PCT; or return
 	set -g BATTERY_SLOTS (math "$BATTERY_PCT" / 10)
 end
 
@@ -142,6 +165,7 @@ function battery -a \
   # HACK: Always use linux since I always use linux - skips a fork.
   battery_update_info_linux
   set -q BATTERY_SLOTS; or return
+  string match -qr '^[0-9]+$' -- $BATTERY_SLOTS; or return
   switch "$BATTERY_SLOTS"
     case 0 1 2; set color $red
     case 3 4;   set color $yellow
@@ -165,5 +189,4 @@ function battery -a \
       end
     end
   end
-  
 end
