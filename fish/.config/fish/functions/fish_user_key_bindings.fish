@@ -1,5 +1,5 @@
 function fish_user_key_bindings
-	fzf_key_bindings
+	functions -q fzf_key_bindings; and fzf_key_bindings
     # In paste-mode, self-insert except for the sequence to get out of it
     # This should return to the previous mode
     bind -M paste -m default \e\[201~ force-repaint
