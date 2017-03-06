@@ -270,27 +270,45 @@
 
 ;; ido-mode: Nicer minibuffer completion
 ;; ido-grid-mode makes it a grid.
-(use-package ido-grid-mode
+;; (use-package ido-grid-mode
+;;   :init
+;;   (ido-mode t)
+;;   (ido-grid-mode)
+;;   (setq ido-enable-flex-matching t)
+;;   (ido-everywhere)
+;;   ;; Let us cycle through instead of opening up a buffer with candidates!
+;;   (setq ido-cannot-complete-command #'ido-next-match)
+;;   (setq org-completing-use-ido t)
+;;   (setq ido-save-directory-list-file (expand-file-name "ido.last" user-cache-directory))
+;;   (setq magit-completing-read-function #'magit-ido-completing-read)
+;;   (use-package ido-ubiquitous
+;;     :init
+;;     (ido-ubiquitous-mode 1))
+;;   ;; Make M-x use ido as well
+;;   (use-package smex
+;;     :bind ("M-X" . smex-major-mode-commands)
+;;     ("M-x" . smex)
+;;     :config
+;;     (setq smex-save-file (expand-file-name "smex-items" user-cache-directory)))
+;;   )
+
+(use-package counsel
+  :diminish ivy-mode
+  :diminish counsel-mode
+  :bind ("M-y" . counsel-yank-pop)
+  ("C-x b" . ivy-switch-buffer)
   :init
-  (ido-mode t)
-  (ido-grid-mode)
-  (setq ido-enable-flex-matching t)
-  (ido-everywhere)
-  ;; Let us cycle through instead of opening up a buffer with candidates!
-  (setq ido-cannot-complete-command #'ido-next-match)
-  (setq org-completing-use-ido t)
-  (setq ido-save-directory-list-file (expand-file-name "ido.last" user-cache-directory))
-  (setq magit-completing-read-function #'magit-ido-completing-read)
-  (use-package ido-ubiquitous
-    :init
-    (ido-ubiquitous-mode 1))
-  ;; Make M-x use ido as well
-  (use-package smex
-    :bind ("M-X" . smex-major-mode-commands)
-    ("M-x" . smex)
-    :config
-    (setq smex-save-file (expand-file-name "smex-items" user-cache-directory)))
+  ;; I'm not interested in the number of candidates
+  (setq ivy-count-format "")
+  (counsel-mode)
+  ;; Enter goes into a directory, it doesn't open with dired.
+  ;; To open dired, select the "." entry when in the directory.
+  (bind-keys :map ivy-minibuffer-map
+             ("<RET>" . ivy-alt-done)
+             ("C-f" . ivy-immediate-done))
   )
+(use-package swiper
+  :bind ("C-s" . swiper))
 
 ;; Misc language modes
 (autoload #'lua-mode "lua-mode" "Lua editing mode." t)
@@ -407,6 +425,7 @@
         projectile-cache-file (expand-file-name "projectile.cache" user-cache-directory)
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-directory)
         projectile-switch-project-action (lambda () (neotree-show) (neotree-refresh)))
+  (setq projectile-completion-system 'ivy)
   (projectile-global-mode))
 
 ;;; Keybindings
@@ -414,7 +433,6 @@
 
 ;; Misc global bindings
 (bind-keys
- ("M-y" . konix/kill-ring-insert)
  ("<f5>" . revert-buffer)
  ;;esc quits
  ("<escape>" . keyboard-quit)
@@ -484,7 +502,7 @@
       ("s" ace-swap-window "swap")
       ("d" ace-delete-window nil)
       ("i" ace-maximize-window "ace-one" :color blue)
-      ("b" ido-switch-buffer "buf")
+      ("b" ivy-switch-buffer "buf")
       ("r" hydra-window-size/body "resize" :exit t)
       ("C-j" scroll-other-window nil)
       ("C-k" scroll-other-window-down nil)
@@ -526,6 +544,10 @@
       ("<left>" previous-buffer "previous buffer")
       ("<right>" next-buffer "next buffer")
       ("d" which-key-show-top-level "show toplevel")
+      ("b" ivy-switch-buffer "Buffer")
+      ("f" counsel-find-file "File")
+      ("y" counsel-yank-pop "Killring")
+      ("x" counsel-M-x "Command")
       ("q" nil "cancel")
       )
     (bind-key (faho/kbd "<SPC>") 'hydra-leader/body)))
@@ -543,6 +565,7 @@
 (use-package magit
   :commands magit-status
   :config
+  (setq magit-completing-read-function 'ivy-completing-read)
   (use-package evil-magit)
   )
 
