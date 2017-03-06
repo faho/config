@@ -224,6 +224,7 @@
     :init
     (global-evil-matchit-mode 1))
   (use-package evil-commentary
+    :diminish evil-commentary-mode
     :init
     (evil-commentary-mode))
   (use-package evil-surround
@@ -608,6 +609,7 @@
   (setq web-mode-enable-css-colorization t))
 
 (use-package which-key
+  :diminish which-key-mode
   :init
   (setq which-key-idle-delay 0.3)
   (which-key-mode)
@@ -615,6 +617,7 @@
   )
 
 (use-package flycheck
+  :diminish flycheck-mode
   :config
   ;; I'm not writing a package, I don't need headers and footers and such
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
