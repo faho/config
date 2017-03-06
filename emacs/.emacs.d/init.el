@@ -76,14 +76,7 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
-;; Pinning packages to repos
-;; Useful because ox-reveal may depend on _really_ new org features
-;; TODO: Reevaluate with emacs 25.1
-;; (setq package-pinned-packages '((ox-reveal . "melpa-stable")))
-
 ;; Install use-package because that installs everything else
-;; This could also use `package-selected-packages (introduced in 25.1),
-;; but that prints an annoying message when nothing needs to be done.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -112,9 +105,6 @@
 ;; cyberpunk
 ;; wheatgrass ir-black ir_black reverse ample flatland-black
 (use-package cyberpunk-theme)
-
-;; Also enable 256 colors on konsole (needs emacs 25.1)
-(add-to-list 'term-file-aliases '("konsole-256color" . "xterm-256color"))
 
 ;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
