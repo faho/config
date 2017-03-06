@@ -58,7 +58,8 @@ function battery_update_info_termux
     set -g BATTERY_CUR_CAP (string match -r '"percentage":.*' -- $output \
     | string replace -r '"percentage".* (\d+),.*' '$1')
     set -g BATTERY_PCT $BATTERY_CUR_CAP
-	set -g BATTERY_SLOTS (math "$BATTERY_PCT" / 10)
+    # Remove the last digit to do integer-division by 10 without `math`.
+    set -g BATTERY_SLOTS (string replace -r '\d$' '' -- $BATTERY_PCT)
 end
 
 function battery_update_info_linux
@@ -94,7 +95,7 @@ function battery_update_info_linux
 	| string replace -r '.*time to.*:\s*' '')
 
     string match -qr '^[0-9]+$' -- $BATTERY_PCT; or return
-	set -g BATTERY_SLOTS (math "$BATTERY_PCT" / 10)
+    set -g BATTERY_SLOTS (string replace -r '\d$' '' -- $BATTERY_PCT)
 end
 
 function battery_update_info_darwin
@@ -127,7 +128,7 @@ function battery_update_info_darwin
     (echo "$BATTERY_TIME_LEFT / 60" | bc) \
     (echo "$BATTERY_TIME_LEFT % 60" | bc))
 
-  set -g BATTERY_SLOTS (math $BATTERY_PCT / 10)
+    set -g BATTERY_SLOTS (string replace -r '\d$' '' -- $BATTERY_PCT)
 end
 
 function battery -a \
