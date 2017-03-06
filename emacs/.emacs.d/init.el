@@ -465,10 +465,12 @@
    Scroll other window: _C-j_:Down _C-k_:Up
    _r_: Resize
    "
-      ("h" windmove-left nil)
-      ("j" windmove-down nil)
-      ("k" windmove-up nil)
-      ("l" windmove-right nil)
+      ;; Without the wrapper, windmove writes an
+      ;; error to the minibuffer when no window is there.
+      ("h" (ignore-error-wrapper 'windmove-left) nil)
+      ("j" (ignore-error-wrapper 'windmove-down) nil)
+      ("k" (ignore-error-wrapper 'windmove-up) nil)
+      ("l" (ignore-error-wrapper 'windmove-right) nil)
       ("v" (lambda ()
              (interactive)
              (split-window-right)
