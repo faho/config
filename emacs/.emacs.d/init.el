@@ -94,10 +94,12 @@
 (use-package smart-mode-line
   :config
   (progn
+    (setq sml/show-encoding nil)
     (setq sml/theme 'respectful)
     (setq sml/no-confirm-load-theme t)
     (sml/setup)
     ))
+
 (column-number-mode t)
 (global-hl-line-mode t)
 ;; Colors
