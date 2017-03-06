@@ -268,30 +268,6 @@
 (bind-key "<up>" 'previous-complete-history-element minibuffer-local-map)
 (bind-key "<down>" 'next-complete-history-element minibuffer-local-map)
 
-;; ido-mode: Nicer minibuffer completion
-;; ido-grid-mode makes it a grid.
-;; (use-package ido-grid-mode
-;;   :init
-;;   (ido-mode t)
-;;   (ido-grid-mode)
-;;   (setq ido-enable-flex-matching t)
-;;   (ido-everywhere)
-;;   ;; Let us cycle through instead of opening up a buffer with candidates!
-;;   (setq ido-cannot-complete-command #'ido-next-match)
-;;   (setq org-completing-use-ido t)
-;;   (setq ido-save-directory-list-file (expand-file-name "ido.last" user-cache-directory))
-;;   (setq magit-completing-read-function #'magit-ido-completing-read)
-;;   (use-package ido-ubiquitous
-;;     :init
-;;     (ido-ubiquitous-mode 1))
-;;   ;; Make M-x use ido as well
-;;   (use-package smex
-;;     :bind ("M-X" . smex-major-mode-commands)
-;;     ("M-x" . smex)
-;;     :config
-;;     (setq smex-save-file (expand-file-name "smex-items" user-cache-directory)))
-;;   )
-
 (use-package counsel
   :diminish ivy-mode
   :diminish counsel-mode
@@ -358,7 +334,6 @@
 ;;   `(make-directory ,(var "eww/") t))
 ;; (setq eww-bookmarks-directory          (var "eww/"))
 ;; (setq gamegrid-user-score-file-directory (var "gamegrid-user-score/"))
-;; (setq ido-save-directory-list-file     (var "ido-save-directory-list.el"))
 ;; (setq org-clock-persist-file           (var "org/clock-persist.el"))
 ;; (setq org-id-locations-file            (var "org/id-locations.el"))
 ;; (setq org-registry-file                (var "org/registry.el"))
