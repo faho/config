@@ -550,6 +550,9 @@
       ("x" counsel-M-x "Command")
       ("q" nil "cancel")
       )
+    ;; Bind ctrl-space, which should work everywhere.
+    (bind-key "C-@" 'hydra-leader/body)
+    ;; Also bind C-c space as a fallback.
     (bind-key (faho/kbd "<SPC>") 'hydra-leader/body)))
 
 
