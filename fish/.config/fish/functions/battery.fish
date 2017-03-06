@@ -27,11 +27,11 @@ function init --on-event init_battery
 end
 
 function battery_update_info
-	if command -s ioreg >/dev/null
-		battery_update_info_darwin
-	else if command -s upower >/dev/null
+	if command -sq upower
 		battery_update_info_linux
-    else if command -s termux-battery-status >/dev/null
+	else if command -sq ioreg
+		battery_update_info_darwin
+    else if command -sq termux-battery-status
         # Termux, an Android terminal emulator and debian-chrooty-thingy.
         # Warning: If the "termux:api" system package isn't installed,
         # `termux-battery-status` will hang forever.
@@ -70,7 +70,7 @@ function battery_update_info_linux
 	set -l upo (upower -i $__battery_upower_devices)
 
 	# Mind the space in " charging", we want to match "charging" but not "discharging"
-	printf "%s"\n $upo | string match -rq "state:.* charging\|state:.*fully-charged"
+	printf "%s"\n $upo | string match -rq "state:.* charging|state:.*fully-charged"
 	and set -g BATTERY_IS_PLUGGED
 	or set -e  BATTERY_IS_PLUGGED
 
@@ -99,32 +99,32 @@ function battery_update_info_linux
 end
 
 function battery_update_info_darwin
-  set -l ioreg (ioreg -rc "AppleSmartBattery")
+    set -l ioreg (ioreg -rc "AppleSmartBattery")
 
-  printf "%s"\n $ioreg \
-  | grep -q "\"ExternalConnected\" = Yes"
+    printf "%s"\n $ioreg \
+    | grep -q "\"ExternalConnected\" = Yes"
     and set -g BATTERY_IS_PLUGGED
     or set -e BATTERY_IS_PLUGGED
 
-  printf "%s"\n $ioreg \
-  | grep -q "\"IsCharging\" = Yes"
+    printf "%s"\n $ioreg \
+    | grep -q "\"IsCharging\" = Yes"
     and set -g BATTERY_IS_CHARGING
     or set -e  BATTERY_IS_CHARGING
 
-  set -g BATTERY_MAX_CAP (printf "%s\n" $ioreg \
-  | grep "\"MaxCapacity\" =" \
-  | sed -e 's/^.*"MaxCapacity"\ =\ //')
+    set -g BATTERY_MAX_CAP (printf "%s\n" $ioreg \
+    | grep "\"MaxCapacity\" =" \
+    | sed -e 's/^.*"MaxCapacity"\ =\ //')
 
-  set -g BATTERY_CUR_CAP (printf "%s\n" $ioreg \
-  | grep "\"CurrentCapacity\" =" \
-  | sed -e 's/^.*CurrentCapacity"\ =\ //')
-  set -g BATTERY_PCT (printf "%.1f" \
+    set -g BATTERY_CUR_CAP (printf "%s\n" $ioreg \
+    | grep "\"CurrentCapacity\" =" \
+    | sed -e 's/^.*CurrentCapacity"\ =\ //')
+    set -g BATTERY_PCT (printf "%.1f" \
     (echo "$BATTERY_CUR_CAP / $BATTERY_MAX_CAP * 100" | bc -l))
 
-  set -g BATTERY_TIME_LEFT (printf "%s\n" $ioreg \
-  | grep "\"AvgTimeToEmpty\" =" \
-  | sed -e 's/^.*"AvgTimeToEmpty"\ =\ //')
-  set BATTERY_TIME_LEFT (printf "%02d:%02d" \
+    set -g BATTERY_TIME_LEFT (printf "%s\n" $ioreg \
+    | grep "\"AvgTimeToEmpty\" =" \
+    | sed -e 's/^.*"AvgTimeToEmpty"\ =\ //')
+    set BATTERY_TIME_LEFT (printf "%02d:%02d" \
     (echo "$BATTERY_TIME_LEFT / 60" | bc) \
     (echo "$BATTERY_TIME_LEFT % 60" | bc))
 
