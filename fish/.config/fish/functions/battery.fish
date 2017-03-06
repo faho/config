@@ -62,8 +62,11 @@ function battery_update_info_termux
 end
 
 function battery_update_info_linux
-	set -l devices (upower -e | string match '*battery*') # This can theoretically be multiple
-	set -l upo (upower -i $devices)
+    # Cache the devices, they usually won't change.
+    if not set -q __battery_upower_devices
+	    set -g __battery_upower_devices (upower -e | string match '*battery*') # This can theoretically be multiple
+    end
+	set -l upo (upower -i $__battery_upower_devices)
 
 	# Mind the space in " charging", we want to match "charging" but not "discharging"
 	printf "%s"\n $upo | string match -rq "state:.* charging\|state:.*fully-charged"
