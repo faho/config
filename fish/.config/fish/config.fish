@@ -52,6 +52,4 @@ if status --is-interactive
         function fish_right_prompt
         end
     end
-    type -q fzf_key_bindings
-    and fzf_key_bindings
 end
