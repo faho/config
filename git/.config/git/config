@@ -15,6 +15,7 @@
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	pom = pull origin master
+    rim = rebase --interactive master
 
 [diff "odf"]
 	  binary=true
