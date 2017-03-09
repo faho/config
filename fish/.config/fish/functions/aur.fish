@@ -207,13 +207,24 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     end
                     set packages $packages $dir
                 end
+                set -l pullstatus 0
                 for pkg in $packages
                     git -C $pkg pull origin master
+                    or set pullstatus $status
                 end
-                makepkgs $packages
+                if test $pullstatus = 0
+                    makepkgs $packages
+                else
+                    echo "Something failed pulling, fix the errors and rerun" >&2
+                    return 6
+                end
             else
-                git -C $aurpkgs submodule foreach git pull origin master
-                makepkgs $aurpkgs/*
+                if git -C $aurpkgs submodule foreach git pull origin master
+                    makepkgs $aurpkgs/*
+                else
+                    echo "Something failed pulling, fix the errors and rerun" >&2
+                    return 6
+                end
             end
         case list
             set -l printqueue
