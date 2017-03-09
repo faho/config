@@ -18,7 +18,7 @@ function fish_prompt
     # Store this in a global variable because it's slow and unchanging
     set -q prompt_host; or begin set -g prompt_host ""
         if set -q SSH_TTY
-            or begin command -s systemd-detect-virt >/dev/null
+            or begin command -sq systemd-detect-virt
                 and systemd-detect-virt -q
             end
             set prompt_host $usercolor$USER$normal@(set_color $fish_color_host)(hostname)$normal":"
