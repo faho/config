@@ -215,7 +215,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 git -C $aurpkgs submodule foreach git pull origin master
                 makepkgs $aurpkgs/*
             end
-        case list ls
+        case list
             set -l printqueue
             set -l printpkgs
             set -q argv[1]
@@ -289,6 +289,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             echo "         Update and install all given packages"
             echo $bold"    show$normal <Packages>"
             echo "         Open the package's directory in \$EDITOR"
+            echo $bold"    list$normal"
+            echo "         List packages"
             return 0
     end
 end
