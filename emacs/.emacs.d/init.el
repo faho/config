@@ -460,12 +460,10 @@
    Scroll other window: _C-j_:Down _C-k_:Up
    _r_: Resize
    "
-      ;; Without the wrapper, windmove writes an
-      ;; error to the minibuffer when no window is there.
-      ("h" (ignore-error-wrapper 'windmove-left) nil)
-      ("j" (ignore-error-wrapper 'windmove-down) nil)
-      ("k" (ignore-error-wrapper 'windmove-up) nil)
-      ("l" (ignore-error-wrapper 'windmove-right) nil)
+      ("h" windmove-left nil)
+      ("j" windmove-down nil)
+      ("k" windmove-up nil)
+      ("l" windmove-right nil)
       ("v" (lambda ()
              (interactive)
              (split-window-right)
@@ -521,22 +519,25 @@
       ("v" paste-from-clipboard "Paste")
       ("w" hydra-window/body "Window" :exit t)
       ("a" hydra-misc-modes/body "Applications" :exit t)
-      ("h" (ignore-error-wrapper 'windmove-left) nil :exit nil)
-      ("j" (ignore-error-wrapper 'windmove-down) nil :exit nil)
-      ("k" (ignore-error-wrapper 'windmove-up) nil :exit nil)
-      ("l" (ignore-error-wrapper 'windmove-right) nil :exit nil)
-      ("C-h" previous-buffer "Prev buffer" :exit nil)
-      ("C-l" next-buffer "Next buffer" :exit nil)
+      ("h" windmove-left nil :exit nil)
+      ("j" windmove-down nil :exit nil)
+      ("k" windmove-up nil :exit nil)
+      ("l" windmove-right nil :exit nil)
+      ("H" previous-buffer "Prev buffer" :exit nil)
+      ("L" next-buffer "Next buffer" :exit nil)
       ("K" which-key-show-top-level "show Keys")
       ("y" counsel-yank-pop "Killring")
       ("x" counsel-M-x "Command")
       ("q" nil "cancel")
+      ("C-@" set-mark-command "Mark")
       )
+
     ;; Bind ctrl-space, which should work everywhere.
+    ;; TODO: It might be nice to call set-mark-command or similar if the mark is active.
     (bind-key "C-@" 'hydra-leader/body)
+    (bind-key "C-SPC" 'hydra-leader/body)
     ;; Also bind C-c space as a fallback.
     (bind-key (faho/kbd "<SPC>") 'hydra-leader/body)))
-
 
 (setq find-file-wildcards t)
 (setq-default split-width-threshold 100)
