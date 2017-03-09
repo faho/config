@@ -166,11 +166,21 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             end
             return 0
         case build install
-            for pkg in $argv
+            set -l opts
+            set -l pkgs
+            # Pass all options along to makepkg
+            for arg in $argv
+                if string match -qr -- '^-.*' $arg
+                    set opts $opts $arg
+                else
+                    set pkgs $pkgs $arg
+                end
+            end
+            for pkg in $pkgs
                 set -l dir (aur_findpkg $pkg)
                 # If necessary, clone it
                 if not set -q dir[1]
-                    aur clone $pkg
+                    aur clone $pkg $opts
                     or return 1
                     string match -q 'pkgs/*' -- $pkg
                     and set dir $aurpkgs/$pkg
@@ -181,9 +191,9 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 set -q aurdeps[1]
                 and for dep in (string replace -ar '[>=<].*$' '' -- $aurdeps)
                     echo "Building $dep"
-                    aur build $dep
+                    aur build $dep $opts
                 end
-                makepkgs $dir
+                makepkgs $dir $opts
             end
             return 0
         case update
