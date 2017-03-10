@@ -197,8 +197,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             end
             return 0
         case update
+            set -l packages
             if set -q argv[1]
-                set -l packages
                 for pkg in $argv
                     set -l dir (aur_findpkg $pkg)
                     if not set -q dir[1]
@@ -207,24 +207,21 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     end
                     set packages $packages $dir
                 end
-                set -l pullstatus 0
-                for pkg in $packages
-                    git -C $pkg pull origin master
-                    or set pullstatus $status
-                end
-                if test $pullstatus = 0
-                    makepkgs $packages
-                else
-                    echo "Something failed pulling, fix the errors and rerun" >&2
-                    return 6
-                end
             else
-                if git -C $aurpkgs submodule foreach git pull origin master
-                    makepkgs $aurpkgs/*
-                else
-                    echo "Something failed pulling, fix the errors and rerun" >&2
-                    return 6
-                end
+                set packages $aurpkgs/*
+            end
+            set -l failedpulls
+            for pkg in $packages
+                git -C $pkg pull origin master
+                or set failedpulls $failedpulls $pkg
+            end
+            if not set -q failedpulls[1]
+                makepkgs $packages
+            else
+                echo "The following packages failed pulling:" >&2
+                string replace -- "$aurpkgs" "pkgs/" $failedpulls >&2
+                echo "Fix the errors and rerun" >&2
+                return 6
             end
         case list
             set -l printqueue
