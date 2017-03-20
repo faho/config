@@ -43,7 +43,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 return 1
             end
             set -l resultcount (echo $tmp | jshon -e resultcount)
-            if [ $resultcount -eq "0" ]
+            if test $resultcount -eq "0"
                 echo $red"No results found" >&2
                 return 1
             end
@@ -83,7 +83,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     echo "Could not contact AUR" >&2
                     return 1
                 end
-                if [ (echo $tmp | jshon -e resultcount) -eq "0" ]
+                if test (echo $tmp | jshon -e resultcount) -eq "0"
                     echo $red"No results found" >&2
                     return 1
                 end
@@ -102,11 +102,11 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 # 	echo "Now cloning: $pkg"
                 # 	aur clone (string replace -ar '[>=<].*$' '' -- $pkg)
                 # end
-                [ "$target" != pkgs ]
+                test "$target" != pkgs
                 and set dir $aurqueue/$names
                 or set dir $aurpkgs/$names
-                [ ! -e "$dir" ]
-                and git clone $cloneurls[$clonenum] $dir
+                test -e "$dir"
+                or git clone $cloneurls[$clonenum] $dir
             end
             return 0
         case info
@@ -117,7 +117,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     return 1
                 end
                 set -l resultcount (echo $tmp | jshon -e resultcount)
-                if [ $resultcount -eq "0" ]
+                if test $resultcount -eq "0"
                     echo $red"No results found" >&2
                     return 1
                 end
