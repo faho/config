@@ -106,6 +106,10 @@
 ;; List of okay themes:
 ;; cyberpunk
 ;; wheatgrass ir-black ir_black reverse ample flatland-black
+;; idea-darkula
+;; Okay with 24bit (emacs 26.1):
+;; atom-one-dark hamburg
+;; molokai material planet
 (use-package cyberpunk-theme)
 
 ;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
