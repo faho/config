@@ -638,6 +638,14 @@
 ;; This is needed to make sentence movement work with evil
 (setq sentence-end-double-space nil)
 
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
 ;; (use-package xterm-color
 ;;   :init
 ;;   (progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
