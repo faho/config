@@ -219,6 +219,11 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             end
             set -l failedpulls
             for pkg in $packages
+                # If PKGBUILD only differs in the pkgver= lines, check it out.
+                # This is because makepkg updates that line in-file for VCS packages, resulting in failed merges.
+                if git -C $pkg diff -- PKGBUILD | string match -r '^[+-][^+-].*' | string match -rv '^[+-]pkgver=' | not string length -q
+                    git -C $pkg checkout -- PKGBUILD
+                end
                 git -C $pkg pull origin master
                 or set failedpulls $failedpulls $pkg
             end
