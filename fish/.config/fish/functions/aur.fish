@@ -33,11 +33,16 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 echo $red"Please supply at least one keyword" >&2
                 return 1
             end
-            # TODO: A "--name-only" argument to only search by name
+            # A "--name-only" option to sort only by name
+            set -l nameonly
+            if set -l ind (contains -i -- --name-only $argv)
+                set -e argv[$ind]
+                set nameonly "&by=name"
+            end
             set -l arg --data-urlencode "arg=$argv[1]"
             set -e argv[1]
             # This line dominates the profile, the jshon calls don't matter
-            set -l tmp (curl -G $arg "$aurl&type=search" -s)
+            set -l tmp (curl -G $arg "$aurl&type=search$nameonly" -s)
             if test $status -gt 0
                 echo $red"Could not contact AUR" >&2
                 return 1
@@ -54,10 +59,11 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             for i in (seq $resultcount)
                 # Unfortunately the AUR rpc does not support multiple search arguments
                 # So we have to do searches for everything but the first ourselves
-                set -l printp true
+                set -l printp
+                # This will only be called with search terms after the first (since we deleted that)
                 for a in $argv
-                    if not string match -q "*$a*" -- $names[$i] $descs[$i]
-                        set printp
+                    if not string match -q "*$a*" -- $names[$i] (set -q nameonly[1]; or $descs[$i])
+                        set -e printp
                         break
                     end
                 end
@@ -280,7 +286,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             echo $bold"Usage:$normal aur <Operation> [...]"
             echo
             echo $bold"Operations:$normal"
-            echo $bold"    search$normal <Keywords>"
+            echo $bold"    search$normal [--name-only] <Keywords>"
             echo "         Search the AUR for packages matching all given keywords in name or description"
             echo $bold"    clone$normal <Packages>"
             echo "         Clone packages to the queue directory"
