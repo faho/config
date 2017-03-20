@@ -39,7 +39,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             # This line dominates the profile, the jshon calls don't matter
             set -l tmp (curl -G $arg "$aurl&type=search" -s)
             if test $status -gt 0
-                echo "Could not contact AUR" >&2
+                echo $red"Could not contact AUR" >&2
                 return 1
             end
             set -l resultcount (echo $tmp | jshon -e resultcount)
@@ -62,10 +62,11 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     end
                 end
 
-                if set -q printp[1]
-                    printf "%s %s\n\t%s (%s)\n" $bold$names[$i]$normal $green$versions[$i]$normal $descs[$i] $yellow$urls[$i]$normal
+                if set -q printp
+                    printf "%s %s\n  %s (%s)\n" $bold$names[$i]$normal $green$versions[$i]$normal $descs[$i] $yellow$urls[$i]$normal
                 end
             end
+            echo "Found $bold$resultcount$normal results" >&2
             return 0
         case clone download
             for pkg in $argv
@@ -80,7 +81,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 end
                 set -l tmp (curl -G --data-urlencode "arg=$pkg" "$aurl&type=info" -s)
                 if test $status -gt 0
-                    echo "Could not contact AUR" >&2
+                    echo $red"Could not contact AUR" >&2
                     return 1
                 end
                 if test (echo $tmp | jshon -e resultcount) -eq "0"
@@ -219,7 +220,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 makepkgs $packages
             else
                 echo "The following packages failed pulling:" >&2
-                string replace -- "$aurpkgs" "pkgs/" $failedpulls >&2
+                string replace -- "$aurpkgs/" "pkgs/" $failedpulls >&2
                 echo "Fix the errors and rerun" >&2
                 return 6
             end
