@@ -5,9 +5,7 @@
 #   OS X, Linux and termux compatible battery utility.
 #
 # USAGE
-#   if available battery
-#     battery
-#   end
+#   battery
 #
 # ENV #   BATTERY_IS_PLUGGED
 #   BATTERY_IS_CHARGING
@@ -22,9 +20,15 @@
 #   empty_slot_ch     ▯
 #   show_empty_slots  true
 
-function init --on-event init_battery
-  battery_update_info
-end
+# The MIT License (MIT)
+# 
+# Copyright (c) 2015 Jorge Bucaran
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 function battery_update_info
 	if command -sq upower
