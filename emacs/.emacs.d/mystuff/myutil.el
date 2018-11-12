@@ -128,10 +128,10 @@
 
 ;; TODO: Request git directory
 ;; TODO: Use a proper git-binding
-(defun insert-format-patch ()
-  "Insert a git patch"
-  (interactive)
-  (insert (shell-command-to-string (format "git format-patch --stdout %s" (ido-completing-read "Commit start:" '("HEAD~" "origin/master") 'nil)))))
+;; (defun insert-format-patch ()
+;;   "Insert a git patch"
+;;   (interactive)
+;;   (insert (shell-command-to-string (format "git format-patch --stdout %s" (ido-completing-read "Commit start:" '("HEAD~" "origin/master") 'nil)))))
 
 (defun faho/emms-call (func) 
   "Load emms and call argument"

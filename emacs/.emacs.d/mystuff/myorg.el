@@ -38,12 +38,12 @@
 					("WAITING" . (:foreground "red" :weight bold))
 					("DONE" . (:foreground "green" :weight bold))
 					))
-			(org-babel-do-load-languages
-			 'org-babel-load-languages '(
-										 (sh . t)
-										 (python . t)
-										 (sqlite . t)
-										 (latex . t)))
+			;; (org-babel-do-load-languages
+			;;  'org-babel-load-languages '(
+			;; 							 (sh . t)
+			;; 							 (python . t)
+			;; 							 (sqlite . t)
+			;; 							 (latex . t)))
 			(setq org-return-follows-link t)
 			;; (require 'ox-reveal)
 			;; (setq org-reveal-root (expand-file-name "dev/reveal.js" "~/"))

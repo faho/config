@@ -66,7 +66,6 @@
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ;; Either melpa or marmalade are needed for goto-chg, but melpa contains moar stuff
-        ;; including nlinum-relative.
         ("melpa" . "https://melpa.org/packages/") ;; This contains packages from git
         ("melpa-stable" . "https://stable.melpa.org/packages/")))
 (setq package-archive-priorities
@@ -86,7 +85,7 @@
 
 ;; These autoload through use-package
 ;; Don't error if not found
-(require 'mymail nil t)
+;; (require 'mymail nil t)
 (require 'myorg nil t)
 
 ;;; Aesthetics
@@ -114,13 +113,15 @@
 
 ;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
-(use-package nlinum-relative
-  :mode "prog-mode"
-  :init
-  (use-package nlinum)
-  (add-hook 'prog-mode-hook (lambda ()
-                              (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
-                                (nlinum-relative-mode 1)))))
+;; (use-package nlinum-relative
+;;   :mode "prog-mode"
+;;   :init
+;;   (use-package nlinum)
+;;   (add-hook 'prog-mode-hook (lambda ()
+;;                               (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
+;;                                 (nlinum-relative-mode 1)))))
+(setq-default display-line-numbers 'relative)
+(global-display-line-numbers-mode t)
 (setq diff-switches "-u")
 
 ;; Highlight matching parens in different colors
@@ -213,7 +214,7 @@
                   comint-mode
                   shell-mode
                   term-mode
-                  neotree-mode
+                  ;; neotree-mode
                   magit-popup-sequence-mode))
     (add-to-list 'evil-emacs-state-modes mode))
   ;; Set cursor when in evil-insert mode
@@ -249,15 +250,15 @@
               :init
               (add-to-list 'company-backends 'company-fish-shell))
             ;; Tab completion - insert tab at start of line, complete otherwise
-            (setq-default tab-always-indent #'complete)
-            (setq-default c-tab-always-indent #'complete)
+            (setq-default tab-always-indent #'complete
+                          c-tab-always-indent #'complete)
             (global-company-mode t)))
 
 ;; Code Style
-(setq-default tab-width 4)
-(setq-default standard-indent 4)
-(setq-default indent-tabs-mode nil)
-(setq-default c-basic-offset 4)
+(setq-default tab-width 4
+              standard-indent 4
+              indent-tabs-mode nil
+              c-basic-offset 4)
 
 ;; Minibuffer
 ;; Save mini buffer history
@@ -324,9 +325,9 @@
 (make-directory autosave-dir t)
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
 (setq undo-dir (expand-file-name "undo" user-cache-directory))
-(setq undo-tree-auto-save-history t)
 (make-directory undo-dir t)
-(setq undo-tree-history-directory-alist `((".*" . ,undo-dir)))
+(setq undo-tree-history-directory-alist `(("." . ,undo-dir)))
+(setq undo-tree-auto-save-history t)
 
 ;; Some more paths to check
 ;; From https://github.com/tarsius/no-littering/blob/master/no-littering.el
@@ -404,8 +405,8 @@
   :init
   (setq projectile-enable-caching t
         projectile-cache-file (expand-file-name "projectile.cache" user-cache-directory)
-        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-directory)
-        projectile-switch-project-action (lambda () (neotree-show) (neotree-refresh)))
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-directory))
+        ;; projectile-switch-project-action (lambda () (neotree-show) (neotree-refresh)))
   (setq projectile-completion-system 'ivy)
   (projectile-global-mode))
 
@@ -575,37 +576,37 @@
 ;; Always use a separate window, not frame, for ediff
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-(use-package neotree
-  :bind 
-  ("<f9>" . neotree-toggle)
-  :config
-  (setq neo-smart-open t)
-  (defun faho/neotree-collapse-node ()
-    ;; TODO: This always goes to the parent
-    ;; With save-excursion, it reacts badly when it
-    ;; actually closes
-    ;; Also, it never closes the current node
-    "Close the current parent node"
-    (interactive)
-    (let ((indentation (if (not (looking-at ""))
-                           (current-indentation)
-                         (skip-chars-forward "\s\t\n")
-                         (current-indentation))))
-      (when (> indentation 0)
-        (while (and (not (bobp))
-                    (<= indentation (current-indentation)))
-          (forward-line -1))
-        (neotree-enter))))
-  (bind-keys :map neotree-mode-map
-             ("h" . neotree-select-up-node)
-             ("H" . faho/neotree-collapse-node)
-             ("TAB" . neotree-enter)
-             ("SPC" . neotree-enter)
-             ("q" . neotree-hide)
-             ("." . neotree-hidden-file-toggle)
-             ("l" . neotree-enter)
-             ("j" . next-line)
-             ("k" . previous-line)))
+;; (use-package neotree
+;;   :bind 
+;;   ("<f9>" . neotree-toggle)
+;;   :config
+;;   (setq neo-smart-open t)
+;;   (defun faho/neotree-collapse-node ()
+;;     ;; TODO: This always goes to the parent
+;;     ;; With save-excursion, it reacts badly when it
+;;     ;; actually closes
+;;     ;; Also, it never closes the current node
+;;     "Close the current parent node"
+;;     (interactive)
+;;     (let ((indentation (if (not (looking-at ""))
+;;                            (current-indentation)
+;;                          (skip-chars-forward "\s\t\n")
+;;                          (current-indentation))))
+;;       (when (> indentation 0)
+;;         (while (and (not (bobp))
+;;                     (<= indentation (current-indentation)))
+;;           (forward-line -1))
+;;         (neotree-enter))))
+;;   (bind-keys :map neotree-mode-map
+;;              ("h" . neotree-select-up-node)
+;;              ("H" . faho/neotree-collapse-node)
+;;              ("TAB" . neotree-enter)
+;;              ("SPC" . neotree-enter)
+;;              ("q" . neotree-hide)
+;;              ("." . neotree-hidden-file-toggle)
+;;              ("l" . neotree-enter)
+;;              ("j" . next-line)
+;;              ("k" . previous-line)))
 
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
