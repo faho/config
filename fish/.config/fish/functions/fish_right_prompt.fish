@@ -5,6 +5,13 @@ function fish_right_prompt
     set -l plug ""
 	set -q BATTERY_IS_PLUGGED; and set plug "⚡"
 	set -l d (set_color brgrey)(date "+%R")(set_color normal)
+    set -l duration "$cmd_duration$CMD_DURATION"
+    if test $duration -gt 100
+        set duration (math $duration / 1000)s
+    else
+        set duration ""
+    end
+
 	# A simpler version for stupid locales
 	if not string match -qir '.*\.utf-?8' -- $LANG
 		set note ""
@@ -22,4 +29,5 @@ function fish_right_prompt
 		end
 	end
 	printf "%s %s %s%s %s" $mpc $vcs $plug $bat $d
+	printf "%s%s %s %s%s %s" $duration $mpc $vcs $plug $bat $d
 end
