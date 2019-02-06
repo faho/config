@@ -8,29 +8,42 @@ function fish_prompt
     # If we don't have unicode use a simpler delimiter
     string match -qi "*.utf-8" -- $LANG; or set delim ">"
 
+    # CWD colored red if we are root.
     set -l cwd (set_color $fish_color_cwd)
     test $USER = root; and set -q fish_color_cwd_root
     and set cwd (set_color $fish_color_cwd_root)
 
-    test $last_status -ne 0; and set -l prompt_status (set_color $fish_color_error)"[$last_status]$normal"
+    # Prompt status only if it's not 0
+    set -l prompt_status
+    test $last_status -ne 0; and set prompt_status (set_color $fish_color_error)"[$last_status]$normal" # 😉
 
     # Only show host if in SSH or container
     # Store this in a global variable because it's slow and unchanging
-    set -q prompt_host; or begin set -g prompt_host ""
+    if not set -q prompt_host
+        set -g prompt_host ""
+        set -g prompt_host_nocolor ""
         if set -q SSH_TTY
             or begin command -sq systemd-detect-virt
                 and systemd-detect-virt -q
             end
-            set prompt_host $usercolor$USER$normal@(set_color $fish_color_host)(hostname)$normal":"
+            set -l host (hostname)
+            set prompt_host_nocolor $USER@$host
+            set prompt_host $usercolor$USER$normal@(set_color $fish_color_host)$host$normal":"
         end
     end
 
     # Shorten pwd if prompt is too long
-    # TODO: This will break if prompt_host is actually used because of the control sequences
     set -l pwd (prompt_pwd)
-    set -l len (string length -- $prompt_host$pwd$last_status$delim' ')
-    if test $len -gt $COLUMNS
-        set pwd (string replace -ar '([^/])[^/]*' '$1' -- $pwd)
+    # This is quite cheesy - we simply try all prompt_pwds until it fits.
+    # Since prompt_pwd is builtins-only, this is usually quite fast.
+    # 0 means unshortened
+    set -l seq $fish_prompt_pwd_dir_length 0 10 9 8 7 6 5 4 3 2 1
+    for i in $seq
+        set pwd (prompt_pwd $i)
+        set -l len (string length -- $prompt_host_nocolor$pwd$last_status$delim' ')
+        if test $len -lt $COLUMNS
+            break
+        end
     end
     echo -n -s $prompt_host $cwd $pwd $normal $prompt_status $delim ' '
 end
