@@ -1,10 +1,12 @@
 function fish_right_prompt
-	set -l note "♪"
-	type -q __fish_vcs_prompt; and set -l vcs (__fish_vcs_prompt 2>/dev/null)
-	set -l bat (battery)
+    set -l note "♪"
+    type -q __fish_vcs_prompt
+    and set -l vcs (__fish_vcs_prompt 2>/dev/null)
+    set -l bat (battery)
     set -l plug ""
-	set -q BATTERY_IS_PLUGGED; and set plug "⚡"
-	set -l d (set_color brgrey)(date "+%R")(set_color normal)
+    set -q BATTERY_IS_PLUGGED
+    and set plug "⚡"
+    set -l d (set_color brgrey)(date "+%R")(set_color normal)
     set -l duration "$cmd_duration$CMD_DURATION"
     if test $duration -gt 100
         set duration (math $duration / 1000)s
@@ -12,24 +14,25 @@ function fish_right_prompt
         set duration ""
     end
 
-	# A simpler version for stupid locales
-	if not string match -qir '.*\.utf-?8' -- $LANG
-		set note ""
-		set -q BATTERY_IS_PLUGGED; and set plug "p"
-		set bat (printf '%03d%%\n' $BATTERY_PCT)
-	end
-	set -l mpc
-	# if type -q mpc; and systemctl --user --quiet is-active mpd >/dev/null 2>/dev/null
-	# 	if set mpc (mpc status 2>/dev/null)
-	# 		if set -q mpc[2]; and string match -q "[playing]*" -- $mpc[2]
-	# 			set mpc (set_color brcyan)"$note$mpc[1]$note"(set_color normal)
-	# 		else
-	# 			set mpc ""
-	# 		end
-	# 	end
-	# end
+    # A simpler version for stupid locales
+    if not string match -qir '.*\.utf-?8' -- $LANG
+        set note ""
+        set -q BATTERY_IS_PLUGGED
+        and set plug "p"
+        set bat (printf '%03d%%\n' $BATTERY_PCT)
+    end
+    set -l mpc
+    # if type -q mpc; and systemctl --user --quiet is-active mpd >/dev/null 2>/dev/null
+    # 	if set mpc (mpc status 2>/dev/null)
+    # 		if set -q mpc[2]; and string match -q "[playing]*" -- $mpc[2]
+    # 			set mpc (set_color brcyan)"$note$mpc[1]$note"(set_color normal)
+    # 		else
+    # 			set mpc ""
+    # 		end
+    # 	end
+    # end
     if test "$SHLVL" -ge 2
         printf "SUBSHELL $SHLVL "
     end
-	printf "%s%s %s %s%s %s" $duration $mpc $vcs $plug $bat $d
+    printf "%s%s %s %s%s %s" $duration $mpc $vcs $plug $bat $d
 end
