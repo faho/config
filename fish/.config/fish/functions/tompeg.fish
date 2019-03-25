@@ -1,11 +1,9 @@
 function tompeg
 	for i in $argv
-		set -l IFS "="
 		# set -l vc (mediainfo $i | grep "Video" -A 2 | grep "Format " | while read a b; echo $b; end)
 		# set -l ac (mediainfo $i | grep "Audio" -A 2 | grep "Format " | while read a b; echo $b; end)
-		set -l vc (ffprobe $i -show_entries "stream=codec_name" ^/dev/null -select_streams v | while read a b; echo $b; end)
-		set -l ac (ffprobe $i -show_entries "stream=codec_name" ^/dev/null -select_streams a | while read a b; echo $b; end)
-		set -e IFS
+		set -l vc (ffprobe $i -show_entries "stream=codec_name" 2>/dev/null -select_streams v | while read -d= a b; echo $b; end)
+		set -l ac (ffprobe $i -show_entries "stream=codec_name" 2>/dev/null -select_streams a | while read -d= a b; echo $b; end)
 		# Remove extraneous characters
 		echo $vc | read vc _
 		echo $ac | read ac _

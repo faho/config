@@ -1,8 +1,7 @@
 function faho_getaurdeps
 	# Read dependencies in .SRCINFO format
 	set -l deps
-	# Yes, the "eq" will be set to "="
-	while read -l key eq value
+	while read -l -d '=' key value
 		string match -q -- "*depends" $key; and set deps $deps (string replace -r ':.*' '' -- $value)
 	end
 	# This should handle versioned deps and providers
