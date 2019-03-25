@@ -616,6 +616,21 @@
   (setq-default indent-tabs-mode nil)
   )
 
+(use-package rust-mode
+  :mode ("\\.rs\\'" . rust-mode)
+  :commands rust-mode
+  :config
+  (setq-default indent-tabs-mode nil)
+  )
+
+(use-package cmake-mode
+  :mode ("\\CMakeLists.txt\\'" . cmake-mode)
+  :commands cmake-mode
+  :config
+  ;; 4-space indentation
+  (setq-default indent-tabs-mode nil)
+  )
+
 (use-package web-mode
   :mode (("\\.html\\'" . web-mode)
          ("\\.php\\'" . web-mode)
@@ -635,7 +650,7 @@
   :diminish flycheck-mode
   :config
   ;; I'm not writing a package, I don't need headers and footers and such
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc rust-cargo sh-shellcheck))
   :init
   (add-hook #'prog-mode-hook 'flycheck-mode))
 
