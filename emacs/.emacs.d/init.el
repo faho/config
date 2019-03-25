@@ -219,13 +219,12 @@
     (add-to-list 'evil-emacs-state-modes mode))
   ;; Set cursor when in evil-insert mode
   ;; This works for KDE4 Konsole
-  (unless (display-graphic-p)
     ;; Reset on exit
-    (add-hook 'kill-emacs-hook (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7")))
+    (add-hook 'kill-emacs-hook (lambda () (unless (display-graphic-p) (send-string-to-terminal "\e]50;CursorShape=0\x7"))))
     ;; Set to thin line in insert-state
-    (add-hook 'evil-insert-state-entry-hook (lambda () (send-string-to-terminal "\e]50;CursorShape=1\x7")))
+    (add-hook 'evil-insert-state-entry-hook (lambda () (unless (display-graphic-p) (send-string-to-terminal "\e]50;CursorShape=1\x7"))))
     ;; Set to box outside of insert-state
-    (add-hook 'evil-insert-state-exit-hook  (lambda () (send-string-to-terminal "\e]50;CursorShape=0\x7"))))
+    (add-hook 'evil-insert-state-exit-hook  (lambda () (unless (display-graphic-p) (send-string-to-terminal "\e]50;CursorShape=0\x7"))))
   ;; matchit: A way to jump between matched tags (parens, html tags etc)
   (use-package evil-matchit
     :init
