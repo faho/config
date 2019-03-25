@@ -31,16 +31,22 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 function battery_update_info
-	if command -sq upower
-		battery_update_info_linux
-	else if command -sq ioreg
-		battery_update_info_darwin
+    if command -sq upower
+        # Overwrite this function with the OS-specific version
+        # That skips the check every single prompt.
+        # If we don't find anything, we keep checking because something could be installed.
+        functions -e battery_update_info
+        functions -c battery_update_info_linux battery_update_info
+    else if command -sq ioreg
+        functions -e battery_update_info
+        functions -c battery_update_info_darwin battery_update_info
     else if command -sq termux-battery-status
         # Termux, an Android terminal emulator and debian-chrooty-thingy.
         # Warning: If the "termux:api" system package isn't installed,
         # `termux-battery-status` will hang forever.
-        battery_update_info_termux
-	end
+        functions -e battery_update_info
+        functions -c battery_update_info_termux battery_update_info
+    end
 end
 
 function battery_update_info_termux
