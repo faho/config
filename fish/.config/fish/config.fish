@@ -35,16 +35,13 @@ set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 set -gx SWT_GTK3 0
 set -gx WINEDEBUG "-all,fixme-all"
 
+if not set -q fish_user_paths
+    set -U fish_user_paths ~/.local/bin
+end
+
 if status --is-interactive
     set -gx GPGKEY 36EBBDB3
     set -gx GPG_TTY (tty)
-    function startnvidia --description "Switch to X server backed by the nvidia card"
-        # sudo systemctl stop bumblebeed display-manager
-        sudo modprobe -r bbswitch
-        # set -x LD_LIBRARY_PATH "/usr/lib/nvidia:/usr/lib32/nvidia:/usr/lib:/usr/lib32"
-        # startx -- -config xorg-nvidia.conf
-        sudo systemctl start prime@$USER.service
-    end
 
     function startintel --description "Start X server backed by the intel card"
         sudo systemctl start bumblebeed display-manager
@@ -54,7 +51,9 @@ if status --is-interactive
     set fish_function_path ~/.config/fish/test/functions $fish_function_path
     set fish_complete_path ~/.config/fish/test/completions $fish_complete_path
 
-    end
+    set fish_prompt_pwd_dir_length 0
+    set -g fish_cursor_insert line
+
     set -g __fish_git_prompt_showdirtystate 1
     set -g __fish_git_prompt_showuntrackedfiles 1
     set -g __fish_git_prompt_showupstream informative
