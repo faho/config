@@ -46,3 +46,15 @@
 	verbose = true
 [url "https://aur.archlinux.org/"]
     insteadOf = aur://
+[merge]
+    # This makes it so non-fastforward merges are by default an error.
+    # To explicitly do one, use `git merge --no-ff`.
+    ff = only
+[push]
+    followTags = true
+[rerere]
+	enabled = 1
+[cinnabar]
+	helper = /home/alfa/dev/git-cinnabar/git-cinnabar-helper
+[status]
+    relativePaths = false
