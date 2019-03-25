@@ -2,29 +2,38 @@
 # Init file for fish
 #
 
-set -gx ASPROOT ~/packages/asp
-set -gx CDPATH . ~ (test -e ~/Videos; and echo ~/Videos)
-set -gx EDITOR "emacs -nw"
-set -gx GOPATH ~/dev/go
-set -gx GTK2_RC_FILES "$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-set -gx LESSHISTFILE "-"
-set -gx MAIL ~/.mail
-set -gx MAILDIR $MAIL
-set -gx MICRO_TRUECOLOR $fish_term24bit
-set -gx MPD_HOST "/run/user/1000/mpd.socket"
-set -gx NO_AT_BRIDGE 1
-set -gx PAGER "less"
-set -gx PRIMUS_SYNC 1
-set -gx SSH_ASKPASS /usr/bin/ksshaskpass
-set -gx SSH_AUTH_SOCK "$XDG_CONFIG_HOME/gnupg/S.gpg-agent.ssh"
-set -gx SWT_GTK3 0
-set -gx WINEDEBUG "-all"
+# These go first, because other stuff depends on them.
 set -gx XDG_CACHE_HOME "$HOME/.cache"
 set -gx XDG_CONFIG_HOME "$HOME/.config"
 set -gx XDG_DATA_HOME "$HOME/.local/share"
 
-# SDL mapping for PS3 controller
-# set -x SDL_GAMECONTROLLERCONFIG "030000004c0500006802000011010000,PS3 Controller,a:b14,b:b13,back:b0,dpdown:b6,dpleft:b7,dpright:b5,dpup:b4,guide:b16,leftshoulder:b10,leftstick:b1,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b11,rightstick:b2,righttrigger:b9,rightx:a2,righty:a3,start:b3,x:b15,y:b12,platform:Linux,"
+set -gx ANDROID_HOME ~/.android # /opt/android-sdk
+set -gx ASPROOT ~/packages/asp
+set -gx CDPATH . ~ (test -e ~/Videos; and echo ~/Videos)
+set -gx EDITOR emacs -nw
+set -gx GCC_COLORS 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+set -gx GOPATH ~/dev/go
+set -gx GTK2_RC_FILES "$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+set -gx LESSHISTFILE "-"
+# set -gx MAIL ~/.mail
+# set -gx MAILDIR $MAIL
+set -gx MICRO_TRUECOLOR $fish_term24bit
+set -gx MPD_HOST "$XDG_RUNTIME_DIR/mpd.socket"
+set -gx NVIM_TUI_ENABLE_CURSOR_SHAPE 1
+set -gx NVIM_TUI_ENABLE_TRUE_COLOR $fish_term24bit
+set -gx NO_AT_BRIDGE 1
+set -gx PAGER "less"
+set -gx PRIMUS_SYNC 1
+# How GNU ls displays weird characters in filenames
+# This one displays "a\tb" and "a\ b" (without the quotes)
+# The default in new GNU ls displays bashy "'a'$'\t''b'".
+# NOTE: This enables it _even when output isn't a tty_,
+# so it's worse than useless.
+# set -gx QUOTING_STYLE escape
+set -gx SSH_ASKPASS /usr/bin/ksshaskpass
+set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
+set -gx SWT_GTK3 0
+set -gx WINEDEBUG "-all,fixme-all"
 
 if status --is-interactive
     set -gx GPGKEY 36EBBDB3
