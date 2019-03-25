@@ -5,7 +5,7 @@ if not set -q faho_colors_set
 	set -U fish_color_command 005fd7
 	set -U fish_color_param 00afff # cyan
 	set -U fish_color_redirection FFF # normal
-	set -U fish_color_comment A00
+	set -U fish_color_comment 666 # THE NUMBER OF THE BEAST...
 	set -U fish_color_error A00 --bold
 	set -U fish_color_escape 0AA # cyan
 	set -U fish_color_operator 0AA # cyan
@@ -26,10 +26,10 @@ if not set -q faho_colors_set
 	set -U fish_color_selection --background=B218B2 # --background=purple
 
 	# Pager colors
-	set -U fish_pager_color_prefix 0AA # cyan
-	set -U fish_pager_color_completion B2B2B2 # normal
-	set -U fish_pager_color_description 555 # yellow
-	set -U fish_pager_color_progress 0AA # cyan
+	set -U fish_pager_color_prefix --underline 0AA # cyan
+	set -U fish_pager_color_completion $fish_color_normal
+	set -U fish_pager_color_description $fish_color_comment
+	set -U fish_pager_color_progress $fish_color_match
 
 	#
 	# Directory history colors
