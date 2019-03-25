@@ -6,7 +6,7 @@
 
 # Attach everything under tmux, if installed and $HOME/.NOTMUX doesn't exist
 if false && [[ $TERM != "screen" ]] && [[ -f "/usr/bin/tmux" ]] && [[ ! -f $HOME/.NOTMUX ]]; then #which tmux; then
-    if [[ -z $(tmux ls 2> /dev/null | grep -v "attached") ]]; then
+    if tmux ls 2> /dev/null | grep -q "attached"; then
         tmux && exit
     else
     tmux attach-session && exit
@@ -39,10 +39,17 @@ export PS1='\h\[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]\$\[\e[m\] ' # <Time as HH:MM:S
 
 source /usr/share/bash-completion/completions/systemctl
 _usystemctl() {
-	_systemctl "--user" $*
+	_systemctl "--user" "$@"
 }
 complete -F _usystemctl usys
 complete -F _systemctl sys
 complete -F __get_active_units stop
 complete -F __get_startable_units start
 complete -F __get_active_units restart
+
+# red="\[\e[31m\]"
+# yellow="\[\e[33m\]"
+# magenta="\[\e[35m\]"
+# cyan="\[\e[36m\]"
+# reset="\[\e[m\]"
+# export PS1="${red}\u${yellow}@${cyan}\h${yellow}\w${magenta}\$${reset}"
