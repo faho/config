@@ -1,5 +1,5 @@
 ;;;Emacs configuration
-(setq frame-resize-pixelwise t)
+;; (setq frame-resize-pixelwise t)
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode)
@@ -16,6 +16,11 @@
 
 ;; Ask for y/n instead of "yes"/"no"
 (defalias #'yes-or-no-p #'y-or-n-p)
+
+(defvar tmp--file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook (lambda ()
+                                (setq file-name-handler-alist tmp--file-name-handler-alist)))
 
 (setq inhibit-startup-message t
       inhibit-splash-screen t
@@ -663,15 +668,32 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
-;; (use-package xterm-color
+;; (use-package lsp-mode
 ;;   :init
-;;   (progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-;;          (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
-  
-;;   (use-package eshell
-;;     :ensure nil
-;;     :config
-;;     (add-hook 'eshell-mode-hook
-;;               (lambda ()
-;;                 (setq xterm-color-preserve-properties t)))
-;;     (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)))
+;;   (use-package lsp-python)
+;;   :config
+;;   (add-hook 'python-mode-hook
+;;             (lambda ()
+;;               (lsp-mode t)
+;;               ))
+;;   )
+
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (use-package treemacs-evil
+      :ensure t
+      :demand t))
+  :bind
+  (:map global-map
+        ("<f9>"        . treemacs-toggle)
+        ("M-0"       . treemacs-select-window)
+        ("C-c 1"     . treemacs-delete-other-windows)))
+
+(use-package treemacs-projectile
+  :defer t
+  :ensure t
+  :config
+  (setq treemacs-header-function #'treemacs-projectile-create-header))
