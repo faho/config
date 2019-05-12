@@ -225,7 +225,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 if git -C $pkg diff -- PKGBUILD | string match -r '^[+-][^+-].*' | string match -rv '^[+-]pkgver=' | not string length -q
                     git -C $pkg checkout -- PKGBUILD
                 end
-                git -C $pkg pull origin master
+                # Automatically resolve merge conflicts in favor of the local copy.
+                git -C $pkg pull -s ours origin master
                 or set failedpulls $failedpulls $pkg
             end
             if not set -q failedpulls[1]
