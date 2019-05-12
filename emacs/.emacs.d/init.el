@@ -111,7 +111,7 @@
 ;; molokai material planet
 (use-package cyberpunk-theme)
 
-;; This should be outside of use-package so we can add to it from outside (e.g. for mu4e)
+;; This should be outside of use-package so we can add to it from outside
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
 ;; (use-package nlinum-relative
 ;;   :mode "prog-mode"
@@ -294,7 +294,6 @@
 
 ;; Misc language modes
 (autoload #'lua-mode "lua-mode" "Lua editing mode." t)
-(autoload #'mu4e-compose-mode "muC" "mu4e compose mode." t)
 (autoload #'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
 (setq auto-mode-alist (append '(("/PKGBUILD$" . pkgbuild-mode)) auto-mode-alist))
 ;; Adds basic highlighting for a bunch of files
@@ -509,7 +508,6 @@
       ("e" ediff "ediff")
       ("g" magit-status "magit")
       ("G" git-timemachine "git-timemachine")
-      ("m" mu4e "mu4e")
       ("p" list-packages "packages")
       ("q" nil "cancel"))
     (bind-key (faho/kbd "m") 'hydra-misc-modes/body)
