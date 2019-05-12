@@ -1,5 +1,4 @@
 function aur --description 'Quite possibly the stupidest aur helper ever invented'
-    # TODO: This does not correctly handle searches with multiple arguments
     # TODO: These should be real configuration
     set -q aurqueue
     or set -l aurqueue ~/dev/build/new
@@ -90,6 +89,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     printf "%s %s\n  %s (%s)\n" $bold$names[$i]$normal $green$versions[$i]$normal $descs[$i] $yellow$urls[$i]$normal
                 end
             end
+            # FIXME: Resultcount does not take into account more than the first searchterm
             echo "Found $bold$resultcount$normal results" >&2
             return 0
         case clone download
@@ -268,12 +268,10 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     set -e printqueue
             end
             if set -q printqueue printpkgs
-                for i in (string replace -- "$aurqueue/" "" $aurqueue/*)
-                    echo queue/$i
-                end
-                for i in (string replace -- "$aurpkgs/" "" $aurpkgs/*)
-                    echo pkgs/$i
-                end
+                set -l qpkgs $aurqueue/*
+                string replace -- "$aurqueue/" "queue/" -- $qpkgs
+                set -l apkgs $aurpkgs/*
+                string replace -- "$aurpkgs/" "pkgs/" -- $apkgs
             else
                 set -q printqueue
                 and ls $aurqueue
