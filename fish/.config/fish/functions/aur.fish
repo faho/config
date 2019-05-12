@@ -53,10 +53,27 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 echo $red"No results found" >&2
                 return 1
             end
-            set -l names (echo $tmp | jshon -e results -a -e Name -u)
-            set -l descs (echo $tmp | jshon -e results -a -e Description -u)
-            set -l urls (echo $tmp | jshon -e results -a -e URL -u)
-            set -l versions (echo $tmp | jshon -e results -a -e Version -u)
+            set -l names
+            set -l descs
+            set -l urls
+            set -l versions
+            # jshon seems to be faster
+            # maybe jq has additional features
+            # Either way, allowing both is easy enough.
+            if command -sq jshon
+                set names (echo $tmp | jshon -e results -a -e Name -u)
+                set descs (echo $tmp | jshon -e results -a -e Description -u)
+                set urls (echo $tmp | jshon -e results -a -e URL -u)
+                set versions (echo $tmp | jshon -e results -a -e Version -u)
+            else if command -sq jq
+                set names (echo $tmp | jq -r '.results[].Name')
+                set descs (echo $tmp | jq -r '.results[].Description')
+                set urls (echo $tmp | jq -r '.results[].URL')
+                set versions (echo $tmp | jq -r '.results[].Version')
+            else
+                echo $red"Please install jshon or jq" >&2
+                return 214
+            end
             for i in (seq $resultcount)
                 # Unfortunately the AUR rpc does not support multiple search arguments
                 # So we have to do searches for everything but the first ourselves
