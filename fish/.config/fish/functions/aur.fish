@@ -80,7 +80,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 set -l printp
                 # This will only be called with search terms after the first (since we deleted that)
                 for a in $argv
-                    if not string match -q "*$a*" -- $names[$i] (set -q nameonly[1]; or $descs[$i])
+                    if not string match -iq "*$a*" -- $names[$i] (set -q nameonly[1]; or echo $descs[$i])
                         set -e printp
                         break
                     end
