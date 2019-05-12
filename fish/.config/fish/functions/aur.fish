@@ -34,15 +34,16 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 return 1
             end
             # A "--name-only" option to sort only by name
+            # It affects both the initial API call and our search later.
             set -l nameonly
             if set -l ind (contains -i -- --name-only $argv)
                 set -e argv[$ind]
-                set nameonly "&by=name"
+                set nameonly --data-urlencode by=name
             end
             set -l arg --data-urlencode "arg=$argv[1]"
             set -e argv[1]
             # This line dominates the profile, the jshon calls don't matter
-            set -l tmp (curl -G $arg "$aurl&type=search$nameonly" -s)
+            set -l tmp (curl -G $arg $nameonly "$aurl&type=search" -s)
             if test $status -gt 0
                 echo $red"Could not contact AUR" >&2
                 return 1
