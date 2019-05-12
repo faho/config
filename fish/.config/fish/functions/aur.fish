@@ -222,6 +222,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             end
             return 0
         case update
+            argparse d/download-only -- $argv
+            or return
             set -l packages
             if set -q argv[1]
                 for pkg in $argv
@@ -246,13 +248,14 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 git -C $pkg pull -s ours origin master
                 or set failedpulls $failedpulls $pkg
             end
-            if not set -q failedpulls[1]
-                makepkgs $packages
-            else
+            if set -q failedpulls[1]
                 echo "The following packages failed pulling:" >&2
                 string replace -- "$aurpkgs/" "pkgs/" $failedpulls >&2
                 echo "Fix the errors and rerun" >&2
                 return 6
+            end
+            if not set -q _flag_download_only
+                makepkgs $packages
             end
         case list
             set -l printqueue
