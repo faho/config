@@ -33,7 +33,10 @@
 
 [color]
 	ui = auto
-
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
 [column]
 	ui = auto
 [pager]
