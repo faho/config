@@ -1,0 +1,27 @@
+#!/bin/sh
+export __GLVND_DISALLOW_PATCHING=1
+if [ "x" = "x$__GL_THREADED_OPTIMIZATIONS" ]; then
+	export __GL_THREADED_OPTIMIZATIONS=1
+	export LD_PRELOAD=${LD_PRELOAD}"libpthread.so libGL.so.1"
+else
+	unset __GL_THREADED_OPTIMIZATIONS
+fi
+
+# Blacklist
+basename $@ | grep -q -f /home/alfa/.config/optiprime.conf && unset __GL_THREADED_OPTIMIZATIONS
+
+# Use bumblebee if it is running.
+# TODO: Add a better way of figuring this out.
+if systemctl is-active bumblebeed; then
+	logger -t optiprime "Starting $@, threaded optimizations: ${__GL_THREADED_OPTIMIZATIONS:-0}"
+	# VGL_READBACK=pbo vblank_mode=0 optirun -b primus "$@"
+	busctl --user call org.kde.KWin /Compositor org.kde.kwin.Compositing suspend
+	vblank_mode=0 optirun -b primus "$@"
+	busctl --user call org.kde.KWin /Compositor org.kde.kwin.Compositing resume
+else
+	logger -t optiprime "Bumblebee not running, starting $@, threaded optimizations: ${__GL_THREADED_OPTIMIZATIONS:-0}"
+	busctl --user call org.kde.KWin /Compositor org.kde.kwin.Compositing suspend
+	"$@"
+	busctl --user call org.kde.KWin /Compositor org.kde.kwin.Compositing resume
+fi
+	
