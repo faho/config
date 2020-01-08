@@ -6,3 +6,6 @@ a.out
 *.zip
 *.rar
 *.tar.*
+.DS_Store
+*.bak
+*.class
