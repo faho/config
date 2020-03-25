@@ -34,5 +34,11 @@ function fish_right_prompt
     if test "$SHLVL" -ge 2
         printf "SUBSHELL $SHLVL "
     end
-    printf "%s%s %s %s%s %s" $duration $mpc $vcs $plug $bat $d
+
+    set -q VIRTUAL_ENV_DISABLE_PROMPT
+    or set -g VIRTUAL_ENV_DISABLE_PROMPT true
+    set -q VIRTUAL_ENV
+    and set -l venv (string replace -r '.*/' '' -- "$VIRTUAL_ENV")
+
+    printf "%s %s%s %s %s%s %s" $venv $duration $mpc $vcs $plug $bat $d
 end
