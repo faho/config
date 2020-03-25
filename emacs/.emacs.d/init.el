@@ -109,6 +109,7 @@
 ;; Colors
 ;; List of okay themes:
 ;; cyberpunk
+;; klere
 ;; wheatgrass ir-black ir_black reverse ample flatland-black
 ;; idea-darkula
 ;; Okay with 24bit (emacs 26.1):
