@@ -60,4 +60,7 @@ if status --is-interactive
     set -g __fish_git_prompt_showupstream informative
     set -g __fish_git_prompt_showcolorhints 1
     set -g __fish_git_prompt_use_informative_chars 1
+    set -g fish_cursor_insert line
+    set -g fish_cursor_default block
+    set -g fish_cursor_visual underscore
 end
