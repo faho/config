@@ -16,6 +16,7 @@
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	pom = pull origin master
     rim = rebase --interactive master
+    grep-group = grep --break --heading --line-number --color
 
 [diff "odf"]
 	  binary=true
