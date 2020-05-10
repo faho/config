@@ -5,7 +5,7 @@ function faho_getaurdeps
 		string match -q -- "*depends" $key; and set deps $deps (string replace -r ':.*' '' -- $value)
 	end
 	# This should handle versioned deps and providers
-	test -n "$deps"; and if set -l aurdeps (pacman -Spq $deps >/dev/null ^| string replace -r '.*: ' '')
+	test -n "$deps"; and if set -l aurdeps (pacman -Spq $deps >/dev/null 2>| string replace -r '.*: ' '')
 		printf "%s\n" $aurdeps
 		return 0
 	end
