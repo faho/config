@@ -642,7 +642,7 @@
       :demand t))
   :bind
   (:map global-map
-        ("<f9>"        . treemacs-toggle)
+        ("<f9>"        . treemacs)
         ("M-0"       . treemacs-select-window)
         ("C-c 1"     . treemacs-delete-other-windows)))
 
