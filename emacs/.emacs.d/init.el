@@ -550,6 +550,8 @@
   :config
   (setq magit-completing-read-function 'ivy-completing-read)
   (use-package evil-magit)
+  (bind-keys :map magit-mode-map
+             ("<SPC>" . hydra-leader/body))
   )
 
 ;; This actually goes through the shell
