@@ -39,7 +39,7 @@ function fish_prompt
     # 0 means unshortened
     set -l seq $fish_prompt_pwd_dir_length 0 10 9 8 7 6 5 4 3 2 1
     for i in $seq
-        set pwd (prompt_pwd $i)
+        set pwd (fish_prompt_pwd_dir_length=$i prompt_pwd)
         set -l len (string length -- $prompt_host_nocolor$pwd$last_status$delim' ')
         if test $len -lt $COLUMNS
             break
