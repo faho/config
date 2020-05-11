@@ -90,7 +90,6 @@
 
 ;; These autoload through use-package
 ;; Don't error if not found
-;; (require 'mymail nil t)
 (require 'myorg nil t)
 
 ;;; Aesthetics
@@ -387,17 +386,8 @@
             (font-lock-add-keywords nil
                                     '(("\\<\\(WTF\\|TODO\\|STUB\\|HACK\\):" 1 font-lock-keyword-face t))
                                     )
-            ;;(flyspell-prog-mode) ; Spellcheck comments and strings
-            ;;(whitespace-mode) ; Show whitespace (not sure if this isn't too annoying)
             (subword-mode))) ; Count CamelCase as two words
 
-;; Spelling
-;; (setq-default ispell-program-name "aspell")
-;; (setq ispell-list-command "list")
-;; (setq ispell-alternate-dictionary "english")
-;; (setq ispell-dictionary "deutsch")
-;; (add-hook 'text-mode-hook 'set-dict)
-;; (add-hook 'prog-mode-hook 'set-dict)
 (setq scroll-step 1)
 (setq scroll-conservatively 1000)
 
@@ -410,7 +400,6 @@
   (setq projectile-enable-caching t
         projectile-cache-file (expand-file-name "projectile.cache" user-cache-directory)
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-directory))
-        ;; projectile-switch-project-action (lambda () (neotree-show) (neotree-refresh)))
   (setq projectile-completion-system 'ivy)
   (projectile-global-mode))
 
@@ -513,13 +502,13 @@
       ("d" dired "dired")
       ("e" ediff "ediff")
       ("g" magit-status "magit")
-      ("G" git-timemachine "git-timemachine")
       ("p" list-packages "packages")
       ("q" nil "cancel"))
     (bind-key (faho/kbd "m") 'hydra-misc-modes/body)
 
     (defhydra hydra-leader (:color blue)
       "l" ;; Yeah, this takes too much space, unfortunately it can't be empty
+      (":" counsel-M-x "M-x")
       ("b" ivy-switch-buffer "Buffer")
       ("f" counsel-find-file "File")
       ("F" projectile-find-file-in-known-projects "Known files")
@@ -563,10 +552,6 @@
   (use-package evil-magit)
   )
 
-;; git-timemachine - stepping through git history
-;; This is a minor mode, so it's tricky to get it to work with evil
-(use-package git-timemachine)
-
 ;; This actually goes through the shell
 ;; since I use fish, the default is borked.
 (setq grep-find-template
@@ -578,38 +563,6 @@
 (setq ediff-split-window-function #'split-window-horizontally)
 ;; Always use a separate window, not frame, for ediff
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-
-;; (use-package neotree
-;;   :bind 
-;;   ("<f9>" . neotree-toggle)
-;;   :config
-;;   (setq neo-smart-open t)
-;;   (defun faho/neotree-collapse-node ()
-;;     ;; TODO: This always goes to the parent
-;;     ;; With save-excursion, it reacts badly when it
-;;     ;; actually closes
-;;     ;; Also, it never closes the current node
-;;     "Close the current parent node"
-;;     (interactive)
-;;     (let ((indentation (if (not (looking-at ""))
-;;                            (current-indentation)
-;;                          (skip-chars-forward "\s\t\n")
-;;                          (current-indentation))))
-;;       (when (> indentation 0)
-;;         (while (and (not (bobp))
-;;                     (<= indentation (current-indentation)))
-;;           (forward-line -1))
-;;         (neotree-enter))))
-;;   (bind-keys :map neotree-mode-map
-;;              ("h" . neotree-select-up-node)
-;;              ("H" . faho/neotree-collapse-node)
-;;              ("TAB" . neotree-enter)
-;;              ("SPC" . neotree-enter)
-;;              ("q" . neotree-hide)
-;;              ("." . neotree-hidden-file-toggle)
-;;              ("l" . neotree-enter)
-;;              ("j" . next-line)
-;;              ("k" . previous-line)))
 
 (use-package fish-mode
   :mode ("\\.fish\\'" . fish-mode)
