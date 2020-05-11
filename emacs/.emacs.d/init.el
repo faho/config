@@ -361,11 +361,11 @@
 ;; (setq yas-snippet-dirs                 (list (etc "yas-snippets/") 'yas-installed-snippets-dir))
 
 ;; Save point position between sessions
-(use-package saveplace
-  :ensure nil
-  :init
-  (setq-default save-place t)
-  (setq save-place-file (expand-file-name "places" user-cache-directory)))
+;; (use-package saveplace
+;;   :ensure nil
+;;   :init
+;;   (setq-default save-place t)
+;;   (setq save-place-file (expand-file-name "places" user-cache-directory)))
 
 (setq bookmark-default-file (expand-file-name "bookmark" user-cache-directory))
 (setq delete-old-versions -1)
