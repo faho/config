@@ -1,7 +1,7 @@
 function fish_right_prompt
     set -l note "♪"
-    type -q __fish_vcs_prompt
-    and set -l vcs (__fish_vcs_prompt 2>/dev/null)
+    type -q fish_vcs_prompt
+    and set -l vcs (fish_vcs_prompt 2>/dev/null)
     set -l bat (battery)
     set -l plug ""
     set -q BATTERY_IS_PLUGGED

@@ -37,8 +37,7 @@ function fish_prompt
     # This is quite cheesy - we simply try all prompt_pwds until it fits.
     # Since prompt_pwd is builtins-only, this is usually quite fast.
     # 0 means unshortened
-    set -l seq $fish_prompt_pwd_dir_length 0 10 9 8 7 6 5 4 3 2 1
-    for i in $seq
+    for i in $fish_prompt_pwd_dir_length 0 10 9 8 7 6 5 4 3 2 1
         set pwd (fish_prompt_pwd_dir_length=$i prompt_pwd)
         set -l len (string length -- $prompt_host_nocolor$pwd$last_status$delim' ')
         if test $len -lt $COLUMNS
