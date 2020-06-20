@@ -40,5 +40,5 @@ function fish_right_prompt
     set -q VIRTUAL_ENV
     and set -l venv (string replace -r '.*/' '' -- "$VIRTUAL_ENV")
 
-    printf "%s %s%s %s %s%s %s" $venv $duration $mpc $vcs $plug $bat $d
+    printf "%s %s %s %s%s %s" $venv $duration "$vcs" $plug $bat $d
 end
