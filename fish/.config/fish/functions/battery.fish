@@ -46,7 +46,10 @@ function battery_update_info
         # `termux-battery-status` will hang forever.
         functions -e battery_update_info
         functions -c battery_update_info_termux battery_update_info
+    else
+        return
     end
+    battery_update_info
 end
 
 function battery_update_info_termux
