@@ -1,4 +1,4 @@
-function hangman
+function guessword
 	if not test -r /usr/share/dict/words
 		echo "Please install a wordlist in /usr/share/dict/words"
 		return 1
