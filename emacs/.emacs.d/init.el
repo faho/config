@@ -17,6 +17,10 @@
 ;; Ask for y/n instead of "yes"/"no"
 (defalias #'yes-or-no-p #'y-or-n-p)
 
+;; Don't warn about "Package cl is deprecated" on startup.
+;; I'm not the one to fix it!
+(setq byte-compile-warnings '(cl-functions))
+
 (defvar tmp--file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 (add-hook 'emacs-startup-hook (lambda ()
@@ -114,7 +118,10 @@
 ;; Okay with 24bit (emacs 26.1):
 ;; atom-one-dark hamburg
 ;; molokai material planet
-(use-package cyberpunk-theme)
+(use-package cyberpunk-theme
+  :config
+  (load-theme 'cyberpunk t)
+  )
 
 ;; This should be outside of use-package so we can add to it from outside
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
