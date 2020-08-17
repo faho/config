@@ -15,7 +15,7 @@ set -gx EDITOR emacs -nw
 set -gx GCC_COLORS 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 set -gx GOPATH ~/dev/go
 set -gx GTK2_RC_FILES "$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-set -gx LESSHISTFILE "-"
+set -gx LESSHISTFILE -
 # set -gx MAIL ~/.mail
 # set -gx MAILDIR $MAIL
 set -gx MICRO_TRUECOLOR $fish_term24bit
@@ -23,7 +23,7 @@ set -gx MPD_HOST "$XDG_RUNTIME_DIR/mpd.socket"
 set -gx NVIM_TUI_ENABLE_CURSOR_SHAPE 1
 set -gx NVIM_TUI_ENABLE_TRUE_COLOR $fish_term24bit
 set -gx NO_AT_BRIDGE 1
-set -gx PAGER "less"
+set -gx PAGER less
 set -gx PRIMUS_SYNC 1
 # How GNU ls displays weird characters in filenames
 # This one displays "a\tb" and "a\ b" (without the quotes)

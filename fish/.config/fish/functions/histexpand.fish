@@ -1,6 +1,6 @@
 # Defined in /tmp/fish.g5mHoi/histexpand.fish @ line 2
 function histexpand
-	set -l token (commandline -ct)
+    set -l token (commandline -ct)
     echo "Token is $token"
     switch "$token"
         case '!!'

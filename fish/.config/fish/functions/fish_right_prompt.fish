@@ -18,7 +18,7 @@ function fish_right_prompt
     if not string match -qir '.*\.utf-?8' -- $LANG
         set note ""
         set -q BATTERY_IS_PLUGGED
-        and set plug "p"
+        and set plug p
         set bat (printf '%03d%%\n' $BATTERY_PCT)
     end
     set -l mpc
@@ -40,5 +40,6 @@ function fish_right_prompt
     set -q VIRTUAL_ENV
     and set -l venv (string replace -r '.*/' '' -- "$VIRTUAL_ENV")
 
+    set_color normal
     printf "%s %s %s %s%s %s" $venv $duration "$vcs" $plug $bat $d
 end

@@ -1,3 +1,3 @@
 function sf
-	sudo fish $argv;
+    sudo fish $argv
 end

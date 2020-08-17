@@ -1,7 +1,7 @@
 # Defined in /tmp/fish.QAafTh/expand_path.fish @ line 2
 function expand_path --description 'Expand arguments to be used as paths'
     echo "ARGV IS $argv"
-	for p in $argv
+    for p in $argv
         # TODO: Expand variables as well
         # Expand "~".
         if string match -q '~*' -- $p

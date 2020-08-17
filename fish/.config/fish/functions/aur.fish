@@ -48,7 +48,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 return 1
             end
             set -l resultcount (echo $tmp | jshon -e resultcount)
-            if test $resultcount -eq "0"
+            if test $resultcount -eq 0
                 echo $red"No results found" >&2
                 return 1
             end
@@ -108,7 +108,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     echo $red"Could not contact AUR" >&2
                     return 1
                 end
-                if test (echo $tmp | jshon -e resultcount) -eq "0"
+                if test (echo $tmp | jshon -e resultcount) -eq 0
                     echo $red"No results found" >&2
                     return 1
                 end
@@ -142,7 +142,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                     return 1
                 end
                 set -l resultcount (echo $tmp | jshon -e resultcount)
-                if test $resultcount -eq "0"
+                if test $resultcount -eq 0
                     echo $red"No results found" >&2
                     return 1
                 end
@@ -163,7 +163,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 end
 
                 for i in (seq $resultcount)
-                    printf "$bold%-32s:$normal %s\n" "Name" $names[$i] "Description" $descs[$i] "Version" $versions[$i] "Url: " $urls[$i] "Dependencies" "$deps" "Makedependencies" "$makedeps" "(Make)-Dependencies from AUR" "$aurdeps"
+                    printf "$bold%-32s:$normal %s\n" Name $names[$i] Description $descs[$i] Version $versions[$i] "Url: " $urls[$i] Dependencies "$deps" Makedependencies "$makedeps" "(Make)-Dependencies from AUR" "$aurdeps"
                 end
             end
             return 0
@@ -250,7 +250,7 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             end
             if set -q failedpulls[1]
                 echo "The following packages failed pulling:" >&2
-                string replace -- "$aurpkgs/" "pkgs/" $failedpulls >&2
+                string replace -- "$aurpkgs/" pkgs/ $failedpulls >&2
                 echo "Fix the errors and rerun" >&2
                 return 6
             end
@@ -262,16 +262,16 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
             set -l printpkgs
             set -q argv[1]
             and switch $argv[1]
-                case "--queueonly"
+                case --queueonly
                     set -e printpkgs
-                case "--pkgsonly"
+                case --pkgsonly
                     set -e printqueue
             end
             if set -q printqueue printpkgs
                 set -l qpkgs $aurqueue/*
-                string replace -- "$aurqueue/" "queue/" -- $qpkgs
+                string replace -- "$aurqueue/" queue/ -- $qpkgs
                 set -l apkgs $aurpkgs/*
-                string replace -- "$aurpkgs/" "pkgs/" -- $apkgs
+                string replace -- "$aurpkgs/" pkgs/ -- $apkgs
             else
                 set -q printqueue
                 and ls $aurqueue
@@ -300,12 +300,12 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 set -q dir[1]
                 and eval $EDITOR (string escape -- $dir)
             end
-        case "cd"
+        case cd
             set -l dir (aur_findpkg $argv[1])
             if set -q dir[1]
                 cd $dir
             end
-        case "help" "*"
+        case help "*"
             echo $bold"aur.fish $normal -- The stupidest aur helper"
             echo
             echo $bold"Usage:$normal aur <Operation> [...]"
@@ -336,26 +336,26 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
 end
 
 function aur_findpkg
-	if set -q argv[2]
-		echo "Please only pass one argument" >&2
-		return 2
-	end
-	set -q aurqueue; or set -l aurqueue ~/dev/build/new
-	set -q aurpkgs; or set -l aurpkgs ~/dev/build/current
+    if set -q argv[2]
+        echo "Please only pass one argument" >&2
+        return 2
+    end
+    set -q aurqueue; or set -l aurqueue ~/dev/build/new
+    set -q aurpkgs; or set -l aurpkgs ~/dev/build/current
 
-	set -l dir
-	if not string match -q "pkgs/*" -- $argv
-		set -l d "$aurqueue/"(string replace -r "^queue/" "" -- $argv)
-		test -d "$d"; and set dir "$d"
-	end
-	if not string match -q "queue/*" -- $argv
-		set -l d "$aurpkgs/"(string replace -r "^pkgs/" "" -- $argv)
-		test -d "$d"; and set dir "$d"
-	end
-	if test -n "$dir"
-		echo $dir
-		return 0
-	else
-		return 1
-	end
+    set -l dir
+    if not string match -q "pkgs/*" -- $argv
+        set -l d "$aurqueue/"(string replace -r "^queue/" "" -- $argv)
+        test -d "$d"; and set dir "$d"
+    end
+    if not string match -q "queue/*" -- $argv
+        set -l d "$aurpkgs/"(string replace -r "^pkgs/" "" -- $argv)
+        test -d "$d"; and set dir "$d"
+    end
+    if test -n "$dir"
+        echo $dir
+        return 0
+    else
+        return 1
+    end
 end

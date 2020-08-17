@@ -1,3 +1,3 @@
 function sumlines
-	paste -sd+ | bc;
+    paste -sd+ | bc
 end

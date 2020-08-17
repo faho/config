@@ -1,6 +1,6 @@
 # Defined in /tmp/fish.qpmL3V/histreplace_or_execute.fish @ line 2
 function histreplace_or_execute
-	set -l oldcmd (commandline)
+    set -l oldcmd (commandline)
     set -l newcmd
     set -l modified
     for line in $oldcmd

@@ -78,32 +78,32 @@ end
 function battery_update_info_linux
     # Cache the devices, they usually won't change.
     if not set -q __battery_upower_devices
-	    set -g __battery_upower_devices (upower -e | string match '*battery*') # This can theoretically be multiple
+        set -g __battery_upower_devices (upower -e | string match '*battery*') # This can theoretically be multiple
     end
-	set -l upo (upower -i $__battery_upower_devices)
+    set -l upo (upower -i $__battery_upower_devices)
 
-	# Mind the space in " charging", we want to match "charging" but not "discharging"
-	printf "%s"\n $upo | string match -rq "state:.* charging|state:.*fully-charged"
-	and set -g BATTERY_IS_PLUGGED
-	or set -e  BATTERY_IS_PLUGGED
+    # Mind the space in " charging", we want to match "charging" but not "discharging"
+    printf "%s"\n $upo | string match -rq "state:.* charging|state:.*fully-charged"
+    and set -g BATTERY_IS_PLUGGED
+    or set -e BATTERY_IS_PLUGGED
 
-	printf "%s"\n $upo | string match -rq "state:.* charging"
+    printf "%s"\n $upo | string match -rq "state:.* charging"
     and set -g BATTERY_IS_CHARGING
-    or set -e  BATTERY_IS_CHARGING
+    or set -e BATTERY_IS_CHARGING
 
-	set -g BATTERY_MAX_CAP (printf "%s\n" $upo \
+    set -g BATTERY_MAX_CAP (printf "%s\n" $upo \
 	| string match -r "\s*energy-full:.*" \
 	| string replace -r '\s*energy-full:\s*' '')
 
-	set -g BATTERY_CUR_CAP (printf "%s\n" $upo \
+    set -g BATTERY_CUR_CAP (printf "%s\n" $upo \
 	| string match -r "\s*energy:.*" \
 	| string replace -r '\s*energy:\s*' '')
 
-	set -g BATTERY_PCT (printf "%s\n" $upo \
+    set -g BATTERY_PCT (printf "%s\n" $upo \
 	| string match -r '\s*percentage:.*' \
 	| string replace -r '\s*percentage:\s*(.*)%' '$1')
 
-	set -g BATTERY_TIME_LEFT (printf "%s\n" $upo \
+    set -g BATTERY_TIME_LEFT (printf "%s\n" $upo \
 	| string match -r ".*time to.*:.*" \
 	| string replace -r '.*time to.*:\s*' '')
 
@@ -115,14 +115,14 @@ function battery_update_info_darwin
     set -l ioreg (ioreg -rc "AppleSmartBattery")
 
     printf "%s"\n $ioreg \
-    | grep -q "\"ExternalConnected\" = Yes"
+        | grep -q "\"ExternalConnected\" = Yes"
     and set -g BATTERY_IS_PLUGGED
     or set -e BATTERY_IS_PLUGGED
 
     printf "%s"\n $ioreg \
-    | grep -q "\"IsCharging\" = Yes"
+        | grep -q "\"IsCharging\" = Yes"
     and set -g BATTERY_IS_CHARGING
-    or set -e  BATTERY_IS_CHARGING
+    or set -e BATTERY_IS_CHARGING
 
     set -g BATTERY_MAX_CAP (printf "%s\n" $ioreg \
     | grep "\"MaxCapacity\" =" \
@@ -145,64 +145,67 @@ function battery_update_info_darwin
 end
 
 function battery -a \
-  filled_slot_ch    \
-  empty_slot_ch     \
-  show_empty_slots  \
-  red yellow green
+    filled_slot_ch \
+    empty_slot_ch \
+    show_empty_slots \
+    red yellow green
 
-  if test -z "$filled_slot_ch"
-	set filled_slot_ch "█|"
-	set filled_slot_ch "▮"
-  end
-
-  if test -z "$empty_slot_ch"
-    set empty_slot_ch " |"
-    set empty_slot_ch "▯"
-  end
-
-  if test -z "$show_empty_slots"
-    set show_empty_slots true
-  end
-
-  if test -z "$red"
-    set red (set_color -o f00)
-  end
-
-  if test -z "$yellow"
-    set yellow (set_color -o ff0)
-  end
-
-  if test -z "$green"
-    set green (set_color -o 0f0)
-  end
-
-  set -l normal   (set_color normal)
-  set -l color    $green
-
-  battery_update_info
-  set -q BATTERY_SLOTS; or return
-  string match -qr '^[0-9]+$' -- $BATTERY_SLOTS; or return
-  switch "$BATTERY_SLOTS"
-    case 0 1 2; set color $red
-    case 3 4;   set color $yellow
-    case "*";   set color $green
-  end
-
-  for n in (seq 10)
-    if test $n -eq "$BATTERY_SLOTS"
-		if type -q bar
-			printf "$color"
-			bar (string sub -s -1 -l 1 $BATTERY_PCT)0
-			printf "$normal"
-		else
-			printf "$color$filled_slot_ch$normal"
-		end
-    else if test $n -lt "$BATTERY_SLOTS"
-		printf "$color$filled_slot_ch$normal"
-	else
-      if test $show_empty_slots = true
-        printf "$color$empty_slot_ch$normal"
-      end
+    if test -z "$filled_slot_ch"
+        set filled_slot_ch "█|"
+        set filled_slot_ch "▮"
     end
-  end
+
+    if test -z "$empty_slot_ch"
+        set empty_slot_ch " |"
+        set empty_slot_ch "▯"
+    end
+
+    if test -z "$show_empty_slots"
+        set show_empty_slots true
+    end
+
+    if test -z "$red"
+        set red (set_color -o f00)
+    end
+
+    if test -z "$yellow"
+        set yellow (set_color -o ff0)
+    end
+
+    if test -z "$green"
+        set green (set_color -o 0f0)
+    end
+
+    set -l normal (set_color normal)
+    set -l color $green
+
+    battery_update_info
+    set -q BATTERY_SLOTS; or return
+    string match -qr '^[0-9]+$' -- $BATTERY_SLOTS; or return
+    switch "$BATTERY_SLOTS"
+        case 0 1 2
+            set color $red
+        case 3 4
+            set color $yellow
+        case "*"
+            set color $green
+    end
+
+    for n in (seq 10)
+        if test $n -eq "$BATTERY_SLOTS"
+            if type -q bar
+                printf "$color"
+                bar (string sub -s -1 -l 1 $BATTERY_PCT)0
+                printf "$normal"
+            else
+                printf "$color$filled_slot_ch$normal"
+            end
+        else if test $n -lt "$BATTERY_SLOTS"
+            printf "$color$filled_slot_ch$normal"
+        else
+            if test $show_empty_slots = true
+                printf "$color$empty_slot_ch$normal"
+            end
+        end
+    end
 end

@@ -23,7 +23,8 @@ function fish_prompt
         set -g prompt_host ""
         set -g prompt_host_nocolor ""
         if set -q SSH_TTY
-            or begin command -sq systemd-detect-virt
+            or begin
+                command -sq systemd-detect-virt
                 and systemd-detect-virt -q
             end
             set -l host (hostname)

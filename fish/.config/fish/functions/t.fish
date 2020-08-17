@@ -1,3 +1,3 @@
 function t
-	argparse -n banana h/help v/version -- $argv;
+    argparse -n banana h/help v/version -- $argv
 end

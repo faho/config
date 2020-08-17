@@ -1,3 +1,3 @@
 function fdebug
-	logger -t fish $argv
+    logger -t fish $argv
 end
