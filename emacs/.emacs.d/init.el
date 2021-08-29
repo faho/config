@@ -156,6 +156,7 @@
 (use-package avy)
 ;;; Minor Modes:
 ;; Vim-Mode
+(setq evil-want-keybinding nil)
 (use-package evil
   :diminish (undo-tree-mode . "")
   :config
@@ -249,6 +250,13 @@
     :config
    (global-evil-surround-mode t))
   )
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (setq evil-collection-company-use-tng nil)
+  (evil-collection-init))
 
 (use-package company
   :diminish company-mode
@@ -556,7 +564,7 @@
   :commands magit-status
   :config
   (setq magit-completing-read-function 'ivy-completing-read)
-  (use-package evil-magit)
+  ;; (use-package evil-magit)
   (bind-keys :map magit-mode-map
              ("<SPC>" . hydra-leader/body))
   )
