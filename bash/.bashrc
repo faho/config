@@ -4,15 +4,6 @@
 # If not running interactively, don't do anything (else slim breaks by calling tmux)
 [[ $- != *i* ]] && return
 
-# Attach everything under tmux, if installed and $HOME/.NOTMUX doesn't exist
-if false && [[ $TERM != "screen" ]] && [[ -f "/usr/bin/tmux" ]] && [[ ! -f $HOME/.NOTMUX ]]; then #which tmux; then
-    if tmux ls 2> /dev/null | grep -q "attached"; then
-        tmux && exit
-    else
-    tmux attach-session && exit
-    fi
-fi
-
 # Source system-wide config 
 # Do this first so user-config takes precedence
 source /etc/bash.bashrc
