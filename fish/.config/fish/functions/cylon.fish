@@ -1,7 +1,8 @@
 function cylon
     set -l eye (set_color red)--(set_color green)--(set_color red)--(set_color normal)
     set -l direction right
-    set -l field "     e     "
+    set -l whitespace (string repeat -n (math $COLUMNS / 2 - 1) " ")
+    set -l field (string pad -w (math $COLUMNS - 2 - (string length -V -- $eye)) -r $whitespace"e")
     set -l mode terminal
     # TODO: When input is a pipe,
     # we should quit once the other side terminates.
@@ -9,7 +10,7 @@ function cylon
     # and it will cause us to run faster when input comes faster.
     isatty stdin; or set mode wait
     while begin
-            test $mode = terminal; and sleep 0.1s
+            test $mode = terminal; and sleep 0.01s
         end
         or begin
             test $mode = wait; and read -zn 1
