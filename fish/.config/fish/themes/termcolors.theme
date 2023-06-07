@@ -1,0 +1,30 @@
+fish_color_autosuggestion      brblack
+fish_color_cancel              -r
+fish_color_command             brgreen
+fish_color_keyword             brgreen
+fish_color_comment             brmagenta
+fish_color_cwd                 green
+fish_color_cwd_root            red
+fish_color_end                 brmagenta
+fish_color_error               brred
+fish_color_escape              brcyan
+fish_color_history_current     --bold
+fish_color_host                normal
+fish_color_match               --background=brblue
+fish_color_normal              normal
+fish_color_operator            cyan
+fish_color_param               brblue
+fish_color_quote               yellow
+fish_color_redirection         bryellow
+fish_color_search_match        'bryellow' '--background=brblack'
+fish_color_selection           'white' '--bold' '--background=brblack'
+fish_color_status              red
+fish_color_user                brgreen
+fish_color_valid_path          --underline
+fish_pager_color_completion    normal
+fish_pager_color_description   yellow
+fish_pager_color_prefix        'white' '--bold' '--underline'
+fish_pager_color_progress      'brwhite' '--background=cyan'
+fish_pager_color_selected_background 'bryellow' '--background=brblack'
+fish_pager_color_selected_completion
+fish_pager_color_selected_prefix

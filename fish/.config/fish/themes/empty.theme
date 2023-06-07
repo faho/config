@@ -1,0 +1,8 @@
+fish_color_autosuggestion brblack
+fish_color_normal blue
+fish_color_search_match -r
+fish_color_selection -r
+fish_pager_color_description brblack
+fish_pager_color_prefix '--underline'
+fish_pager_color_progress brblack
+fish_pager_color_selected_background -r

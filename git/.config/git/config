@@ -1,10 +1,10 @@
 [user]
-	name = Fabian Homborg
+	name = Fabian Boehm
 	email = FHomborg@gmail.com
 	signingkey = 36EBBDB3
 
 [sendemail]
-	from = Fabian Homborg <FHomborg@gmail.com>
+	from = Fabian Boehm <FHomborg@gmail.com>
 	smtpserver = smtp.gmail.com
 	smtpuser = FHomborg@gmail.com
 	smtpserverport = 587
@@ -13,10 +13,36 @@
 	chainreplyto = false
 
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --first-parent
+	re = restore --staged
 	pom = pull origin master
     rim = rebase --interactive master
     grep-group = grep --break --heading --line-number --color
+
+[core]
+    pager = delta
+[include]
+    path = ~/.config/git/themes.gitconfig
+
+[interactive]
+    diffFilter = delta --color-only
+[add.interactive]
+    useBuiltin = false # required for git 2.37.0
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+    dark = true
+    line-numbers = true
+    #features = woolly-mammoth
+    features = mantis-shrimp
+    side-by-side = false
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
 
 [diff "odf"]
 	  binary=true
@@ -40,10 +66,10 @@
     untracked = cyan
 [column]
 	ui = auto
-[pager]
-	log = /usr/share/git/diff-highlight/diff-highlight | less
-	show = /usr/share/git/diff-highlight/diff-highlight | less
-	diff = /usr/share/git/diff-highlight/diff-highlight | less
+# [pager]
+# 	log = /usr/share/git/diff-highlight/diff-highlight | less
+# 	show = /usr/share/git/diff-highlight/diff-highlight | less
+# 	diff = /usr/share/git/diff-highlight/diff-highlight | less
 [diff]
 	algorithm = histogram
 [commit]

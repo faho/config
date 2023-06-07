@@ -118,10 +118,13 @@
 ;; Okay with 24bit (emacs 26.1):
 ;; atom-one-dark hamburg
 ;; molokai material planet
-(use-package cyberpunk-theme
-  :config
-  (load-theme 'cyberpunk t)
-  )
+;;
+;; modus-themes is shipped with emacs >= 28
+;; (use-package modus-themes
+;;   :ensure nil
+;;   :config
+  (load-theme 'modus-vivendi t)
+;; )
 
 ;; This should be outside of use-package so we can add to it from outside
 (setq linum-disabled-modes-list '(shell-mode inferior-emacs-lisp-mode))
@@ -157,6 +160,8 @@
 ;;; Minor Modes:
 ;; Vim-Mode
 (setq evil-want-keybinding nil)
+(if (fboundp 'undo-redo) (setq evil-undo-system 'undo-redo) (setq evil-undo-system 'undo-tree))
+
 (use-package evil
   :diminish (undo-tree-mode . "")
   :config
@@ -174,6 +179,7 @@
              ("M-o" . evil-jump-forward)
              ("TAB" . nil))
   (bind-key "C-e" nil evil-insert-state-map)
+  (bind-key "C-@" 'hydra-leader/body evil-insert-state-map)
   ;; Enable C-w C-w for window-switching _everywhere_
   ;; First remove the default binding (kill-region) so C-w can be used as a prefix
   (bind-key "C-w" nil)
@@ -186,6 +192,7 @@
              ("C-M-m" . scroll-other-window-down) ;; Yes, this scrolls up
              ;; My simple replacement for evil-leader
              ("SPC" . hydra-leader/body)
+             ("C-SPC" . hydra-leader/body)
              ("q" . delete-window))
   (bind-keys :map evil-visual-state-map
              ("SPC" . hydra-leader/body)
@@ -668,3 +675,7 @@
   :ensure t
   :config
   (setq treemacs-header-function #'treemacs-projectile-create-header))
+
+(setq
+ warning-suppress-log-types '((comp) (comp))
+ warning-suppress-types '((comp)))

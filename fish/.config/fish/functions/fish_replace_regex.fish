@@ -5,11 +5,27 @@ function fish_replace_regex
         commandline "$cmd"
         commandline -f repaint
     end
-    read -l match -p 'echo Match:'
-    read -l replacement -p 'echo Replacement:'
-    echo \t (string replace -ar -- '('$match')' (set_color red)'$1'(set_color green)"$replacement"(set_color normal) $cmd)
+    echo
+    read -l match -P 'Match: '
+    or begin
+        functions -e __fish_replace_old
+        commandline -f repaint
+        return
+    end
+    read -l replacement -P 'Replacement: '
+    or begin
+        functions -e __fish_replace_old
+        commandline -f repaint
+        return
+    end
+    echo \t (string replace -ar -- '('$match')' (set_color --underline 444444)'$1'(set_color green)"$replacement"(set_color normal) $cmd)
     set -l new (string replace -ar -- '('$match')' $replacement $cmd)
-    read -l yn -p 'echo "Accept?"'
+    read -l yn -P 'Accept (y/N)? ' -n 1
+    or begin
+        functions -e __fish_replace_old
+        commandline -f repaint
+        return
+    end
     functions -e __fish_replace_old
     if test "$yn" = y -o "$yn" = Y -o "$yn" = J -o "$yn" = j
         commandline "$new"
