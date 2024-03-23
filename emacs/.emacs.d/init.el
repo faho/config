@@ -30,6 +30,7 @@
       inhibit-splash-screen t
       inhibit-startup-buffer-menu t ; Don't show buffer list when opening multiple files
       inhibit-default-init t ; Don't read default.el - I like my settings to be mine
+      initial-major-mode 'fundamental-mode ; The major mode in the scratch buffer - org probably too slow?
       initial-scratch-message "")
 
 ;; Kill the "Have you HURD of our savior GNU" message with fire
@@ -596,12 +597,33 @@
   (setq-default indent-tabs-mode nil)
   )
 
-(use-package rust-mode
-  :mode ("\\.rs\\'" . rust-mode)
-  :commands rust-mode
-  :config
-  (setq-default indent-tabs-mode nil)
-  )
+;; (use-package rustic
+;;   :ensure
+;;   :mode ("\\.rs\\'" . rustic-mode)
+;;   :bind (:map rustic-mode-map
+;;               ("M-j" . lsp-ui-imenu)
+;;               ("M-?" . lsp-find-references)
+;;               ("C-c C-c l" . flycheck-list-errors)
+;;               ("C-c C-c a" . lsp-execute-code-action)
+;;               ("C-c C-c r" . lsp-rename)
+;;               ("C-c C-c q" . lsp-workspace-restart)
+;;               ("C-c C-c Q" . lsp-workspace-shutdown)
+;;               ("C-c C-c s" . lsp-rust-analyzer-status))
+;;   :config
+;;   ;; uncomment for less flashiness
+;;   ;; (setq lsp-eldoc-hook nil)
+;;   ;; (setq lsp-enable-symbol-highlighting nil)
+;;   ;; (setq lsp-signature-auto-activate nil)
+
+;;   ;; comment to disable rustfmt on save
+;;   (setq rustic-format-on-save t))
+
+;; (use-package rust-mode
+;;   :mode ("\\.rs\\'" . rust-mode)
+;;   :commands rust-mode
+;;   :config
+;;   (setq-default indent-tabs-mode nil)
+;;   )
 
 (use-package cmake-mode
   :mode ("\\CMakeLists.txt\\'" . cmake-mode)
@@ -654,6 +676,26 @@
 ;;               (lsp-mode t)
 ;;               ))
 ;;   )
+
+;; (use-package lsp-mode
+;;   :commands lsp
+;;   :config
+;;   (setq lsp-inlay-hint-enable t)
+;;   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+;; (use-package lsp-ui
+;;   :commands lsp-ui-mode)
+
+;; Tell Emacs to prefer the treesitter mode
+;; You'll want to run the command `M-x treesit-install-language-grammar' before editing.
+(setq major-mode-remap-alist
+        '((yaml-mode . yaml-ts-mode)
+          (bash-mode . bash-ts-mode)
+          (js2-mode . js-ts-mode)
+          (typescript-mode . typescript-ts-mode)
+          (json-mode . json-ts-mode)
+          (css-mode . css-ts-mode)
+          (python-mode . python-ts-mode)))
 
 (use-package treemacs
   :ensure t

@@ -74,7 +74,7 @@
                  evil-visual-end)
                  ((boundp 'region-end)
                  region-end))
-		   "xsel -i -b" nil nil nil nil)
+		   "wl-copy" nil nil nil nil)
 		   ; "wl-copy -f -n" nil nil nil nil)
 		  ;; Supress "Shell command completed with no output"
 		  (message "")))))
@@ -85,7 +85,7 @@
 	  (progn
 		(clipboard-yank)
 		)
-	(insert (shell-command-to-string "xsel -o -b"))
+	(insert (shell-command-to-string "wl-paste"))
 	))
 
 (defun rename-file-and-buffer ()
