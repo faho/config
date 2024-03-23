@@ -53,8 +53,7 @@
 (dolist (dir load-path)
   (make-directory dir t))
 
-(defconst faho/config-files '("mystuff/mymail.el"
-                              "mystuff/myorg.el"
+(defconst faho/config-files '("mystuff/myorg.el"
                               "mystuff/myutil.el"))
 
 ;; Yes, that's a hardcoded config repo
