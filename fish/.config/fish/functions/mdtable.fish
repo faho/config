@@ -2,6 +2,9 @@ function mdtable
     argparse d/delimiter= -- $argv
     or return
 
+    isatty stdin
+    and return
+
     set -ql _flag_d[1]
     and set _flag_d -d $_flag_d[-1]
 

@@ -8,6 +8,11 @@ function gitcomp
     set -ql _flag_h
     and set -a tags HEAD
 
+    if not set -q tags[1]
+        echo "I can't work without tags or --head, sorry" >&2
+        return 1
+    end
+
     set -l max (git rev-list --count (string split -m1 -f1 \t -- $tags[-1]))
     for t in $tags
         set -l td (string split -m1 \t $t)

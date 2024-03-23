@@ -13,5 +13,5 @@ function fish_greeting
           ''\V)     \_) ''\\\\''\\\\JJ\\''J\)
                       ''/''J''\\''J''T\\''JJJ''J)
                       (J''JJ''| \UUU)
-                       (UU)' | pridecat
+                       (UU)' | pridecat $argv
 end

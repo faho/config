@@ -36,7 +36,10 @@ if builtin -q abbr
 
     abbr -a --regex '.*/' --function autocd autocd
 
-    function multicd; echo cd (string repeat -n (math (string length -- $argv[1]) - 1) ../); end
+    function multicd
+        set -l length (math (string length -- $argv) - 1)
+        echo cd (string repeat -n $length ../)
+    end
 
     abbr --add dotdot --regex '^\.\.+$' --function multicd
 
@@ -82,7 +85,7 @@ if builtin -q abbr
     #     echo -- $toks[$args]
     # end
 
-    # abbr --add histreplace --function histreplace --position anywhere --regex '!.*'
+    abbr --add histreplace --function histreplace --position anywhere --regex '!.*'
 
     function histreplace
         switch "$argv[1]"
