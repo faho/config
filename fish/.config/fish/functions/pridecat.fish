@@ -35,7 +35,7 @@ function pridecat
         end
 
 
-        echo (set_color $bg -b $cols[1])$line(set_color reset)
+        echo (set_color $cols[1])$line(set_color reset)
         set -e cols[1]
         if not set -q cols[1]
             set cols $$var
