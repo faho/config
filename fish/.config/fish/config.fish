@@ -12,12 +12,6 @@ set -gx XDG_CONFIG_HOME ~/.config
 set -gx XDG_DATA_HOME ~/.local/share
 set -gx --path XDG_DATA_DIRS $XDG_DATA_HOME/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 
-for flatpakdir in $HOME/.local/share/flatpak/exports/bin /var/lib/flatpak/exports/bin
-    if test -d $flatpakdir
-        contains $flatpakdir $PATH; or set -a PATH $flatpakdir
-    end
-end
-
 set -gx ANDROID_HOME ~/.android # /opt/android-sdk
 set -gx ASPROOT ~/packages/asp
 set -gx CDPATH . ~ (path filter -xd ~/Videos)
@@ -44,6 +38,7 @@ set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 set -gx SWT_GTK3 0
 set -gx WINEDEBUG "-all,fixme-all"
 
+fish_add_path --path ~/.local/share/flatpak/exports/bin /var/lib/flatpak/exports/bin
 fish_add_path ~/.local/bin
 
 set -g __fish_git_prompt_showdirtystate 1
