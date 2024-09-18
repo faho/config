@@ -19,7 +19,7 @@ set -gx EDITOR emacs -nw
 set -gx GCC_COLORS 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 set -gx GOPATH ~/dev/go
 set -gx GTK2_RC_FILES $XDG_CONFIG_HOME/gtk-2.0/gtkrc
-set -gx LANG de_DE.UTF-8
+# set -gx LANG de_DE.UTF-8
 set -gx LESSHISTFILE -
 set -gx MICRO_TRUECOLOR $fish_term24bit
 set -gx MPD_HOST "$XDG_RUNTIME_DIR/mpd.socket"
@@ -44,14 +44,11 @@ fish_add_path ~/.local/bin
 set -g __fish_git_prompt_showdirtystate 1
 # set -g __fish_git_prompt_showuntrackedfiles 1
 # set -g __fish_git_prompt_show_informative_status 1
-set -g __fish_git_prompt_showupstream informative
+# set -g __fish_git_prompt_showupstream informative
 set -g __fish_git_prompt_showcolorhints 1
 set -g __fish_git_prompt_use_informative_chars 1
 
 if status --is-interactive
-    # set -gx GPGKEY 36EBBDB3
-    # set -gx GPG_TTY (tty)
-
     # Add path for completions/functions intended to go upstream
     set fish_function_path ~/.config/fish/test/functions $fish_function_path
     set fish_complete_path ~/.config/fish/test/completions $fish_complete_path
