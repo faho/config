@@ -11,6 +11,5 @@ function mkfish --wraps=makepkg
                 set branch "#branch=$arg"
         end
     end
-    cd ~/dev/build/fish-shell-git
-    makepkg -sir $opts
+    makepkg -D ~/dev/build/fish-shell-git -sir $opts
 end

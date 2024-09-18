@@ -8,6 +8,9 @@ function mdtable
     set -ql _flag_d[1]
     and set _flag_d -d $_flag_d[-1]
 
+    set -q argv[1]
+    or read -la $_flag_d argv
+
     string join '|' -- "" $argv ""
     set -l nums (count $argv)
     string join '|' -- "" (string repeat -n $nums :---\n)

@@ -122,7 +122,8 @@ function aur --description 'Quite possibly the stupidest aur helper ever invente
                 set -l deps (echo $tmp | jshon -e results -a -e Depends -a -u -Q | sort -u)
                 set -l makedeps (echo $tmp | jshon -e results -a -e MakeDepends -a -u -Q | sort -u)
                 set -l aurdeps (printf '%s\n' $deps $makedeps | faho_getaurdeps)
-                set -l cloneurls "https://aur.archlinux.org/"(echo $tmp | jshon -e results -a -e PackageBase -u)".git"
+                set -l cloneurls "https://aur.archlinux.org/"(echo $tmp | jq -r '.results[].PackageBase')
+                # set -l cloneurls "https://aur.archlinux.org/"(echo $tmp | jshon -e results -a -e PackageBase -u)".git"
                 set -l clonenum 1
                 echo "Aurdeps: $aurdeps"
                 # TODO: This could be a recursive mode
