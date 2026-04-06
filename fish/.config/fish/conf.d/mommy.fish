@@ -7,7 +7,7 @@ function mommy --on-event fish_postexec
     end
     set -g mommy_status_generation $status_generation
 
-    set --default=SHELL_MOMMY_NEGATIVE_RESPONSES -l NEGATIVE_RESPONSES "do you need MOMMYS_ROLE's help~?" \
+    set -l NEGATIVE_RESPONSES "do you need MOMMYS_ROLE's help~?" \
         "Don't give up, my love~" \
         "Don't worry, MOMMYS_ROLE is here to help you~" \
         "I believe in you, my sweet AFFECTIONATE_TERM~" \
@@ -29,7 +29,7 @@ function mommy --on-event fish_postexec
         "You're doing your best, and that's all that matters to MOMMYS_ROLE~" \
         "MOMMYS_ROLE is always here to encourage you~ "
 
-    set --default=SHELL_MOMMYS_POSITIVE_RESPONSES -l POSITIVE_RESPONSES "*pets your head*" \
+    set -l POSITIVE_RESPONSES "*pets your head*" \
         "awe, what a good AFFECTIONATE_TERM~\nMOMMYS_ROLE knew you could do it~" \
         "good AFFECTIONATE_TERM~\nMOMMYS_ROLE's so proud of you~" \
         "Keep up the good work, my love~" \
@@ -43,14 +43,14 @@ function mommy --on-event fish_postexec
         "you did an amazing job, my dear~" \
         "you're such a smart cookie~ "
 
-    set --default=SHELL_MOMMYS_ROLE -l role mommy
-    set --default=SHELL_MOMMYS_ADJECTIVE -l adjective little good lovely cute
-    set --default=SHELL_MOMMYS_LITTLE -l little boy
-    set --default=SHELL_MOMMYS_PRONOUNS -l pronouns her
-    set --default=SHELL_MOMMYS_COLOR -l mommy_color FFB6C1 # lightpink
-    set --default=SHELL_MOMMYS_ONLY_NEGATIVE -l only_negative false
-    set --default=SHELL_MOMMYS_CHANCE -l mommy_chance_percent 10
-    set --default=SHELL_MOMMYS_ALWAYS_SEC -l mommy_always_sec 30
+    set -l role mommy
+    set -l adjective little good lovely cute
+    set -l little boy
+    set -l pronouns her
+    set -l mommy_color FFB6C1 # lightpink
+    set -l only_negative false
+    set -l mommy_chance_percent 10
+    set -l mommy_always_sec 30
 
     # My mushy brain's attempt to make mommy less likely to show up for shorter commands.
     set -l res $(math $mommy_chance_percent x "(($duration + 50) / 1000)")
